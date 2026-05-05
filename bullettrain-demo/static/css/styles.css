@@ -238,6 +238,13 @@ p { margin: 0; }
   width: auto;
 }
 
+.brand img.logo-wordmark {
+  height: 36px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+}
+
 .brand-svg-fallback {
   display: flex;
   align-items: center;

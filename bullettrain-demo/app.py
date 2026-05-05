@@ -37,7 +37,11 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "bullettrain-demo-secret")
 
 @app.context_processor
 def inject_globals():
-    return {"current_year": datetime.utcnow().year}
+    logo_png_path = os.path.join(app.static_folder, "img", "logo-icon.png")
+    return {
+        "current_year": datetime.utcnow().year,
+        "has_logo_png": os.path.isfile(logo_png_path),
+    }
 
 
 # ---------------------------------------------------------------------------

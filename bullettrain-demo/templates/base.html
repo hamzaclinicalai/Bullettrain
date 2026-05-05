@@ -17,13 +17,17 @@
 <header class="nav">
   <div class="container nav-inner">
 
-    <!-- Logo: drop your PNG at static/img/logo-icon.png to override the SVG -->
     <a href="{{ url_for('index') }}" class="brand">
-      <img src="{{ url_for('static', filename='img/logo-icon.png') }}"
-           alt="BulletTrain"
-           class="logo-icon"
-           onerror="this.src='{{ url_for('static', filename='img/logo-icon.svg') }}';" />
-      <span>BulletTrain<span style="color:var(--accent);">.ai</span></span>
+      {% if has_logo_png %}
+        <img src="{{ url_for('static', filename='img/logo-icon.png') }}"
+             alt="BulletTrain.ai"
+             class="logo-wordmark" />
+      {% else %}
+        <img src="{{ url_for('static', filename='img/logo-icon.svg') }}"
+             alt="BulletTrain"
+             class="logo-icon" />
+        <span>BulletTrain<span style="color:var(--accent);">.ai</span></span>
+      {% endif %}
     </a>
 
     <!-- Mobile hamburger -->
