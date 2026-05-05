@@ -1,11 +1,9 @@
 /**
  * BulletTrain.ai - simulation runner
  *
- * Wires the LiveAvatar SDK to the UI:
- *   1. Fetches a session token from the Flask backend.
- *   2. Starts a LiveAvatarSession and attaches it to the <video> element.
- *   3. Listens to transcript events and posts them to /api/transcript/:session_id.
- *   4. On session end, calls /api/analyze/:session_id and redirects to results.
+ * LiveAvatar SDK handles video streaming only.
+ * Web Speech API handles mic input (no SDK voiceChat dependency).
+ * Backend /api/respond generates avatar replies; session.message() speaks them.
  */
 
 import {
@@ -15,23 +13,14 @@ import {
   SessionState,
 } from "@heygen/liveavatar-web-sdk";
 
-window.addEventListener("error", (e) => {
-  if (e.message && e.message.toLowerCase().includes("import")) {
-    showOverlay("⚠️", "SDK failed to load", `Check your internet connection and try refreshing.<br><small>${e.message}</small>`);
-  }
-});
-
 // ---------------------------------------------------------------------------
-// Read runner metadata from the DOM
+// DOM refs
 // ---------------------------------------------------------------------------
 const runner     = document.getElementById("runner");
 const SESSION_ID = runner.dataset.session;
 const SIM_ID     = runner.dataset.sim;
 const MODE       = runner.dataset.mode;
 
-// ---------------------------------------------------------------------------
-// DOM refs
-// ---------------------------------------------------------------------------
 const videoEl        = document.getElementById("avatar-video");
 const overlay        = document.getElementById("stage-overlay");
 const overlayIcon    = document.getElementById("overlay-icon");
@@ -48,10 +37,12 @@ const timerEl        = document.getElementById("timer");
 // State
 // ---------------------------------------------------------------------------
 let avatarSession  = null;
+let recognition    = null;   // Web Speech API instance
 let micOn          = false;
-let avatarSpeaking = false;  // true while avatar is mid-speech; blocks mic re-echo
+let avatarSpeaking = false;  // true while session.message() is in progress
 let timerInterval  = null;
 let elapsedSeconds = 0;
+let streamReady    = false;
 
 window.__sessionLive = false;
 
@@ -73,40 +64,34 @@ function startTimer() {
 function showOverlay(icon, title, msg, showSpinner = false) {
   overlay.classList.remove("hidden");
   overlayIcon.style.display = showSpinner ? "none" : "block";
-  overlayIcon.textContent = icon;
-  overlayTitle.textContent = title;
-  overlayMsg.innerHTML = msg;
-  spinner.style.display = showSpinner ? "block" : "none";
-  startBtn.style.display = "none";
+  overlayIcon.textContent   = icon;
+  overlayTitle.textContent  = title;
+  overlayMsg.innerHTML      = msg;
+  spinner.style.display     = showSpinner ? "block" : "none";
+  startBtn.style.display    = "none";
 }
-
-function hideOverlay() {
-  overlay.classList.add("hidden");
-}
+function hideOverlay() { overlay.classList.add("hidden"); }
 
 // ---------------------------------------------------------------------------
 // Transcript helpers
 // ---------------------------------------------------------------------------
-function clearTranscriptPlaceholder() {
-  const placeholder = transcriptList.querySelector("[style*='text-align:center']");
-  if (placeholder) placeholder.remove();
+function clearPlaceholder() {
+  transcriptList.querySelector("[data-placeholder]")?.remove();
 }
-
 function appendBubble(speaker, text) {
-  clearTranscriptPlaceholder();
+  clearPlaceholder();
   const div = document.createElement("div");
   div.className = `bubble ${speaker}`;
   div.innerHTML = `<span class="who">${speaker === "user" ? "You" : "Avatar"}</span>${escapeHtml(text)}`;
   transcriptList.appendChild(div);
   transcriptList.scrollTop = transcriptList.scrollHeight;
 }
-
 function escapeHtml(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 
 // ---------------------------------------------------------------------------
-// Post a transcript turn to the backend
+// Backend calls
 // ---------------------------------------------------------------------------
 async function postTranscript(speaker, text) {
   try {
@@ -115,20 +100,13 @@ async function postTranscript(speaker, text) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ speaker, text }),
     });
-  } catch (_) { /* best-effort */ }
+  } catch (_) {}
 }
 
-// ---------------------------------------------------------------------------
-// Mute mic, ask backend for a response, speak it through the avatar.
-// ---------------------------------------------------------------------------
 async function fetchAndSpeakResponse(userText) {
-  if (!avatarSession) return;
+  if (!avatarSession || !streamReady) return;
 
-  // Mute mic before speaking to prevent echo loop
-  if (micOn) {
-    avatarSession.stopListening();
-    setMicOn(false);
-  }
+  pauseListening();
   avatarSpeaking = true;
 
   try {
@@ -137,19 +115,107 @@ async function fetchAndSpeakResponse(userText) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ session_id: SESSION_ID, text: userText }),
     });
-    if (!res.ok) { avatarSpeaking = false; return; }
+    if (!res.ok) throw new Error(`respond ${res.status}`);
     const data = await res.json();
-    if (data.text && avatarSession) {
+    if (!data.text) throw new Error("empty response");
+
+    // Speak through avatar
+    try {
+      await avatarSession.message(data.text);
+    } catch (_) {
+      // message() may not return a promise in all SDK versions — fire and continue
       avatarSession.message(data.text);
-      // Optimistically add to transcript; AVATAR_TRANSCRIPTION may also fire
-      appendBubble("avatar", data.text);
-      postTranscript("avatar", data.text);
-    } else {
-      avatarSpeaking = false;
     }
-  } catch (_) {
+
+    // Show in transcript immediately (SDK AVATAR_TRANSCRIPTION may not fire)
+    appendBubble("avatar", data.text);
+    postTranscript("avatar", data.text);
+
+    // Wait for avatar to finish speaking before re-enabling mic.
+    // AVATAR_SPEAK_ENDED handles it, but add a time-based fallback.
+    const wordCount  = data.text.split(/\s+/).length;
+    const speakMs    = Math.max(wordCount * 450, 2000); // ~450ms per word
+    setTimeout(() => {
+      if (avatarSpeaking) {
+        avatarSpeaking = false;
+        if (micOn) resumeListening();
+      }
+    }, speakMs);
+
+  } catch (err) {
+    console.error("fetchAndSpeakResponse:", err);
     avatarSpeaking = false;
+    if (micOn) resumeListening();
   }
+}
+
+// ---------------------------------------------------------------------------
+// Web Speech API  (Chrome / Edge; graceful degradation on others)
+// ---------------------------------------------------------------------------
+function initSpeechRecognition() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    // Browser doesn't support it — show a warning but keep the video going
+    appendBubble("avatar", "[Your browser doesn't support speech recognition. Try Chrome or Edge.]");
+    return;
+  }
+
+  recognition = new SR();
+  recognition.continuous      = false;  // one utterance at a time
+  recognition.interimResults  = false;
+  recognition.lang            = "en-US";
+  recognition.maxAlternatives = 1;
+
+  recognition.onresult = async (evt) => {
+    const text = evt.results[0][0].transcript.trim();
+    if (!text || avatarSpeaking) return;
+    appendBubble("user", text);
+    postTranscript("user", text);
+    await fetchAndSpeakResponse(text);
+  };
+
+  recognition.onend = () => {
+    // Auto-restart after each utterance while mic is "on"
+    if (micOn && !avatarSpeaking && window.__sessionLive) {
+      try { recognition.start(); } catch (_) {}
+    }
+  };
+
+  recognition.onerror = (evt) => {
+    if (evt.error === "no-speech" || evt.error === "aborted") {
+      // Normal — restart
+      if (micOn && !avatarSpeaking && window.__sessionLive) {
+        try { recognition.start(); } catch (_) {}
+      }
+    } else {
+      console.warn("Speech recognition error:", evt.error);
+    }
+  };
+}
+
+function resumeListening() {
+  if (!recognition || !window.__sessionLive) return;
+  try { recognition.start(); } catch (_) {}
+  setMicOn(true);
+}
+function pauseListening() {
+  if (!recognition) return;
+  try { recognition.stop(); recognition.abort(); } catch (_) {}
+}
+function setMicOn(on) {
+  micOn = on;
+  micBtn.innerHTML = on
+    ? `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Mic On`
+    : `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Mic Off`;
+  micBtn.className = on ? "btn is-on" : "";
+}
+
+// ---------------------------------------------------------------------------
+// Avatar SPEAK_ENDED — clean way to re-enable mic
+// ---------------------------------------------------------------------------
+function onAvatarSpeakEnded() {
+  avatarSpeaking = false;
+  if (micOn && !avatarSpeaking) resumeListening();
 }
 
 // ---------------------------------------------------------------------------
@@ -158,7 +224,7 @@ async function fetchAndSpeakResponse(userText) {
 async function startSession() {
   showOverlay("", "", "Connecting to avatar…", true);
 
-  // 1. Get session token from Flask backend
+  // 1. Get session token
   let sessionToken;
   try {
     const res = await fetch("/api/session-token", {
@@ -177,9 +243,12 @@ async function startSession() {
     return;
   }
 
-  // 2. Create and start the LiveAvatar session
+  // 2. Initialize speech recognition before starting session
+  initSpeechRecognition();
+
+  // 3. Create avatar session — streaming video only (no voiceChat)
   try {
-    avatarSession = new LiveAvatarSession(sessionToken, { voiceChat: true });
+    avatarSession = new LiveAvatarSession(sessionToken);
 
     avatarSession.on(SessionEvent.SESSION_STATE_CHANGED, (state) => {
       if (state === SessionState.CONNECTED) {
@@ -187,9 +256,6 @@ async function startSession() {
         controls.style.display = "flex";
         window.__sessionLive = true;
         startTimer();
-        // Kick off the conversation: the avatar speaks the opener first.
-        // Mic stays OFF until avatar finishes speaking (AVATAR_SPEAK_ENDED).
-        fetchAndSpeakResponse("");
       }
       if (state === SessionState.DISCONNECTED || state === SessionState.DISCONNECTING) {
         window.__sessionLive = false;
@@ -197,53 +263,22 @@ async function startSession() {
       }
     });
 
-    avatarSession.on(SessionEvent.SESSION_STREAM_READY, () => {
+    avatarSession.on(SessionEvent.SESSION_STREAM_READY, async () => {
       avatarSession.attach(videoEl);
       videoEl.play().catch(() => {});
+      streamReady = true;
+
+      // Stream is ready — now safe to call message().
+      // Avatar speaks the opener first; mic enables after avatar finishes.
+      setMicOn(true); // show mic button as "on" so user knows it will activate
+      await fetchAndSpeakResponse(""); // empty = opener
     });
 
-    // Track avatar transcript (the SDK may emit these in voiceChat mode)
-    // We add the bubble optimistically in fetchAndSpeakResponse, so skip duplicates here.
-    avatarSession.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, () => {
-      // Already handled in fetchAndSpeakResponse; no-op to avoid duplicates.
-    });
-
-    // Re-enable mic only after avatar fully finishes speaking
-    avatarSession.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, () => {
-      avatarSpeaking = false;
-      if (avatarSession && !micOn) {
-        avatarSession.startListening();
-        setMicOn(true);
-      }
-    });
-
-    // User speech - only process when avatar is NOT speaking to prevent echo
-    let userBuffer = "";
-
-    avatarSession.on(AgentEventsEnum.USER_TRANSCRIPTION_CHUNK, (evt) => {
-      if (!avatarSpeaking) userBuffer += evt.text || "";
-    });
-
-    avatarSession.on(AgentEventsEnum.USER_TRANSCRIPTION, async (evt) => {
-      // Discard if avatar is currently speaking (echo guard)
-      if (avatarSpeaking) { userBuffer = ""; return; }
-
-      const text = evt.text || userBuffer;
-      userBuffer = "";
-      if (!text.trim()) return;
-
-      appendBubble("user", text);
-      postTranscript("user", text);
-      await fetchAndSpeakResponse(text);
-    });
-
-    avatarSession.on(AgentEventsEnum.SESSION_STOPPED, () => {
-      handleSessionEnd();
-    });
+    // SDK may still emit AVATAR_SPEAK_ENDED even without voiceChat
+    avatarSession.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, onAvatarSpeakEnded);
+    avatarSession.on(AgentEventsEnum.SESSION_STOPPED, () => handleSessionEnd());
 
     await avatarSession.start();
-    // NOTE: Do NOT call enableMic() here. The avatar speaks first.
-    // Mic is enabled by AVATAR_SPEAK_ENDED after the opener finishes.
 
   } catch (err) {
     showOverlay("⚠️", "Session error", `Failed to start avatar session.<br><small>${err.message}</small>`);
@@ -254,24 +289,15 @@ async function startSession() {
 }
 
 // ---------------------------------------------------------------------------
-// Mic controls
+// Mic toggle (manual button)
 // ---------------------------------------------------------------------------
-function setMicOn(on) {
-  micOn = on;
-  micBtn.innerHTML = on
-    ? `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Mic On`
-    : `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> Mic Off`;
-  micBtn.className = on ? "btn is-on" : "";
-}
-
 function toggleMic() {
-  if (!avatarSession || avatarSpeaking) return;
+  if (!window.__sessionLive) return;
   if (micOn) {
-    avatarSession.stopListening();
+    pauseListening();
     setMicOn(false);
   } else {
-    avatarSession.startListening();
-    setMicOn(true);
+    resumeListening();
   }
 }
 
@@ -280,27 +306,23 @@ function toggleMic() {
 // ---------------------------------------------------------------------------
 function interruptAvatar() {
   if (!avatarSession) return;
-  avatarSession.interrupt();
+  try { avatarSession.interrupt(); } catch (_) {}
   avatarSpeaking = false;
-  if (!micOn) {
-    avatarSession.startListening();
-    setMicOn(true);
-  }
+  resumeListening();
 }
 
 // ---------------------------------------------------------------------------
-// End session and trigger analysis
+// End session
 // ---------------------------------------------------------------------------
 async function endSession() {
   if (!avatarSession) return;
   clearInterval(timerInterval);
   window.__sessionLive = false;
+  pauseListening();
 
   showOverlay("⏳", "Generating your analysis…", "Hang tight. We're scoring your session against the rubric.", true);
 
-  try {
-    await avatarSession.stop();
-  } catch (_) { /* session may already be closed */ }
+  try { await avatarSession.stop(); } catch (_) {}
   avatarSession = null;
 
   await generateAnalysis();
@@ -310,6 +332,7 @@ async function handleSessionEnd() {
   if (!window.__sessionLive) return;
   clearInterval(timerInterval);
   window.__sessionLive = false;
+  pauseListening();
   showOverlay("⏳", "Session ended", "Generating analysis…", true);
   await generateAnalysis();
 }
@@ -319,17 +342,14 @@ async function generateAnalysis() {
     const res = await fetch(`/api/analyze/${SESSION_ID}`, { method: "POST" });
     if (!res.ok) throw new Error(`Analyze failed: ${res.status}`);
     const data = await res.json();
-    if (data.redirect_url) {
-      window.location.href = data.redirect_url;
-      return;
-    }
+    if (data.redirect_url) { window.location.href = data.redirect_url; }
   } catch (err) {
     showOverlay("⚠️", "Analysis error", `Could not generate analysis: ${err.message}`);
   }
 }
 
 // ---------------------------------------------------------------------------
-// Wire up global events from inline onclick helpers
+// Global event bridge (inline onclick helpers in HTML)
 // ---------------------------------------------------------------------------
 window.addEventListener("bt:start",     () => startSession());
 window.addEventListener("bt:toggleMic", () => toggleMic());
@@ -338,15 +358,10 @@ window.addEventListener("bt:end",       () => {
   if (confirm("End the session now and see your results?")) endSession();
 });
 
-// ---------------------------------------------------------------------------
 // Keyboard shortcuts
-// ---------------------------------------------------------------------------
 window.addEventListener("keydown", (e) => {
   if (e.code === "Space" && e.target === document.body && window.__sessionLive) {
-    e.preventDefault();
-    toggleMic();
+    e.preventDefault(); toggleMic();
   }
-  if (e.code === "Escape" && window.__sessionLive) {
-    interruptAvatar();
-  }
+  if (e.code === "Escape" && window.__sessionLive) interruptAvatar();
 });
