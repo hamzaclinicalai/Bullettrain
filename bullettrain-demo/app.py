@@ -218,37 +218,40 @@ SIMULATIONS = [
         "skills": ["Coaching", "Performance conversations", "Accountability"],
     },
     {
-        "id": "healthcare-intake",
-        "industry": "Healthcare Franchise",
-        "title": "Compassionate Patient Intake",
-        "tagline": "Conduct intake for an anxious first-time patient.",
-        "duration": "8-12 min",
-        "difficulty": "Intermediate",
+        "id": "tech-enterprise-renewal",
+        "industry": "Technology",
+        "title": "Enterprise Account Renewal",
+        "tagline": "Save a churning enterprise SaaS account before renewal.",
+        "duration": "10-15 min",
+        "difficulty": "Advanced",
         "color": "#EC4899",
         "summary": (
-            "A first-time patient is visibly anxious about a new diagnostic visit. "
-            "Complete intake while protecting privacy, surfacing concerns, and "
-            "preparing them for the clinician."
+            "A senior engineering leader at a Fortune 500 company is unhappy with "
+            "platform reliability and is threatening to switch vendors at renewal. "
+            "Your job is to de-escalate, uncover root concerns, and build a path "
+            "to contract extension."
         ),
         "avatar_context": (
-            "You are Sam Carter. This is your first time at this clinic and you are "
-            "nervous about what today's diagnostic visit might reveal. You don't know "
-            "what to expect and you are a little overwhelmed by the intake process. "
-            "You will answer questions honestly but you need the staff member to make "
-            "you feel safe and not rushed. React to what the intake person says."
+            "You are Jordan Kim, VP of Engineering at a large enterprise company. "
+            "Your team has been dealing with repeated outages on the SaaS platform "
+            "you pay a lot of money for. Your renewal is coming up in 30 days and "
+            "you are seriously considering switching to a competitor. The account rep "
+            "has asked for a call and you agreed, but you are skeptical and not in "
+            "the mood for a sales pitch. You want accountability and a real plan, "
+            "not just apologies. React to what the account rep says."
         ),
         "objectives": [
-            "Establish psychological safety in the first 30 seconds",
-            "Collect required intake data without sounding scripted",
-            "Surface clinically relevant concerns to flag for the provider",
-            "Hand off to the clinician with a clean summary",
+            "Acknowledge the outages directly without making excuses",
+            "Ask discovery questions to understand the full business impact",
+            "Present a credible remediation timeline with named owners",
+            "Earn a commitment to stay through the renewal period",
         ],
         "persona": {
-            "name": "Sam Carter",
-            "role": "Anxious first-time patient",
-            "voice_tone": "nervous, soft-spoken",
+            "name": "Jordan Kim",
+            "role": "VP of Engineering, enterprise customer",
+            "voice_tone": "direct, skeptical, time-pressured",
         },
-        "skills": ["Bedside manner", "HIPAA-aware intake", "Hand-off"],
+        "skills": ["Executive presence", "Churn recovery", "Technical credibility"],
     },
 ]
 
@@ -522,9 +525,10 @@ _OPENERS = {
         "Look, I've been a shift lead here for two years. "
         "My section runs fine. I'm not sure why shrink is suddenly my problem."
     ),
-    "healthcare-intake": (
-        "I've never been to this clinic before. "
-        "I'm a little nervous. I'm not sure what to expect from today."
+    "tech-enterprise-renewal": (
+        "Look, I agreed to this call but I want to be direct. "
+        "We have had three major outages in the past two months and my engineers are losing confidence in your platform. "
+        "Our renewal is in 30 days and I need a real reason to stay."
     ),
 }
 

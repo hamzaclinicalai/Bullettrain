@@ -45,25 +45,7 @@
         <div class="num">
           <span data-target="{{ total_simulations }}" data-suffix="+">{{ total_simulations }}+</span>
         </div>
-        <div class="label">Simulations</div>
-      </div>
-      <div class="hero-stat">
-        <div class="num">
-          <span data-target="12" data-suffix="">12</span>
-        </div>
-        <div class="label">Industries</div>
-      </div>
-      <div class="hero-stat">
-        <div class="num">
-          <span data-target="94" data-suffix="%">94%</span>
-        </div>
-        <div class="label">Retention Lift</div>
-      </div>
-      <div class="hero-stat">
-        <div class="num">
-          <span data-target="3" data-suffix="x">3x</span>
-        </div>
-        <div class="label">Faster Ramp</div>
+        <div class="label">Demo Simulations</div>
       </div>
     </div>
   </div>
@@ -74,14 +56,14 @@
      ================================================================ -->
 <div class="logo-strip">
   <div class="container">
-    <p class="strip-label">Trusted by teams in</p>
+    <p class="strip-label">Built for teams in</p>
     <div class="logo-row">
       <span>QSR Franchise</span>
       <span>Fitness Franchise</span>
       <span>Hospitality</span>
       <span>Automotive</span>
       <span>Retail Chains</span>
-      <span>Healthcare Networks</span>
+      <span>Technology</span>
     </div>
   </div>
 </div>
@@ -141,7 +123,7 @@
           </li>
         </ul>
         <div style="margin-top:36px;">
-          <a href="{{ url_for('catalog') }}" class="btn btn-primary btn-lg">Browse all simulations</a>
+          <a href="{{ url_for('catalog') }}" class="btn btn-primary btn-lg">Browse demo simulations</a>
         </div>
       </div>
 
@@ -201,7 +183,7 @@
     </div>
     <div style="margin-top:40px;" class="reveal">
       <a href="{{ url_for('catalog') }}" class="btn btn-ghost">
-        See all {{ total_simulations }} simulations
+        See all {{ total_simulations }} demo simulations
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </div>
