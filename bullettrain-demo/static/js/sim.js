@@ -117,13 +117,16 @@ function setMicOn(on) {
 
 function sdkStartListening() {
   if (!avatarSession || !window.__sessionLive) return;
-  try { avatarSession.startListening(); } catch (e) { console.warn("startListening:", e); }
-  setMicOn(true);
+  setMicOn(true); // update UI immediately so the button feels instant
+  try { avatarSession.startListening(); } catch (e) {
+    console.warn("startListening:", e);
+    setMicOn(false); // revert if SDK rejected it
+  }
 }
 function sdkStopListening() {
   if (!avatarSession) return;
+  setMicOn(false); // update UI immediately
   try { avatarSession.stopListening(); } catch (_) {}
-  setMicOn(false);
 }
 
 // ---------------------------------------------------------------------------
