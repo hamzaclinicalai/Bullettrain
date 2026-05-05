@@ -38,35 +38,66 @@
       </a>
       <a href="{{ url_for('platform') }}" class="btn btn-ghost on-dark btn-lg">See the Platform</a>
     </div>
-
-    <!-- Animated counters -->
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="num">
-          <span data-target="{{ total_simulations }}" data-suffix="+">{{ total_simulations }}+</span>
-        </div>
-        <div class="label">Demo Simulations</div>
-      </div>
-    </div>
   </div>
 </section>
 
 <!-- ================================================================
-     LOGO STRIP
+     INDUSTRIES
      ================================================================ -->
-<div class="logo-strip">
-  <div class="container">
-    <p class="strip-label">Built for teams in</p>
-    <div class="logo-row">
-      <span>QSR Franchise</span>
-      <span>Fitness Franchise</span>
-      <span>Hospitality</span>
-      <span>Automotive</span>
-      <span>Retail Chains</span>
-      <span>Technology</span>
+<section class="industries-section">
+  <div class="industries-glow"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-head reveal" style="margin-bottom:48px;">
+      <span class="eyebrow on-dark">Built for teams in</span>
+      <h2 style="margin-top:12px;">Every scenario rooted in a real industry moment.</h2>
+    </div>
+    <div class="industry-grid">
+
+      <div class="industry-card reveal reveal-delay-1">
+        <div class="industry-card-icon">🍔</div>
+        <div class="industry-card-name">QSR Franchise</div>
+        <div class="industry-card-desc">Counter recovery, wrong orders, lunch-rush pressure</div>
+        <div class="industry-card-rail" style="background:var(--accent);"></div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-2">
+        <div class="industry-card-icon">💪</div>
+        <div class="industry-card-name">Fitness Franchise</div>
+        <div class="industry-card-desc">Membership tours, pricing objections, closing conversations</div>
+        <div class="industry-card-rail" style="background:var(--signal-green);"></div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-3">
+        <div class="industry-card-icon">🏨</div>
+        <div class="industry-card-name">Hospitality</div>
+        <div class="industry-card-desc">Guest recovery, loyalty escalations, front-desk moments</div>
+        <div class="industry-card-rail" style="background:var(--signal-purple);"></div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-1">
+        <div class="industry-card-icon">🚗</div>
+        <div class="industry-card-name">Automotive</div>
+        <div class="industry-card-desc">Service advisor upsells, trust-building, work order closes</div>
+        <div class="industry-card-rail" style="background:#F59E0B;"></div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-2">
+        <div class="industry-card-icon">🛍️</div>
+        <div class="industry-card-name">Retail Chains</div>
+        <div class="industry-card-desc">Shrink coaching, performance conversations, accountability</div>
+        <div class="industry-card-rail" style="background:#EC4899;"></div>
+      </div>
+
+      <div class="industry-card reveal reveal-delay-3">
+        <div class="industry-card-icon">💻</div>
+        <div class="industry-card-name">Technology</div>
+        <div class="industry-card-desc">Enterprise renewals, churn recovery, executive conversations</div>
+        <div class="industry-card-rail" style="background:#0EA5A4;"></div>
+      </div>
+
     </div>
   </div>
-</div>
+</section>
 
 <!-- ================================================================
      HOW IT WORKS
@@ -101,7 +132,7 @@
 <!-- ================================================================
      SPLIT: PRACTICE / TEST
      ================================================================ -->
-<section style="background:#04080F;padding:100px 0;">
+<section style="background:#04080F;padding:72px 0;">
   <div class="container">
     <div class="split">
       <div class="reveal">

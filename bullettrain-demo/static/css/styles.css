@@ -596,7 +596,7 @@ p { margin: 0; }
 
 .hero-inner {
   position: relative;
-  padding: 100px 28px 120px;
+  padding: 90px 28px 90px;
   z-index: 1;
   width: 100%;
   box-sizing: border-box;
@@ -713,10 +713,87 @@ p { margin: 0; }
 }
 
 /* ============================================================
+   INDUSTRIES SECTION
+   ============================================================ */
+.industries-section {
+  background: #000;
+  padding: 80px 0 90px;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(27,158,255,0.10);
+  border-bottom: 1px solid rgba(27,158,255,0.10);
+}
+
+.industries-glow {
+  position: absolute;
+  width: 900px;
+  height: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgba(27,158,255,0.18) 0%, rgba(27,158,255,0.05) 45%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+  animation: orbDrift1 20s ease-in-out infinite;
+}
+
+.industry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.industry-card {
+  background: rgba(8,12,24,0.70);
+  border: 1px solid rgba(27,158,255,0.12);
+  border-radius: 16px;
+  padding: 28px 24px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s, background 0.25s;
+  cursor: default;
+}
+
+.industry-card:hover {
+  border-color: rgba(27,158,255,0.35);
+  background: rgba(27,158,255,0.06);
+  transform: translateY(-4px);
+}
+
+.industry-card-rail {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  opacity: 0.8;
+}
+
+.industry-card-icon {
+  font-size: 32px;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.industry-card-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.industry-card-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* ============================================================
    SECTIONS
    ============================================================ */
 section {
-  padding: 100px 0;
+  padding: 80px 0;
 }
 
 section.tight {
@@ -2026,6 +2103,7 @@ footer .footer-brand-desc {
 
 @media (max-width: 1024px) {
   .cap-grid { grid-template-columns: repeat(2, 1fr); }
+  .industry-grid { grid-template-columns: repeat(2, 1fr); }
   .sim-grid { grid-template-columns: repeat(2, 1fr); }
   .team-grid { grid-template-columns: repeat(2, 1fr); }
   .detail-cols { grid-template-columns: 1fr; }
@@ -2057,6 +2135,7 @@ footer .footer-brand-desc {
 @media (max-width: 640px) {
   .sim-grid { grid-template-columns: 1fr; }
   .cap-grid { grid-template-columns: 1fr; }
+  .industry-grid { grid-template-columns: 1fr; }
   .hero-cta { flex-direction: column; align-items: flex-start; }
   .container { padding: 0 20px; }
 }
