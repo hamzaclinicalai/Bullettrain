@@ -190,9 +190,11 @@ async function fetchAndSpeakResponse(userText) {
 
   avatarSpeak(responseText);
 
-  // Safety fallback: re-enable mic if AVATAR_SPEAK_ENDED never fires
+  // Safety fallback: re-enable mic if AVATAR_SPEAK_ENDED never fires.
+  // Use a generous estimate (750ms/word) so we don't cut in while the avatar
+  // is still talking on longer responses.
   const words   = responseText.split(/\s+/).length;
-  const speakMs = Math.max(words * 650, 5000);
+  const speakMs = Math.max(words * 750, 6000) + 700; // +700 for the settle delay
   setTimeout(() => {
     if (avatarSpeaking) {
       console.warn("[TTS] AVATAR_SPEAK_ENDED never fired — re-enabling mic via fallback");
@@ -279,7 +281,11 @@ async function startSession() {
     avatarSession.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, () => {
       console.log("[SDK] AVATAR_SPEAK_ENDED");
       avatarSpeaking = false;
-      sdkStartListening();
+      // Delay opening the mic so avatar echo/reverb dissipates first.
+      // Also re-check avatarSpeaking in case a new response already started.
+      setTimeout(() => {
+        if (!avatarSpeaking) sdkStartListening();
+      }, 700);
     });
 
     avatarSession.on(AgentEventsEnum.SESSION_STOPPED, () => handleSessionEnd());
