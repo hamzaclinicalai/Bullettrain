@@ -34,8 +34,7 @@ LIVEAVATAR_API_KEY = "a999720b-05d8-11f1-a99e-066a7fa2e369"
 LIVEAVATAR_AVATAR_ID = "075abc67-2fae-4548-8ca9-b815fcbd34c7"
 LIVEAVATAR_API_BASE = "https://api.liveavatar.com"
 
-# Gemini – env var takes precedence, hard-coded value ensures demo always works.
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyCnNzUFgFVHuc3YYkq6Co1kcY9wErHThLo")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_MODEL   = "gemini-2.5-flash"
 
 
@@ -277,19 +276,19 @@ def build_system_prompt(simulation, mode):
     persona = simulation["persona"]
     avatar_context = simulation.get("avatar_context", simulation["summary"])
     silence_note = (
-        " If the other person goes silent for a long time, stay in character and "
-        "press naturally (e.g. 'Hello? Are you still there?' or 'I don't have all day.')."
+        " If the other person goes silent or seems stuck, stay in character and nudge them naturally."
         if mode == "practice"
         else ""
     )
     return (
         f"{avatar_context} "
         f"Your name is {persona['name']}. Your tone is {persona['voice_tone']}. "
-        f"IMPORTANT: You already know exactly what your situation is - do NOT ask the "
-        f"other person to describe the problem or provide details. YOU have the problem. "
-        f"THEY are the one trying to help or sell to you. "
-        f"Respond only to what they actually say. Keep every reply under 3 sentences. "
-        f"Never break character. Never offer training advice or coaching."
+        f"YOU are the one with the problem or the situation. The person you are talking to is trying to help you or sell to you. "
+        f"React naturally to exactly what they say to you - do not repeat your opening complaint, just respond to their last message. "
+        f"Speak the way a real person would in this situation: casual, direct, emotionally authentic. "
+        f"Keep every reply to 1-2 sentences maximum. "
+        f"Do NOT use bullet points, lists, headers, or any structured formatting. "
+        f"Never break character. Never give training advice or coaching feedback."
         f"{silence_note}"
     )
 
@@ -472,11 +471,12 @@ def respond():
 
 
 def _generate_avatar_response(simulation, transcript, user_text, mode):
-    # Always try Gemini first — key is guaranteed via module-level constant.
-    try:
-        return _gemini_response(simulation, transcript, user_text, mode, GEMINI_API_KEY)
-    except Exception as exc:
-        app.logger.error("gemini_response failed: %s", exc)
+    # Always try Gemini first.
+    if GEMINI_API_KEY:
+        try:
+            return _gemini_response(simulation, transcript, user_text, mode, GEMINI_API_KEY)
+        except Exception as exc:
+            app.logger.error("gemini_response failed: %s", exc)
 
     # Claude fallback if Gemini is unavailable.
     anthropic_key = os.environ.get("ANTHROPIC_API_KEY", "")
@@ -589,66 +589,6 @@ _OPENERS = {
 }
 
 
-def _scripted_response(simulation, user_text, mode, turn_count):
-    """
-    Rule-based fallback used when ANTHROPIC_API_KEY is not set.
-    Keeps the simulation moving with contextually appropriate responses.
-    """
-    sim_id = simulation["id"]
-    persona_name = simulation["persona"]["name"]
-    text = user_text.lower()
-
-    # First avatar turn: always use the vivid opener.
-    if turn_count <= 1:
-        return _OPENERS.get(sim_id, f"Hi. I have a situation I need help with.")
-
-    # Detect trainee intent and respond accordingly.
-    apologised = any(w in text for w in ["sorry", "apologize", "apolog", "my mistake", "my bad"])
-    offered_fix = any(w in text for w in [
-        "replace", "refund", "comp", "complimentary", "free", "fix", "make it right",
-        "right away", "immediately", "take care", "resolve", "new one", "fresh"
-    ])
-    asked_question = "?" in user_text
-    named_me = persona_name.lower().split()[0] in text
-
-    if apologised and offered_fix:
-        lines = [
-            "Okay, that actually helps. How long will it take?",
-            "Alright, I appreciate that. Let's do it - and please make sure it doesn't happen again.",
-            f"Fine. I'll wait. But {persona_name.split()[0]} won't be back if this keeps happening.",
-        ]
-    elif apologised:
-        lines = [
-            "I hear the apology, but what are you actually going to do about it?",
-            "Okay - but an apology doesn't fix the problem. What's the next step?",
-            "I appreciate that, but I need a concrete solution, not just 'sorry.'",
-        ]
-    elif offered_fix:
-        lines = [
-            "Okay… that sounds reasonable. How quickly can that happen?",
-            "That works for me. Can you confirm that right now?",
-            "Alright. And what are you going to do to make sure this doesn't happen again?",
-        ]
-    elif asked_question:
-        lines = [
-            f"I'm {persona_name}. I've been a customer here for years and I expect better.",
-            "My main concern is just getting this sorted as fast as possible.",
-            "I just want to know: what can you actually do for me right now?",
-        ]
-    elif named_me:
-        lines = [
-            "Yes, that's me. So what are your options here?",
-            "I'm glad you're paying attention. What can you do?",
-        ]
-    else:
-        lines = [
-            "I'm still waiting for a real answer here.",
-            "Can you tell me specifically what's going to happen next?",
-            "I don't have all day. What are my options?",
-            "I appreciate you trying, but I need something more concrete.",
-        ]
-
-    return lines[turn_count % len(lines)]
 
 
 @app.post("/api/transcript/<session_id>")
