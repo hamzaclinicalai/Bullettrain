@@ -8,7 +8,7 @@ import os
 import json
 import time
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 import requests
 from flask import (
@@ -35,6 +35,11 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "bullettrain-demo-secret")
 
 
+@app.context_processor
+def inject_globals():
+    return {"current_year": datetime.utcnow().year}
+
+
 # ---------------------------------------------------------------------------
 # Simulation catalog
 # ---------------------------------------------------------------------------
@@ -44,7 +49,7 @@ SIMULATIONS = [
         "industry": "Quick Service Restaurant",
         "title": "Customer Recovery at the Counter",
         "tagline": "De-escalate a frustrated guest and rescue the visit.",
-        "duration": "8–12 min",
+        "duration": "8-12 min",
         "difficulty": "Foundational",
         "color": "#FF6B4A",
         "summary": (
@@ -70,7 +75,7 @@ SIMULATIONS = [
         "industry": "Fitness Franchise",
         "title": "Closing the New Member Tour",
         "tagline": "Convert a tour into a paid membership without pressure.",
-        "duration": "10–15 min",
+        "duration": "10-15 min",
         "difficulty": "Intermediate",
         "color": "#3B82F6",
         "summary": (
@@ -96,7 +101,7 @@ SIMULATIONS = [
         "industry": "Hospitality Franchise",
         "title": "VIP Guest Check-In Recovery",
         "tagline": "Handle a botched reservation for a loyalty member.",
-        "duration": "6–10 min",
+        "duration": "6-10 min",
         "difficulty": "Foundational",
         "color": "#0EA5A4",
         "summary": (
@@ -122,13 +127,13 @@ SIMULATIONS = [
         "industry": "Automotive Franchise",
         "title": "Service Advisor Up-Sell",
         "tagline": "Recommend additional service without breaking trust.",
-        "duration": "10–14 min",
+        "duration": "10-14 min",
         "difficulty": "Advanced",
         "color": "#8B5CF6",
         "summary": (
             "A customer came in for an oil change. The technician flagged worn "
             "brake pads and a leaking gasket. Communicate findings, prioritize "
-            "safety, and close the additional work — ethically."
+            "safety, and close the additional work - ethically."
         ),
         "objectives": [
             "Translate technical findings into customer language",
@@ -148,12 +153,12 @@ SIMULATIONS = [
         "industry": "Retail Franchise",
         "title": "Coaching a Shift Lead on Shrink",
         "tagline": "Manager-to-lead coaching conversation about losses.",
-        "duration": "12–18 min",
+        "duration": "12-18 min",
         "difficulty": "Advanced",
         "color": "#F59E0B",
         "summary": (
             "Your store's shrink is up 30% this quarter. You need to coach your "
-            "shift lead — without micromanaging — to identify root causes and "
+            "shift lead - without micromanaging - to identify root causes and "
             "agree on a 30-day improvement plan."
         ),
         "objectives": [
@@ -174,7 +179,7 @@ SIMULATIONS = [
         "industry": "Healthcare Franchise",
         "title": "Compassionate Patient Intake",
         "tagline": "Conduct intake for an anxious first-time patient.",
-        "duration": "8–12 min",
+        "duration": "8-12 min",
         "difficulty": "Intermediate",
         "color": "#EC4899",
         "summary": (
@@ -242,6 +247,16 @@ def index():
 @app.route("/platform")
 def platform():
     return render_template("platform.html")
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
+@app.route("/catalog")
+def catalog():
+    return render_template("catalog.html", simulations=SIMULATIONS)
 
 
 @app.route("/simulations")
@@ -432,28 +447,28 @@ def _claude_response(simulation, transcript, user_text, mode, api_key):
 # Per-simulation scripted openers so the first avatar line is always vivid.
 _OPENERS = {
     "qsr-customer-recovery": (
-        "Hi — I ordered the grilled chicken wrap but got a burger. "
+        "Hi, I ordered the grilled chicken wrap but got a burger. "
         "Again. This is the third time this month and I've only got 20 minutes left on my break."
     ),
     "fitness-membership-objections": (
-        "Thanks for the tour — it's a nice facility. "
+        "Thanks for the tour. It's a nice facility. "
         "I'm just not sure I can commit to this financially right now. The monthly fee is pretty steep."
     ),
     "hospitality-guest-checkin": (
         "I'm a Platinum member and I booked a suite three weeks ago. "
-        "You're telling me it's not available? I just got off a six-hour flight."
+        "You're telling me it is not available? I just got off a six-hour flight."
     ),
     "auto-service-advisor": (
         "You said this was just going to be an oil change. "
-        "Now there are extra issues? How do I know this isn't just an upsell?"
+        "Now there are extra issues? How do I know this is not just an upsell?"
     ),
     "retail-shrink-conversation": (
-        "Look — I've been a shift lead here for two years. "
+        "Look, I've been a shift lead here for two years. "
         "My section runs fine. I'm not sure why shrink is suddenly my problem."
     ),
     "healthcare-intake": (
         "I've never been to this clinic before. "
-        "I'm a little nervous — I'm not sure what to expect from today."
+        "I'm a little nervous. I'm not sure what to expect from today."
     ),
 }
 
@@ -483,13 +498,13 @@ def _scripted_response(simulation, user_text, mode, turn_count):
     if apologised and offered_fix:
         lines = [
             "Okay, that actually helps. How long will it take?",
-            "Alright, I appreciate that. Let's do it — and please make sure it doesn't happen again.",
+            "Alright, I appreciate that. Let's do it - and please make sure it doesn't happen again.",
             f"Fine. I'll wait. But {persona_name.split()[0]} won't be back if this keeps happening.",
         ]
     elif apologised:
         lines = [
             "I hear the apology, but what are you actually going to do about it?",
-            "Okay — but an apology doesn't fix the problem. What's the next step?",
+            "Okay - but an apology doesn't fix the problem. What's the next step?",
             "I appreciate that, but I need a concrete solution, not just 'sorry.'",
         ]
     elif offered_fix:
@@ -512,7 +527,7 @@ def _scripted_response(simulation, user_text, mode, turn_count):
     elif mode == "practice" and turn_count > 8:
         lines = [
             "(Hint: try acknowledging the issue by name and offering a specific remedy.)",
-            "(Hint: use my name and commit to a concrete action — time and outcome.)",
+            "(Hint: use my name and commit to a concrete action - time and outcome.)",
         ]
     else:
         lines = [
@@ -624,10 +639,10 @@ def _find_evidence(user_turns, keywords):
 
 def _coaching_tip(objective, coverage):
     if coverage > 0.6:
-        return "Strong coverage — keep this in your default playbook."
+        return "Strong coverage - keep this in your default playbook."
     if coverage > 0.3:
-        return "Partial coverage — name the action explicitly next time."
-    return "Missed in this run — open the next attempt by addressing this directly."
+        return "Partial coverage - name the action explicitly next time."
+    return "Missed in this run - open the next attempt by addressing this directly."
 
 
 def _build_summary(simulation, overall, talk_ratio, duration_s):
@@ -638,8 +653,8 @@ def _build_summary(simulation, overall, talk_ratio, duration_s):
     )
     talk_note = (
         "balanced talk-time" if 0.4 <= talk_ratio <= 0.6 else (
-            "you dominated airtime — leave room for the other party" if talk_ratio > 0.6
-            else "you spoke less than the avatar — drive the conversation more"
+            "you dominated airtime - leave room for the other party" if talk_ratio > 0.6
+            else "you spoke less than the avatar - drive the conversation more"
         )
     )
     minutes = duration_s // 60

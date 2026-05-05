@@ -1,37 +1,44 @@
 {% extends "base.html" %}
-{% block title %}Platform — BulletTrain.ai{% endblock %}
-{% block nav_class %}on-dark{% endblock %}
+{% block title %}Platform | BulletTrain.ai{% endblock %}
+{% block description %}BulletTrain sits between your LMS and the floor. It is where rote knowledge becomes practiced judgment, and where managers finally see who is ready.{% endblock %}
 
 {% block body %}
-<section class="detail-hero" style="padding:90px 0 110px;">
+
+<!-- ================================================================
+     HERO
+     ================================================================ -->
+<section class="detail-hero">
   <div class="container">
     <span class="eyebrow on-dark">Platform Overview</span>
-    <h1 style="color:var(--white);font-size:clamp(36px,5vw,60px);font-weight:600;margin-top:18px;max-width:22ch;">
-      Built for the realities of franchise training
+    <h1 style="margin-top:18px;">
+      <span class="gradient-text">Built for the realities</span><br>
+      of franchise training.
     </h1>
-    <p style="color:rgba(255,255,255,0.72);margin-top:18px;max-width:64ch;font-size:18px;">
-      BulletTrain sits between your LMS and the floor. It's where rote knowledge becomes practiced judgment, and where managers finally see who's ready.
+    <p style="color:var(--text-secondary);margin-top:18px;max-width:62ch;font-size:18px;line-height:1.7;">
+      BulletTrain sits between your LMS and the floor. It is where rote knowledge becomes practiced judgment, and where managers finally see who is ready.
     </p>
   </div>
 </section>
 
-<section>
+<!-- ================================================================
+     FOUR STEPS
+     ================================================================ -->
+<section style="background:var(--bg-base);padding:100px 0;">
   <div class="container">
-    <!-- Step-by-step -->
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">How it works</span>
-      <h2>Four steps from sign-in to debrief</h2>
+      <h2>Four steps from sign-in to debrief.</h2>
     </div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px;">
       {% for step in [
-        ("01", "Choose a scenario", "Browse the simulation library and select the moment your team needs to practice — service recovery, sales closing, coaching, intake, and more."),
-        ("02", "Select a mode", "Practice mode keeps the avatar in character while offering soft prompts. Test mode is a blind run — no hints, fully scored."),
-        ("03", "Talk it through", "The avatar streams live video and audio via LiveAvatar.com. The trainee speaks naturally; the avatar listens, responds, and reacts in real time."),
-        ("04", "Review the analysis", "Every session produces a rubric-scored breakdown: what the trainee hit, what they missed, talk-time balance, and coaching nudges for the next rep."),
+        ("01", "Choose a scenario", "Browse the simulation library and select the moment your team needs to practice: service recovery, sales closing, coaching, intake, and more.", "var(--accent)"),
+        ("02", "Select a mode", "Practice mode keeps the avatar in character while offering soft prompts. Test mode is a blind run with no hints and full scoring.", "var(--signal-green)"),
+        ("03", "Talk it through", "The avatar streams live video and audio via LiveAvatar.com. The trainee speaks naturally; the avatar listens, responds, and reacts in real time.", "var(--signal-purple)"),
+        ("04", "Review the analysis", "Every session produces a rubric-scored breakdown: what the trainee hit, what they missed, talk-time balance, and coaching nudges for the next rep.", "var(--accent-soft)"),
       ] %}
-      <div class="cap">
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);margin-bottom:14px;letter-spacing:0.12em;">STEP {{ step[0] }}</div>
-        <div class="cap-rail" style="background:{% if loop.index == 1 %}var(--accent){% elif loop.index == 2 %}var(--signal-blue){% elif loop.index == 3 %}#8B5CF6{% else %}var(--signal-green){% endif %};"></div>
+      <div class="cap reveal reveal-delay-{{ loop.index }}">
+        <div style="font-family:var(--font-mono);font-size:10px;color:{{ step[3] }};margin-bottom:16px;letter-spacing:0.15em;text-transform:uppercase;">Step {{ step[0] }}</div>
+        <div class="cap-rail" style="background:{{ step[3] }};"></div>
         <h3>{{ step[1] }}</h3>
         <p>{{ step[2] }}</p>
       </div>
@@ -40,82 +47,107 @@
   </div>
 </section>
 
-<!-- Technology -->
-<section style="background:var(--ink-50);padding:90px 0;">
+<!-- ================================================================
+     TECHNOLOGY SPLIT
+     ================================================================ -->
+<section style="background:var(--bg-deep);padding:100px 0;">
   <div class="container">
     <div class="split">
-      <div>
+      <div class="reveal">
         <span class="eyebrow">Technology</span>
-        <h2>Realtime avatar streaming — no video calls, no actors</h2>
-        <p>The avatar is a fully autonomous AI persona powered by LiveAvatar.com's realtime WebRTC streaming. It listens via microphone, reasons over the scenario context, and speaks with natural lip-sync and expression — all under 500ms of latency.</p>
+        <h2>Realtime avatar streaming. No video calls. No actors.</h2>
+        <p>The avatar is a fully autonomous AI persona powered by LiveAvatar.com realtime WebRTC streaming. It listens via microphone, reasons over the scenario context, and speaks with natural lip-sync and expression, all under 500ms of latency.</p>
         <ul>
           <li>
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3" style="flex-shrink:0;color:var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>WebRTC video stream</b> — no download, no plugin</div>
+            <div><b>WebRTC video stream</b> - no download, no plugin</div>
           </li>
           <li>
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3" style="flex-shrink:0;color:var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>Persona-scoped context</b> — each simulation sets a unique system prompt</div>
+            <div><b>Persona-scoped context</b> - each simulation sets a unique system prompt</div>
           </li>
           <li>
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3" style="flex-shrink:0;color:var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>Live transcript</b> — every spoken word is captured for analysis</div>
+            <div><b>Live transcript</b> - every spoken word is captured for analysis</div>
           </li>
           <li>
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3" style="flex-shrink:0;color:var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>Session isolation</b> — each run is its own token; nothing leaks between trainees</div>
+            <div><b>Session isolation</b> - each run is its own token; nothing leaks between trainees</div>
           </li>
         </ul>
       </div>
-      <div class="split-art">
-        <div class="fake-screen">
-          <div class="fake-pill"><span class="fake-dot"></span>WebRTC · &lt;180ms</div>
-          <div style="margin-top:20px;display:grid;gap:8px;font-size:12px;font-family:var(--font-mono);color:rgba(255,255,255,0.7);">
-            <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:10px 12px;">POST /api/session-token → { session_token }</div>
-            <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:10px 12px;">LiveAvatarSession(token).start()</div>
-            <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:10px 12px;">session.attach(videoElement)</div>
-            <div style="background:rgba(16,185,129,0.12);border-radius:8px;padding:10px 12px;color:#6ee7b7;">✓ Avatar streaming — voice + video live</div>
+
+      <div class="split-art reveal reveal-delay-2">
+        <!-- Platform mockup: image with fallback UI -->
+        <div class="platform-mockup">
+          <img src="{{ url_for('static', filename='img/platform-screenshot.png') }}"
+               alt="BulletTrain platform interface"
+               style="width:100%;border-radius:16px;border:1px solid rgba(27,158,255,0.2);"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="mockup-fallback" style="display:none;">
+            <div style="position:relative;z-index:1;width:100%;">
+              <div class="fake-pill" style="margin-bottom:16px;">
+                <span class="fake-dot"></span>WebRTC · Under 180ms
+              </div>
+              <div style="display:grid;gap:8px;font-size:12px;font-family:var(--font-mono);color:var(--text-secondary);">
+                <div style="background:rgba(27,158,255,0.05);border:1px solid rgba(27,158,255,0.10);border-radius:8px;padding:10px 14px;">POST /api/session-token &rarr; { session_token }</div>
+                <div style="background:rgba(27,158,255,0.05);border:1px solid rgba(27,158,255,0.10);border-radius:8px;padding:10px 14px;">LiveAvatarSession(token).start()</div>
+                <div style="background:rgba(27,158,255,0.05);border:1px solid rgba(27,158,255,0.10);border-radius:8px;padding:10px 14px;">session.attach(videoElement)</div>
+                <div style="background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.15);border-radius:8px;padding:10px 14px;color:var(--signal-green);">Avatar streaming: voice + video live</div>
+              </div>
+              <div style="margin-top:14px;font-size:11px;color:var(--text-muted);font-family:var(--font-mono);">Powered by @heygen/liveavatar-web-sdk</div>
+            </div>
           </div>
-          <div style="margin-top:14px;font-size:11px;color:rgba(255,255,255,0.45);font-family:var(--font-mono);">Powered by @heygen/liveavatar-web-sdk</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Analysis -->
-<section>
+<!-- ================================================================
+     AI ANALYSIS
+     ================================================================ -->
+<section style="background:var(--bg-base);padding:100px 0;">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">AI Analysis</span>
-      <h2>A debrief that tells the truth</h2>
-      <p>The analysis engine scores each session against the simulation's learning objectives — not a generic rubric — and generates trainee-specific coaching language.</p>
+      <h2>A debrief that tells the truth.</h2>
+      <p>The analysis engine scores each session against the simulation's learning objectives, not a generic rubric, and generates trainee-specific coaching language.</p>
     </div>
     <div class="cap-grid">
-      <div class="cap">
+      <div class="cap reveal reveal-delay-1">
         <div class="cap-rail"></div>
         <h3>Objective-level scoring</h3>
         <p>Each learning objective gets its own score so a trainee knows exactly which skill moved the needle and which needs another rep.</p>
       </div>
-      <div class="cap">
-        <div class="cap-rail" style="background:var(--signal-blue);"></div>
-        <h3>Talk-time analysis</h3>
-        <p>Who dominated the conversation? Talk-time imbalance is one of the strongest predictors of missed discovery and rapport — the platform surfaces it instantly.</p>
-      </div>
-      <div class="cap">
+      <div class="cap reveal reveal-delay-2">
         <div class="cap-rail" style="background:var(--signal-green);"></div>
+        <h3>Talk-time analysis</h3>
+        <p>Who dominated the conversation? Talk-time imbalance is one of the strongest predictors of missed discovery and rapport. The platform surfaces it instantly.</p>
+      </div>
+      <div class="cap reveal reveal-delay-3">
+        <div class="cap-rail" style="background:var(--signal-purple);"></div>
         <h3>Evidence-backed coaching</h3>
-        <p>Every coaching note links directly to the moment in the transcript where the skill gap appeared — no guesswork for the manager or the trainee.</p>
+        <p>Every coaching note links directly to the moment in the transcript where the skill gap appeared. No guesswork for the manager or the trainee.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="dark" style="padding:80px 0;">
-  <div class="container" style="text-align:center;">
-    <h2 style="color:var(--white);font-size:clamp(28px,3.5vw,44px);">Ready to see it run?</h2>
-    <p style="color:rgba(255,255,255,0.7);margin:16px auto 32px;max-width:52ch;">Pick any simulation from the library. The full loop — avatar session, transcript capture, AI analysis — runs in your browser right now.</p>
-    <a href="{{ url_for('simulations') }}" class="btn btn-primary btn-lg">Browse simulations</a>
+<!-- ================================================================
+     DARK CTA
+     ================================================================ -->
+<section style="background:var(--bg-deep);padding:100px 0;position:relative;overflow:hidden;">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:250px;background:radial-gradient(ellipse,rgba(27,158,255,0.10),transparent 70%);pointer-events:none;"></div>
+  <div class="container" style="text-align:center;position:relative;z-index:1;">
+    <h2 class="gradient-text reveal" style="font-size:clamp(28px,3.5vw,44px);">Ready to see it run?</h2>
+    <p class="reveal reveal-delay-1" style="color:var(--text-secondary);margin:16px auto 36px;max-width:52ch;font-size:17px;line-height:1.7;">
+      Pick any simulation from the library. The full loop: avatar session, transcript capture, AI analysis, runs in your browser right now.
+    </p>
+    <div class="reveal reveal-delay-2">
+      <a href="{{ url_for('catalog') }}" class="btn btn-primary btn-lg">Browse simulations</a>
+    </div>
   </div>
 </section>
+
 {% endblock %}

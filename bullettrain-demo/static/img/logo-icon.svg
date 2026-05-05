@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" fill="#000000"/>
+  <!-- Speed lines (trailing) -->
+  <line x1="0" y1="118" x2="72" y2="118" stroke="#1B9EFF" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+  <line x1="0" y1="125" x2="60" y2="125" stroke="#4DCFFF" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+  <line x1="0" y1="130" x2="50" y2="130" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+  <!-- Train body (sleek aerodynamic shape) -->
+  <path d="M68 88 Q72 72 96 68 L148 68 Q168 68 176 80 L182 90 Q186 98 182 108 L178 116 Q170 124 152 126 L88 126 Q76 126 70 118 Z" fill="url(#bodyGrad)" stroke="rgba(200,220,255,0.2)" stroke-width="0.5"/>
+  <!-- Windshield -->
+  <path d="M148 70 L160 70 Q174 72 180 82 L184 92 Q180 82 168 80 L148 78 Z" fill="#0D1B2E" stroke="rgba(100,160,255,0.3)" stroke-width="0.5"/>
+  <!-- Blue accent stripe along body -->
+  <path d="M72 118 L152 118 Q166 118 174 112 L178 108" stroke="#1B9EFF" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.85"/>
+  <!-- Subtle highlight on top of train -->
+  <path d="M100 70 L150 70 Q162 70 170 76" stroke="rgba(220,235,255,0.5)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Wheel housings -->
+  <ellipse cx="102" cy="127" rx="10" ry="5" fill="#0A0E1A"/>
+  <ellipse cx="152" cy="127" rx="10" ry="5" fill="#0A0E1A"/>
+  <!-- Ground reflection lines -->
+  <line x1="0" y1="133" x2="185" y2="133" stroke="rgba(27,158,255,0.15)" stroke-width="1"/>
+  <line x1="0" y1="136" x2="170" y2="136" stroke="rgba(27,158,255,0.08)" stroke-width="0.8"/>
+  <defs>
+    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8EEF8"/>
+      <stop offset="40%" stop-color="#FFFFFF"/>
+      <stop offset="70%" stop-color="#C8D4E8"/>
+      <stop offset="100%" stop-color="#8898B8"/>
+    </linearGradient>
+  </defs>
+</svg>

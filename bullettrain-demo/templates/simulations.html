@@ -1,48 +1,197 @@
 {% extends "base.html" %}
-{% block title %}Simulation Library — BulletTrain.ai{% endblock %}
-{% block nav_class %}on-dark{% endblock %}
+{% block title %}How Simulations Work | BulletTrain.ai{% endblock %}
+{% block description %}BulletTrain simulations are live AI roleplays graded in real time against the skills that matter on the job. Learn how the system works.{% endblock %}
 
 {% block body %}
-<section class="detail-hero" style="padding:80px 0 110px;">
-  <div class="container">
-    <span class="eyebrow on-dark">Simulation Library</span>
-    <h1 style="color:var(--white);font-size:clamp(34px,4.8vw,58px);font-weight:600;margin-top:18px;">
-      {{ simulations|length }} live scenarios. Real moments. Real stakes.
-    </h1>
-    <p style="color:rgba(255,255,255,0.70);margin-top:18px;max-width:62ch;font-size:17px;">
-      Each simulation drops a trainee into a scenario their role will face on the job. Pick one, choose Practice or Test mode, and run it right now in the browser.
-    </p>
-  </div>
-</section>
 
-<section style="margin-top:-60px;padding:0 0 100px;">
-  <div class="container">
-    <div class="sim-grid">
-      {% for sim in simulations %}
-      <a href="{{ url_for('simulation_detail', sim_id=sim.id) }}" class="sim-card" style="text-decoration:none;">
-        <div>
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <span class="industry">{{ sim.industry }}</span>
-            <span style="font-size:12px;font-family:var(--font-mono);color:var(--ink-400);">{{ sim.difficulty }}</span>
-          </div>
-          <h3 style="margin-top:12px;font-size:20px;">{{ sim.title }}</h3>
-          <p style="margin-top:8px;font-size:15px;">{{ sim.tagline }}</p>
-          <p style="margin-top:10px;color:var(--ink-500);font-size:14px;line-height:1.5;">{{ sim.summary[:180] }}{% if sim.summary|length > 180 %}…{% endif %}</p>
-        </div>
-        <div>
-          <div style="margin-bottom:12px;display:flex;gap:6px;flex-wrap:wrap;">
-            {% for skill in sim.skills %}
-            <span class="tag">{{ skill }}</span>
-            {% endfor %}
-          </div>
-          <div class="sim-meta">
-            <div><strong>{{ sim.duration }}</strong></div>
-            <div>&nbsp;·&nbsp; Practice &amp; Test</div>
-          </div>
-        </div>
+<!-- ================================================================
+     HERO
+     ================================================================ -->
+<section class="hero hero-sm">
+  <div class="hero-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+  <div class="speed-lines">
+    <div class="speed-line"></div>
+    <div class="speed-line"></div>
+    <div class="speed-line"></div>
+  </div>
+  <div class="container hero-inner">
+    <span class="eyebrow on-dark">The Simulation System</span>
+    <h1 class="gradient-text">
+      From scenario to skill. In one conversation.
+    </h1>
+    <p class="hero-sub">
+      Every BulletTrain simulation is a live roleplay with an AI avatar, graded in real time against the skills that matter on the job.
+    </p>
+    <div class="hero-cta">
+      <a href="{{ url_for('catalog') }}" class="btn btn-primary btn-lg">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Try a Demo
       </a>
-      {% endfor %}
     </div>
   </div>
 </section>
+
+<!-- ================================================================
+     STEP 1: Choose your scenario
+     ================================================================ -->
+<section class="step-section dark" style="padding:100px 0;">
+  <div class="container">
+    <div class="step-split">
+      <div class="reveal">
+        <div class="step-number">Step 01</div>
+        <h2>Choose your scenario.</h2>
+        <p>Scenarios are built around real franchise moments, not hypothetical scripts. Every situation in the library comes from actual operator feedback and L&D team research.</p>
+        <p>Pick the scenario that matches what your team faces on the job: a service recovery at the counter, a tour close at the gym, a difficult coaching conversation about losses.</p>
+        <div style="margin-top:28px;">
+          <a href="{{ url_for('catalog') }}" class="btn btn-primary">Browse the library</a>
+        </div>
+      </div>
+      <div class="step-visual reveal reveal-delay-2">
+        <div class="mini-cards">
+          <div class="mini-card">
+            <span>Quick Service</span>
+            <strong>Customer Recovery at the Counter</strong>
+          </div>
+          <div class="mini-card">
+            <span>Fitness</span>
+            <strong>Closing the New Member Tour</strong>
+          </div>
+          <div class="mini-card">
+            <span>Hospitality</span>
+            <strong>VIP Guest Check-In Recovery</strong>
+          </div>
+          <div class="mini-card" style="background:rgba(27,158,255,0.10);border-color:rgba(27,158,255,0.3);">
+            <span style="color:var(--accent-soft);">Automotive</span>
+            <strong>Service Advisor Up-Sell</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     STEP 2: Practice before the test
+     ================================================================ -->
+<section class="step-section" style="padding:100px 0;background:#000;">
+  <div class="container">
+    <div class="step-split reverse">
+      <div class="reveal">
+        <div class="step-number">Step 02</div>
+        <h2>Practice before the test.</h2>
+        <p>Practice mode puts the trainee in the scenario with the avatar staying fully in character. The difference: if the trainee goes silent for too long, the avatar offers a gentle nudge to keep things moving.</p>
+        <p>No grade. No pressure. Unlimited reps until the trainee feels ready to go for the real run.</p>
+      </div>
+      <div class="step-visual reveal reveal-delay-2">
+        <div class="fake-screen" style="height:auto;">
+          <div class="cluster" style="margin-bottom:12px;">
+            <span class="fake-pill"><span class="fake-dot"></span>Practice Mode</span>
+          </div>
+          <div class="fake-bubble">I ordered the grilled chicken wrap but got a burger. Again. This is the third time.</div>
+          <div class="fake-bubble user">I am so sorry about that. Let me fix this right away. Can I get your name?</div>
+          <div style="margin-top:14px;background:rgba(27,158,255,0.08);border:1px solid rgba(27,158,255,0.20);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--accent-soft);font-family:var(--font-mono);">
+            Hint: Try offering a specific remedy with a timeline.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     STEP 3: Take the blind test
+     ================================================================ -->
+<section class="step-section dark" style="padding:100px 0;">
+  <div class="container">
+    <div class="step-split">
+      <div class="reveal">
+        <div class="step-number">Step 03</div>
+        <h2>Take the blind test.</h2>
+        <p>Test mode is the real thing. The avatar stays fully in character throughout the conversation with zero hints, no soft prompts, and no transcript visible during the run. Everything is recorded.</p>
+        <p>This is where preparation meets pressure. Managers can assign test mode as the official assessment, confident that the result is unassisted.</p>
+      </div>
+      <div class="step-visual reveal reveal-delay-2">
+        <div class="fake-screen" style="height:auto;">
+          <div class="cluster" style="margin-bottom:12px;">
+            <span class="fake-pill" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.25);color:#c4b5fd;">
+              <span style="width:7px;height:7px;border-radius:50%;background:#8B5CF6;display:inline-block;"></span>
+              Test Mode
+            </span>
+          </div>
+          <div class="fake-bubble">I ordered the grilled chicken wrap but got a burger. Again. This is the third time.</div>
+          <div style="filter:blur(5px);pointer-events:none;user-select:none;">
+            <div class="fake-bubble user">...</div>
+          </div>
+          <div style="margin-top:14px;background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.15);border-radius:10px;padding:10px 14px;font-size:12px;color:rgba(196,181,253,0.7);font-family:var(--font-mono);">
+            Transcript hidden during test mode
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     STEP 4: Get your AI debrief
+     ================================================================ -->
+<section class="step-section" style="padding:100px 0;background:#000;">
+  <div class="container">
+    <div class="step-split reverse">
+      <div class="reveal">
+        <div class="step-number">Step 04</div>
+        <h2>Get your AI debrief.</h2>
+        <p>The moment the session ends, the platform scores each objective against the full transcript. You see exactly which skills landed, which fell short, and the specific moment in the conversation that explains why.</p>
+        <p>Coaching tips are specific to the run, not boilerplate. Managers see the same breakdown and can share it as part of a formal review cycle.</p>
+        <div style="margin-top:28px;">
+          <a href="{{ url_for('catalog') }}" class="btn btn-primary">Start a simulation</a>
+        </div>
+      </div>
+      <div class="step-visual reveal reveal-delay-2">
+        <div class="fake-score">
+          <div class="fake-score-header">
+            <div class="fake-dial">
+              <span>82</span>
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--text-primary);font-size:15px;">Customer Recovery</div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--signal-green);margin-top:3px;text-transform:uppercase;letter-spacing:0.1em;">On Track</div>
+            </div>
+          </div>
+          <div class="fake-rubric-row">
+            <div style="font-size:13px;color:var(--text-secondary);">Acknowledge the issue without being defensive</div>
+            <div class="fake-rubric-bar" style="--pct:90%;"><div style="width:90%;background:linear-gradient(90deg,var(--accent),var(--accent-soft));height:100%;border-radius:4px;position:absolute;left:0;top:0;"></div></div>
+          </div>
+          <div class="fake-rubric-row">
+            <div style="font-size:13px;color:var(--text-secondary);">Offer a remedy aligned to brand standards</div>
+            <div class="fake-rubric-bar" style="--pct:72%;"><div style="width:72%;background:linear-gradient(90deg,var(--accent),var(--accent-soft));height:100%;border-radius:4px;position:absolute;left:0;top:0;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     FINAL CTA
+     ================================================================ -->
+<section style="background:var(--bg-deep);padding:120px 0;position:relative;overflow:hidden;">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(27,158,255,0.10),transparent 70%);pointer-events:none;"></div>
+
+  <div class="container" style="text-align:center;position:relative;z-index:1;">
+    <span class="eyebrow on-dark">Ready to run one?</span>
+    <h2 class="gradient-text reveal" style="font-size:clamp(30px,4vw,52px);margin-top:16px;">
+      Pick a simulation and start in 30 seconds.
+    </h2>
+    <p class="reveal reveal-delay-1" style="color:var(--text-secondary);margin:18px auto 36px;font-size:17px;max-width:52ch;line-height:1.7;">
+      No account needed for the demo. Choose a scenario, select a mode, and the avatar is ready when you are.
+    </p>
+    <div class="reveal reveal-delay-2">
+      <a href="{{ url_for('catalog') }}" class="btn btn-primary btn-lg">Browse all simulations</a>
+    </div>
+  </div>
+</section>
+
 {% endblock %}

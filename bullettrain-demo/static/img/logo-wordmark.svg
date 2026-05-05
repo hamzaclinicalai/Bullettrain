@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 100" width="520" height="100">
+  <rect width="520" height="100" fill="#000000"/>
+  <!-- Speed lines -->
+  <line x1="0" y1="59" x2="36" y2="59" stroke="#1B9EFF" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+  <line x1="0" y1="63" x2="30" y2="63" stroke="#4DCFFF" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+  <line x1="0" y1="66" x2="25" y2="66" stroke="#FFFFFF" stroke-width="0.8" stroke-linecap="round" opacity="0.25"/>
+  <!-- Train body -->
+  <path d="M34 44 Q36 36 48 34 L74 34 Q84 34 88 40 L91 45 Q93 49 91 54 L89 58 Q85 62 76 63 L44 63 Q38 63 35 59 Z" fill="url(#wBodyGrad)" stroke="rgba(200,220,255,0.15)" stroke-width="0.5"/>
+  <!-- Windshield -->
+  <path d="M74 35 L80 35 Q87 36 90 41 L92 46 Q89 41 84 40 L74 39 Z" fill="#0D1B2E" stroke="rgba(100,160,255,0.25)" stroke-width="0.5"/>
+  <!-- Blue accent stripe -->
+  <path d="M36 59 L76 59 Q83 59 87 56 L89 54" stroke="#1B9EFF" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.9"/>
+  <!-- Top highlight -->
+  <path d="M50 35 L75 35 Q81 35 85 38" stroke="rgba(220,235,255,0.4)" stroke-width="1" fill="none" stroke-linecap="round"/>
+  <!-- Ground lines -->
+  <line x1="0" y1="66" x2="93" y2="66" stroke="rgba(27,158,255,0.12)" stroke-width="0.8"/>
+  <!-- BulletTrain text -->
+  <text x="106" y="62" font-family="'Space Grotesk','Inter',sans-serif" font-size="36" font-weight="700" letter-spacing="-0.5" fill="#FFFFFF">BulletTrain</text>
+  <!-- .ai in blue -->
+  <text x="397" y="62" font-family="'Space Grotesk','Inter',sans-serif" font-size="36" font-weight="700" letter-spacing="-0.5" fill="#1B9EFF">.ai</text>
+  <defs>
+    <linearGradient id="wBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8EEF8"/>
+      <stop offset="40%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#8898B8"/>
+    </linearGradient>
+  </defs>
+</svg>

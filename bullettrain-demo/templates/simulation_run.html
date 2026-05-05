@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ simulation.title }} ({{ mode|title }}) — BulletTrain.ai{% endblock %}
+{% block title %}{{ simulation.title }} ({{ mode|title }}) | BulletTrain.ai{% endblock %}
 
 {% block navbar %}{% endblock %}
 {% block footer %}{% endblock %}
@@ -17,20 +17,20 @@ html, body { height: 100%; overflow: hidden; }
   <div class="runner-bar">
     <div class="meta">
       <a href="{{ url_for('simulation_detail', sim_id=simulation.id) }}"
-         style="color:rgba(255,255,255,0.6);display:inline-flex;align-items:center;gap:6px;font-size:13px;"
+         style="color:var(--text-muted);display:inline-flex;align-items:center;gap:6px;font-size:13px;transition:color 0.2s;"
          id="back-link"
          onclick="return confirmExit(event);">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
         Exit
       </a>
-      <span style="color:rgba(255,255,255,0.25);">|</span>
-      <span>{{ simulation.industry }} — {{ simulation.title }}</span>
+      <span style="color:rgba(240,244,255,0.15);">|</span>
+      <span>{{ simulation.industry }} &middot; {{ simulation.title }}</span>
     </div>
     <div class="meta">
       <span class="mode-pill {% if mode == 'test' %}test{% endif %}">
         {{ mode|upper }} MODE
       </span>
-      <span id="timer" style="font-family:var(--font-mono);color:rgba(255,255,255,0.55);">00:00</span>
+      <span id="timer" style="font-family:var(--font-mono);color:var(--text-muted);">00:00</span>
     </div>
   </div>
 
@@ -59,7 +59,7 @@ html, body { height: 100%; overflow: hidden; }
       </div>
 
       <!-- Controls bar (hidden until session live) -->
-      <div class="stage-controls" id="controls" style="position:static;transform:none;background:rgba(255,255,255,0.05);justify-content:center;display:none;">
+      <div class="stage-controls" id="controls" style="position:static;transform:none;background:rgba(8,12,24,0.80);justify-content:center;display:none;">
         <button id="mic-btn" onclick="toggleMic()">
           <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
           Mic On
@@ -75,11 +75,11 @@ html, body { height: 100%; overflow: hidden; }
       </div>
 
       <!-- Persona card -->
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:center;">
-        <div style="font-size:28px;">🎭</div>
+      <div style="background:rgba(8,12,24,0.80);border:1px solid rgba(27,158,255,0.10);border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:center;">
+        <div style="font-size:28px;">&#127917;</div>
         <div>
           <div style="font-weight:600;color:var(--white);">{{ simulation.persona.name }}</div>
-          <div style="color:rgba(255,255,255,0.55);font-size:13px;">{{ simulation.persona.role }} &nbsp;·&nbsp; Tone: {{ simulation.persona.voice_tone }}</div>
+          <div style="color:var(--text-muted);font-size:13px;">{{ simulation.persona.role }} &nbsp;&middot;&nbsp; Tone: {{ simulation.persona.voice_tone }}</div>
         </div>
       </div>
     </div>
@@ -92,22 +92,22 @@ html, body { height: 100%; overflow: hidden; }
           Conversation
         </span>
         {% if mode == 'test' %}
-        <span style="font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,0.45);">Hidden in test mode</span>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">Hidden in test mode</span>
         {% endif %}
       </div>
       <div class="transcript-list" id="transcript-list"
            {% if mode == 'test' %}style="filter:blur(6px);pointer-events:none;user-select:none;"{% endif %}>
-        <div style="text-align:center;color:rgba(255,255,255,0.35);font-size:13px;padding:24px 0;">
+        <div style="text-align:center;color:var(--text-muted);font-size:13px;padding:24px 0;">
           Conversation will appear here once the session starts.
         </div>
       </div>
 
       <!-- Objectives quick-ref (practice only) -->
       {% if mode == 'practice' %}
-      <div style="padding:14px 18px;border-top:1px solid rgba(255,255,255,0.08);">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.10em;color:rgba(255,255,255,0.4);font-family:var(--font-mono);margin-bottom:10px;">Your objectives</div>
+      <div style="padding:14px 18px;border-top:1px solid rgba(27,158,255,0.08);">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);font-family:var(--font-mono);margin-bottom:10px;">Your objectives</div>
         {% for obj in simulation.objectives %}
-        <div style="font-size:13px;color:rgba(255,255,255,0.65);padding:5px 0;border-top:1px solid rgba(255,255,255,0.06);">{{ obj }}</div>
+        <div style="font-size:13px;color:var(--text-secondary);padding:6px 0;border-top:1px solid rgba(27,158,255,0.06);line-height:1.5;">{{ obj }}</div>
         {% endfor %}
       </div>
       {% endif %}

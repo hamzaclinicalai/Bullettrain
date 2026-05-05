@@ -1,69 +1,114 @@
 {% extends "base.html" %}
-{% block title %}BulletTrain.ai — Real Conversations. Real Skills. Real Results.{% endblock %}
-{% block nav_class %}on-dark{% endblock %}
+{% block title %}BulletTrain.ai | Real Conversations. Real Skills. Real Results.{% endblock %}
+{% block description %}BulletTrain puts your team inside real franchise scenarios with AI avatars. Practice, get scored, and improve without a trainer in the room.{% endblock %}
 
 {% block body %}
 
-<!-- ========== HERO ========== -->
+<!-- ================================================================
+     HERO
+     ================================================================ -->
 <section class="hero">
+  <!-- Background layers -->
+  <div class="hero-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="speed-lines">
+    <div class="speed-line"></div>
+    <div class="speed-line"></div>
+    <div class="speed-line"></div>
+  </div>
+
   <div class="container hero-inner">
     <span class="eyebrow on-dark">Enterprise Training Platform</span>
-    <h1>
-      Train your team with <span class="accent">real conversations</span>, not slideshows.
+
+    <h1 class="gradient-text">
+      Train your team with real conversations.
     </h1>
+
     <p class="hero-sub">
-      BulletTrain's interactive avatar simulations put your people in high-stakes franchise scenarios before the real thing. They practice, we analyze, your business wins.
+      BulletTrain puts your people inside real franchise scenarios. They practice, get scored, and improve. No trainer required.
     </p>
+
     <div class="hero-cta">
       <a href="{{ url_for('simulations') }}" class="btn btn-primary btn-lg">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         Explore Simulations
       </a>
-      <a href="{{ url_for('platform') }}" class="btn btn-ghost on-dark btn-lg">See how it works</a>
+      <a href="{{ url_for('platform') }}" class="btn btn-ghost on-dark btn-lg">See the Platform</a>
     </div>
 
+    <!-- Animated counters -->
     <div class="hero-stats">
-      <div class="hero-stat"><div class="num">{{ total_simulations }}+</div><div class="label">Live Simulations</div></div>
-      <div class="hero-stat"><div class="num">12</div><div class="label">Industries covered</div></div>
-      <div class="hero-stat"><div class="num">94%</div><div class="label">Trainee retention lift</div></div>
-      <div class="hero-stat"><div class="num">3×</div><div class="label">Faster skill ramp</div></div>
+      <div class="hero-stat">
+        <div class="num">
+          <span data-target="{{ total_simulations }}" data-suffix="+">{{ total_simulations }}+</span>
+        </div>
+        <div class="label">Simulations</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">
+          <span data-target="12" data-suffix="">12</span>
+        </div>
+        <div class="label">Industries</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">
+          <span data-target="94" data-suffix="%">94%</span>
+        </div>
+        <div class="label">Retention Lift</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">
+          <span data-target="3" data-suffix="x">3x</span>
+        </div>
+        <div class="label">Faster Ramp</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ========== LOGO STRIP ========== -->
+<!-- ================================================================
+     LOGO STRIP
+     ================================================================ -->
 <div class="logo-strip">
-  <div class="container logo-row">
-    <span>QSR Franchise</span>
-    <span>Fitness Franchise</span>
-    <span>Hospitality</span>
-    <span>Automotive</span>
-    <span>Retail Chains</span>
-    <span>Healthcare Networks</span>
+  <div class="container">
+    <p class="strip-label">Trusted by teams in</p>
+    <div class="logo-row">
+      <span>QSR Franchise</span>
+      <span>Fitness Franchise</span>
+      <span>Hospitality</span>
+      <span>Automotive</span>
+      <span>Retail Chains</span>
+      <span>Healthcare Networks</span>
+    </div>
   </div>
 </div>
 
-<!-- ========== HOW IT WORKS ========== -->
-<section>
+<!-- ================================================================
+     HOW IT WORKS
+     ================================================================ -->
+<section class="dark">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">Platform</span>
-      <h2>From script to skill in a single session</h2>
+      <h2>From scenario to skill in a single session.</h2>
       <p>Three phases. One cohesive experience. No trainers required on repeat visits.</p>
     </div>
     <div class="cap-grid">
-      <div class="cap">
+      <div class="cap reveal reveal-delay-1">
         <div class="cap-rail"></div>
         <h3>Scenario-first library</h3>
-        <p>Every simulation is built around a real franchise moment — a service recovery, an objection, a coaching conversation — not a generic script.</p>
+        <p>Every simulation is built around a real franchise moment: a service recovery, an objection, a coaching conversation. Not a generic script.</p>
       </div>
-      <div class="cap">
-        <div class="cap-rail" style="background:var(--signal-blue);"></div>
-        <h3>Practice → Test workflow</h3>
+      <div class="cap reveal reveal-delay-2">
+        <div class="cap-rail" style="background:var(--signal-green);"></div>
+        <h3>Practice then Test</h3>
         <p>Trainees warm up in practice mode with light guidance, then unlock test mode for a blind run. Skills are locked in, not just demonstrated once.</p>
       </div>
-      <div class="cap">
-        <div class="cap-rail" style="background:var(--signal-green);"></div>
+      <div class="cap reveal reveal-delay-3">
+        <div class="cap-rail" style="background:var(--signal-purple);"></div>
         <h3>AI performance analysis</h3>
         <p>After every session the platform grades each objective, shows the trainee exactly where they succeeded or stumbled, and recommends their next rep.</p>
       </div>
@@ -71,74 +116,91 @@
   </div>
 </section>
 
-<!-- ========== SPLIT: PRACTICE / TEST ========== -->
-<section style="background:var(--ink-50);padding:90px 0;">
+<!-- ================================================================
+     SPLIT: PRACTICE / TEST
+     ================================================================ -->
+<section style="background:#04080F;padding:100px 0;">
   <div class="container">
     <div class="split">
-      <div>
+      <div class="reveal">
         <span class="eyebrow">Dual-mode learning</span>
         <h2>Same scenario. Two completely different experiences.</h2>
-        <p>Practice mode coaches while the trainee runs. Test mode reveals who's truly ready for the floor.</p>
+        <p>Practice mode coaches while the trainee runs. Test mode reveals who is truly ready for the floor.</p>
         <ul>
           <li>
             <svg width="18" height="18" style="flex-shrink:0;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            <div><b>Practice mode</b> — The avatar offers a soft nudge when the trainee goes silent. No grade. No stress. Just reps.</div>
+            <div><b>Practice mode</b> - The avatar offers a soft nudge when the trainee goes silent. No grade. No stress. Just reps.</div>
           </li>
           <li>
-            <svg width="18" height="18" style="flex-shrink:0;color:var(--signal-blue)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            <div><b>Test mode</b> — The avatar stays fully in character. Every turn is recorded, graded, and surfaced in the post-session report.</div>
+            <svg width="18" height="18" style="flex-shrink:0;color:var(--signal-purple)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <div><b>Test mode</b> - The avatar stays fully in character. Every turn is recorded, graded, and surfaced in the post-session report.</div>
           </li>
           <li>
             <svg width="18" height="18" style="flex-shrink:0;color:var(--signal-green)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <div><b>AI debrief</b> — Rubric-scored results tied directly to each learning objective. Managers see aggregate trends; trainees see personal gaps.</div>
+            <div><b>AI debrief</b> - Rubric-scored results tied directly to each learning objective. Managers see aggregate trends; trainees see personal gaps.</div>
           </li>
         </ul>
-        <div style="margin-top:32px;">
-          <a href="{{ url_for('simulations') }}" class="btn btn-dark btn-lg">Browse all simulations</a>
+        <div style="margin-top:36px;">
+          <a href="{{ url_for('catalog') }}" class="btn btn-primary btn-lg">Browse all simulations</a>
         </div>
       </div>
-      <div class="split-art">
+
+      <div class="split-art reveal reveal-delay-2">
         <div class="fake-screen">
           <div class="cluster">
-            <span class="fake-pill"><span class="fake-dot"></span>Practice Mode • Live</span>
+            <span class="fake-pill">
+              <span class="fake-dot"></span>
+              Practice Mode · Live
+            </span>
           </div>
-          <div class="fake-bubble">Hi, I ordered the grilled chicken wrap but received a burger instead. This is the third time this month and I'm really frustrated.</div>
-          <div class="fake-bubble user">I completely understand, and I'm sorry — that's not the experience we want for you. Let me make this right immediately. Can I get your name?</div>
-          <div class="fake-bubble" style="margin-top:8px;">It's Dana. I just want the right order. I don't have much time left on my break.</div>
-          <div class="fake-bubble user">Got it, Dana. I'm putting your wrap in right now — it'll be ready in about 3 minutes on us. And I'll flag this with our kitchen lead so it doesn't happen again.</div>
-          <div style="margin-top:14px;font-size:12px;color:rgba(255,255,255,0.45);font-family:var(--font-mono);">▲ Practice hint available</div>
+          <div class="fake-bubble">Hi, I ordered the grilled chicken wrap but received a burger instead. This is the third time this month and I am really frustrated.</div>
+          <div class="fake-bubble user">I completely understand, and I apologize. That is not the experience we want for you. Let me make this right immediately. Can I get your name?</div>
+          <div class="fake-bubble" style="margin-top:8px;">It is Dana. I just want the right order. I do not have much time left on my break.</div>
+          <div class="fake-bubble user">Got it, Dana. I am putting your wrap in right now. It will be ready in about 3 minutes, on us. And I will flag this with our kitchen lead so it does not happen again.</div>
+          <div style="margin-top:14px;font-size:11px;color:rgba(27,158,255,0.5);font-family:var(--font-mono);">Practice hint available</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== FEATURED SIMULATIONS ========== -->
-<section>
+<!-- ================================================================
+     FEATURED SIMULATIONS
+     ================================================================ -->
+<section class="dark">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <span class="eyebrow">Simulation library</span>
-      <h2>Drop your team into the hard moments</h2>
+      <h2>Drop your team into the hard moments.</h2>
       <p>Each scenario is designed with a franchise operator or L&D team and validated against real performance data.</p>
     </div>
     <div class="sim-grid">
       {% for sim in simulations %}
-      <a href="{{ url_for('simulation_detail', sim_id=sim.id) }}" class="sim-card" style="text-decoration:none;">
+      <a href="{{ url_for('simulation_detail', sim_id=sim.id) }}"
+         class="sim-card glass-card tilt-card reveal reveal-delay-{{ loop.index }}"
+         style="text-decoration:none;">
         <div>
           <span class="industry">{{ sim.industry }}</span>
-          <h3 style="margin-top:10px;">{{ sim.title }}</h3>
+          <h3 style="margin-top:12px;">{{ sim.title }}</h3>
           <p style="margin-top:8px;">{{ sim.tagline }}</p>
         </div>
-        <div class="sim-meta">
-          <div><strong>{{ sim.duration }}</strong></div>
-          <div>&nbsp;·&nbsp;</div>
-          <div>{{ sim.difficulty }}</div>
+        <div>
+          <div style="margin-bottom:12px;display:flex;gap:4px;flex-wrap:wrap;">
+            {% for skill in sim.skills %}
+            <span class="tag">{{ skill }}</span>
+            {% endfor %}
+          </div>
+          <div class="sim-meta">
+            <strong>{{ sim.duration }}</strong>
+            <span>·</span>
+            <span>{{ sim.difficulty }}</span>
+          </div>
         </div>
       </a>
       {% endfor %}
     </div>
-    <div style="margin-top:36px;">
-      <a href="{{ url_for('simulations') }}" class="btn btn-ghost">
+    <div style="margin-top:40px;" class="reveal">
+      <a href="{{ url_for('catalog') }}" class="btn btn-ghost">
         See all {{ total_simulations }} simulations
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
@@ -146,16 +208,23 @@
   </div>
 </section>
 
-<!-- ========== DARK CTA ========== -->
-<section class="dark" style="padding:100px 0;">
-  <div class="container" style="text-align:center;max-width:780px;margin:auto;">
+<!-- ================================================================
+     DARK CTA
+     ================================================================ -->
+<section style="background:#000;padding:120px 0;position:relative;overflow:hidden;">
+  <!-- Background glow -->
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(27,158,255,0.12),transparent 70%);pointer-events:none;"></div>
+
+  <div class="container" style="text-align:center;max-width:720px;margin:auto;position:relative;z-index:1;">
     <span class="eyebrow on-dark">Get started today</span>
-    <h2 style="font-size:clamp(34px,4.5vw,58px);margin-top:18px;color:var(--white);">Your team is one conversation away from being ready.</h2>
-    <p style="color:rgba(255,255,255,0.7);margin:20px auto 36px;font-size:18px;max-width:54ch;">
+    <h2 class="gradient-text reveal" style="font-size:clamp(32px,4.5vw,56px);margin-top:18px;line-height:1.1;">
+      Your team is one conversation away from being ready.
+    </h2>
+    <p class="reveal reveal-delay-1" style="color:var(--text-secondary);margin:20px auto 40px;font-size:18px;max-width:52ch;line-height:1.7;">
       Pick a simulation, put a trainer in the hot seat, and see what the AI surfaces in the debrief. Five minutes to insight.
     </p>
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
-      <a href="{{ url_for('simulations') }}" class="btn btn-primary btn-lg">Launch a simulation</a>
+    <div class="reveal reveal-delay-2" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="{{ url_for('catalog') }}" class="btn btn-primary btn-lg">Launch a simulation</a>
       <a href="{{ url_for('platform') }}" class="btn btn-ghost on-dark btn-lg">Platform overview</a>
     </div>
   </div>
