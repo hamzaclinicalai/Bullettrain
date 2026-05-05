@@ -576,11 +576,6 @@ def _scripted_response(simulation, user_text, mode, turn_count):
             "Yes, that's me. So what are your options here?",
             "I'm glad you're paying attention. What can you do?",
         ]
-    elif mode == "practice" and turn_count > 8:
-        lines = [
-            "(Hint: try acknowledging the issue by name and offering a specific remedy.)",
-            "(Hint: use my name and commit to a concrete action - time and outcome.)",
-        ]
     else:
         lines = [
             "I'm still waiting for a real answer here.",
