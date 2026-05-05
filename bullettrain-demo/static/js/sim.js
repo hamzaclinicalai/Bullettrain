@@ -131,8 +131,9 @@ function sdkStopListening() {
 async function fetchAndSpeakResponse(userText) {
   if (!avatarSession || !streamReady) return;
 
-  sdkStopListening();
+  // Set speaking flag BEFORE stopping mic — the flag gates USER_TRANSCRIPTION
   avatarSpeaking = true;
+  sdkStopListening();
 
   let responseText = "";
   try {
@@ -156,12 +157,19 @@ async function fetchAndSpeakResponse(userText) {
   appendBubble("avatar", responseText);
   postTranscript("avatar", responseText);
 
+  // Small delay to let the audio pipeline settle after stopListening()
+  await new Promise(r => setTimeout(r, 300));
+
   // Have avatar speak it (voiceChat:true makes this pure TTS)
-  try { avatarSession.message(responseText); } catch (_) {}
+  try {
+    avatarSession.message(responseText);
+  } catch (err) {
+    console.error("avatarSession.message() failed:", err);
+  }
 
   // Fallback: re-enable mic if AVATAR_SPEAK_ENDED never fires
   const words   = responseText.split(/\s+/).length;
-  const speakMs = Math.max(words * 500, 3000);
+  const speakMs = Math.max(words * 600, 4000);
   setTimeout(() => {
     if (avatarSpeaking) {
       avatarSpeaking = false;

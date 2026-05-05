@@ -1201,7 +1201,9 @@ section.light .eyebrow { color: var(--accent-deep); }
    SIMULATION RUNNER
    ============================================================ */
 .runner {
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
   background: #000;
   color: var(--white);
   display: flex;
@@ -1246,10 +1248,12 @@ section.light .eyebrow { color: var(--accent-deep); }
 
 .runner-body {
   flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: 1.6fr 1fr;
   gap: 20px;
   padding: 20px 24px;
+  overflow: hidden;
 }
 
 .stage {
@@ -1355,6 +1359,7 @@ section.light .eyebrow { color: var(--accent-deep); }
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 0;
   backdrop-filter: blur(12px);
 }
 
