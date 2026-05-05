@@ -6,6 +6,7 @@ for franchises and enterprise teams. Powered by LiveAvatar.com.
 """
 import os
 import json
+import re
 import time
 import uuid
 from datetime import datetime, timezone
@@ -628,104 +629,372 @@ def analyze(session_id):
 
 
 # ---------------------------------------------------------------------------
-# Lightweight rule-based analysis (demo stand-in for an LLM grader).
+# Analysis engine — Claude LLM path + strict rule-based fallback
 # ---------------------------------------------------------------------------
+
 def generate_analysis(record, simulation):
     transcript = record["transcript"]
-    user_turns = [t for t in transcript if t["speaker"] == "user"]
+    user_turns  = [t for t in transcript if t["speaker"] == "user"]
     avatar_turns = [t for t in transcript if t["speaker"] == "avatar"]
-    user_words = sum(len(t["text"].split()) for t in user_turns)
+    user_words   = sum(len(t["text"].split()) for t in user_turns)
     avatar_words = sum(len(t["text"].split()) for t in avatar_turns)
-    duration_s = 0
-    if transcript:
-        duration_s = int(transcript[-1]["ts"] - transcript[0]["ts"])
+    duration_s   = int(transcript[-1]["ts"] - transcript[0]["ts"]) if transcript else 0
+    turn_count   = len(user_turns)
+    avg_resp_len = round(user_words / max(1, turn_count), 1)
+    talk_ratio   = round(user_words / max(1, user_words + avatar_words), 2)
 
-    rubric = []
-    for objective in simulation["objectives"]:
-        keywords = _keywords(objective)
-        joined = " ".join(t["text"].lower() for t in user_turns)
-        hits = sum(1 for k in keywords if k in joined)
-        coverage = min(1.0, hits / max(1, len(keywords)))
-        score = int(50 + coverage * 50)
-        evidence = _find_evidence(user_turns, keywords)
-        rubric.append(
-            {
-                "objective": objective,
-                "score": score,
-                "coverage": coverage,
-                "evidence": evidence,
-                "tip": _coaching_tip(objective, coverage),
-            }
-        )
-    overall = int(sum(r["score"] for r in rubric) / max(1, len(rubric))) if rubric else 0
-    talk_ratio = user_words / max(1, user_words + avatar_words)
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if api_key and user_turns:
+        try:
+            return _claude_analysis(
+                simulation, record, user_turns, avatar_turns,
+                user_words, avatar_words, duration_s,
+                turn_count, avg_resp_len, talk_ratio, api_key,
+            )
+        except Exception as exc:
+            app.logger.error("claude analysis failed: %s", exc)
 
-    summary = _build_summary(simulation, overall, talk_ratio, duration_s)
+    return _rule_based_analysis(
+        simulation, user_turns, avatar_turns,
+        user_words, avatar_words, duration_s,
+        turn_count, avg_resp_len, talk_ratio,
+    )
+
+
+def _grade(score):
+    if score >= 90: return "A"
+    if score >= 80: return "B"
+    if score >= 70: return "C"
+    if score >= 60: return "D"
+    return "F"
+
+
+def _rating(score):
+    if score >= 85: return "Exceptional"
+    if score >= 75: return "Proficient"
+    if score >= 60: return "Developing"
+    if score >= 45: return "Emerging"
+    return "Needs significant work"
+
+
+# ---------------------------------------------------------------------------
+# Claude LLM analysis
+# ---------------------------------------------------------------------------
+
+def _claude_analysis(simulation, record, user_turns, avatar_turns,
+                     user_words, avatar_words, duration_s,
+                     turn_count, avg_resp_len, talk_ratio, api_key):
+    import anthropic as _anthropic
+
+    transcript_str = "\n".join(
+        f"{'TRAINEE' if t['speaker'] == 'user' else 'CUSTOMER'}: {t['text']}"
+        for t in record["transcript"]
+    )
+    objectives_str = "\n".join(f"{i+1}. {o}" for i, o in enumerate(simulation["objectives"]))
+
+    system = (
+        "You are a strict, senior performance coach evaluating enterprise training simulations. "
+        "Score honestly — do not inflate. Most trainees score 40–70. "
+        "Reserve 85+ for genuinely exceptional execution. "
+        "Base scores only on what was actually said, not intent."
+    )
+
+    prompt = f"""Evaluate the following training simulation and return a JSON object only.
+
+SIMULATION: {simulation['title']}
+PERSONA: {simulation['persona']['name']} — {simulation['persona']['role']} (tone: {simulation['persona']['voice_tone']})
+SCENARIO: {simulation['summary']}
+
+LEARNING OBJECTIVES:
+{objectives_str}
+
+TRANSCRIPT:
+{transcript_str}
+
+SESSION STATS:
+- Trainee turns: {turn_count}
+- Trainee words: {user_words}
+- Avg words per response: {avg_resp_len}
+- Talk-time share: {int(talk_ratio * 100)}%
+
+SCORING SCALE (use strictly):
+0–29   Not addressed — no meaningful attempt
+30–49  Attempted but largely failed — vague, incomplete, or missed the point
+50–64  Partial execution — some elements present, key parts missing
+65–79  Adequate — objective met but could be sharper
+80–89  Strong — skillful execution with clear impact
+90–100 Exceptional — model response, nothing materially missing
+
+Also score these four behavioral dimensions on the same 0–100 scale:
+- empathy: Did the trainee validate feelings, name emotions, or make the other person feel heard?
+- specificity: Did they use the person's name, give real timelines, numbers, or concrete next steps?
+- listening: Did they reference what was said, ask follow-up questions, or track the conversation?
+- resolution: Did they commit to a clear, specific, actionable outcome?
+
+Return ONLY valid JSON — no markdown, no commentary:
+{{
+  "rubric": [
+    {{"objective": "<exact text>", "score": <int>, "evidence": "<direct quote or null>", "tip": "<one specific coaching sentence>"}}
+  ],
+  "dimensions": {{"empathy": <int>, "specificity": <int>, "listening": <int>, "resolution": <int>}},
+  "strengths": ["<specific behavioral observation>", "<specific behavioral observation>"],
+  "growth_areas": ["<specific gap + actionable advice>", "<specific gap + actionable advice>"],
+  "critical_moment": "<one sentence: the single moment that most defined this session>",
+  "summary": "<2–3 sentences of honest, specific assessment>"
+}}"""
+
+    client = _anthropic.Anthropic(api_key=api_key)
+    resp = client.messages.create(
+        model="claude-haiku-4-5-20251001",
+        max_tokens=1400,
+        system=system,
+        messages=[{"role": "user", "content": prompt}],
+    )
+
+    raw = resp.content[0].text.strip()
+    if raw.startswith("```"):
+        raw = re.sub(r"^```[a-z]*\n?", "", raw).rstrip("`").strip()
+    data = json.loads(raw)
+
+    rubric  = data["rubric"]
+    overall = int(sum(r["score"] for r in rubric) / max(1, len(rubric)))
 
     return {
-        "overall_score": overall,
-        "talk_ratio": round(talk_ratio, 2),
-        "user_words": user_words,
-        "avatar_words": avatar_words,
-        "duration_s": duration_s,
-        "rubric": rubric,
-        "summary": summary,
-        "strengths": _strengths(rubric),
-        "growth_areas": _growth_areas(rubric),
+        "overall_score":      overall,
+        "grade":              _grade(overall),
+        "rating":             _rating(overall),
+        "user_words":         user_words,
+        "avatar_words":       avatar_words,
+        "talk_ratio":         talk_ratio,
+        "turn_count":         turn_count,
+        "avg_response_length": avg_resp_len,
+        "duration_s":         duration_s,
+        "rubric":             rubric,
+        "dimensions":         data["dimensions"],
+        "strengths":          data["strengths"],
+        "growth_areas":       data["growth_areas"],
+        "critical_moment":    data.get("critical_moment", ""),
+        "summary":            data["summary"],
     }
 
 
-def _keywords(objective):
-    stop = {
-        "the", "a", "an", "to", "and", "or", "of", "in", "on", "with", "without",
-        "for", "is", "be", "are", "use", "without", "into", "without", "the",
+# ---------------------------------------------------------------------------
+# Rule-based analysis (fallback when no API key)
+# ---------------------------------------------------------------------------
+
+def _behavior_signals(user_turns, persona_name):
+    """Extract behavioral signals from trainee turns."""
+    joined     = " ".join(t["text"].lower() for t in user_turns)
+    first_name = persona_name.lower().split()[0]
+
+    has_timeline = bool(
+        re.search(r'\b\d+\s*(minute|min|second|sec|hour|day|week)', joined)
+        or any(p in joined for p in ["right now", "immediately", "right away", "asap", "today"])
+    )
+    question_turns = [t for t in user_turns if "?" in t["text"]]
+
+    return {
+        "apologized":     any(p in joined for p in ["sorry", "apologize", "apolog", "my mistake", "our fault", "we dropped the ball"]),
+        "acknowledged":   any(p in joined for p in ["i understand", "i see that", "i hear you", "absolutely", "you're right", "that's frustrating", "must be", "can imagine"]),
+        "used_name":      first_name in joined,
+        "offered_fix":    any(p in joined for p in ["replace", "refund", "comp", "complimentary", "free", "fix", "make it right", "take care", "new order", "swap", "redo", "credit"]),
+        "gave_timeline":  has_timeline,
+        "asked_question": len(question_turns) >= 1,
+        "asked_multiple": len(question_turns) >= 2,
+        "follow_through": any(p in joined for p in ["follow up", "follow-up", "check back", "ensure", "prevent", "won't happen again", "make sure", "flag this"]),
+        "named_action":   any(p in joined for p in ["i will", "i'm going to", "let me", "allow me", "i can"]),
+        "closed_loop":    any(p in joined for p in ["anything else", "is there anything", "does that work", "does that help", "how does that sound"]),
+        "defensive":      any(p in joined for p in ["policy says", "but it's", "well actually", "not our fault", "not my fault", "rules say", "procedure is", "nothing i can do"]),
+        "vague_count":    sum(1 for p in ["maybe", "possibly", "try to", "hopefully", "i'll see what", "not sure", "don't know if"] if p in joined),
+        "short_responses": sum(1 for t in user_turns if len(t["text"].split()) < 8),
     }
-    words = [w.strip(",.;:()").lower() for w in objective.split()]
-    return [w for w in words if w and w not in stop and len(w) > 3][:6]
 
 
-def _find_evidence(user_turns, keywords):
+def _score_objective(objective, idx, signals, user_turns, persona_name):
+    """Score a single objective 0–100 based on behavioral signals."""
+    obj_lower = objective.lower()
+    joined    = " ".join(t["text"].lower() for t in user_turns)
+
+    # Build a signal-weighted score from 0
+    score = 0
+
+    # Objective-keyword match (up to 30 pts)
+    stop = {"the","a","an","to","and","or","of","in","on","with","for","is","be","are","use","into"}
+    keywords = [w.strip(",.;:()") for w in obj_lower.split() if w.strip(",.;:()") not in stop and len(w) > 3][:6]
+    hits = sum(1 for k in keywords if k in joined)
+    kw_coverage = hits / max(1, len(keywords))
+    score += int(kw_coverage * 30)
+
+    # Shared behavioral bonuses
+    if signals["acknowledged"]:   score += 12
+    if signals["apologized"]:     score += 8
+    if signals["used_name"]:      score += 8
+    if signals["named_action"]:   score += 8
+    if signals["offered_fix"]:    score += 10
+    if signals["gave_timeline"]:  score += 10
+    if signals["asked_question"]: score += 6
+    if signals["follow_through"]: score += 8
+
+    # Objective-specific bonuses
+    if "greet" in obj_lower or "acknowledge" in obj_lower:
+        if signals["acknowledged"] and signals["apologized"]: score += 10
+        if signals["used_name"]: score += 8
+    if "remedy" in obj_lower or "offer" in obj_lower or "resolv" in obj_lower or "fix" in obj_lower:
+        if signals["offered_fix"] and signals["gave_timeline"]: score += 15
+        elif signals["offered_fix"]: score += 8
+    if "feedback" in obj_lower or "close" in obj_lower or "loop" in obj_lower:
+        if signals["closed_loop"]: score += 12
+        if signals["follow_through"]: score += 10
+    if "question" in obj_lower or "discover" in obj_lower or "surface" in obj_lower:
+        if signals["asked_multiple"]: score += 12
+        elif signals["asked_question"]: score += 6
+    if "commit" in obj_lower or "confirm" in obj_lower or "timeline" in obj_lower:
+        if signals["gave_timeline"] and signals["named_action"]: score += 15
+
+    # Deductions
+    if signals["defensive"]:    score = max(0, score - 18)
+    score = max(0, score - signals["vague_count"] * 6)
+    if signals["short_responses"] >= 3: score = max(0, score - 10)
+
+    score = min(100, score)
+
+    # Evidence
+    evidence = None
     for turn in user_turns:
-        text_l = turn["text"].lower()
-        if any(k in text_l for k in keywords):
-            return turn["text"][:240]
-    return None
+        if any(k in turn["text"].lower() for k in keywords):
+            evidence = turn["text"][:220]
+            break
+
+    # Tip
+    if score >= 80:
+        tip = "Solid execution — maintain this consistency under pressure."
+    elif score >= 65:
+        tip = f"Adequate, but missing {'a specific timeline' if not signals['gave_timeline'] else 'stronger acknowledgment'}. Name the action explicitly."
+    elif score >= 45:
+        tip = f"Partial attempt. {'Add a concrete fix and timeline.' if not signals['offered_fix'] else 'Strengthen follow-through and close the loop.'}"
+    else:
+        tip = "Not demonstrated. In your next rep, address this objective in the opening exchange."
+
+    return {"objective": objective, "score": score, "evidence": evidence, "tip": tip}
 
 
-def _coaching_tip(objective, coverage):
-    if coverage > 0.6:
-        return "Strong coverage - keep this in your default playbook."
-    if coverage > 0.3:
-        return "Partial coverage - name the action explicitly next time."
-    return "Missed in this run - open the next attempt by addressing this directly."
+def _dimension_scores(signals, user_turns, avg_resp_len):
+    """Score the four behavioral dimensions 0–100."""
+    joined = " ".join(t["text"].lower() for t in user_turns)
+
+    # Empathy (0-100)
+    empathy = 0
+    if signals["acknowledged"]:  empathy += 35
+    if signals["apologized"]:    empathy += 25
+    if signals["used_name"]:     empathy += 20
+    if any(p in joined for p in ["i can imagine", "that must", "completely understand", "totally get it"]): empathy += 20
+    empathy = min(100, empathy)
+
+    # Specificity (0-100)
+    specificity = 0
+    if signals["used_name"]:    specificity += 30
+    if signals["gave_timeline"]: specificity += 35
+    if signals["offered_fix"]:   specificity += 25
+    if re.search(r'\b\d+\b', joined): specificity += 10  # any number used
+    specificity = min(100, specificity)
+
+    # Listening (0-100)
+    listening = 0
+    if signals["asked_question"]:  listening += 30
+    if signals["asked_multiple"]:  listening += 20
+    if signals["acknowledged"]:    listening += 25
+    if signals["closed_loop"]:     listening += 25
+    listening = min(100, listening)
+
+    # Resolution (0-100)
+    resolution = 0
+    if signals["offered_fix"]:     resolution += 35
+    if signals["gave_timeline"]:   resolution += 30
+    if signals["named_action"]:    resolution += 20
+    if signals["follow_through"]:  resolution += 15
+    if signals["defensive"]:       resolution = max(0, resolution - 25)
+    resolution = min(100, resolution)
+
+    return {"empathy": empathy, "specificity": specificity, "listening": listening, "resolution": resolution}
 
 
-def _build_summary(simulation, overall, talk_ratio, duration_s):
-    rating = "Exceeds expectations" if overall >= 85 else (
-        "On track" if overall >= 70 else (
-            "Developing" if overall >= 55 else "Needs reps"
-        )
-    )
+def _rule_based_analysis(simulation, user_turns, avatar_turns,
+                         user_words, avatar_words, duration_s,
+                         turn_count, avg_resp_len, talk_ratio):
+    persona_name = simulation["persona"]["name"]
+    signals      = _behavior_signals(user_turns, persona_name)
+
+    rubric = [
+        _score_objective(obj, idx, signals, user_turns, persona_name)
+        for idx, obj in enumerate(simulation["objectives"])
+    ]
+    overall    = int(sum(r["score"] for r in rubric) / max(1, len(rubric))) if rubric else 0
+    dimensions = _dimension_scores(signals, user_turns, avg_resp_len)
+
+    # Strengths: top-performing rubric items phrased as observations
+    sorted_rubric = sorted(rubric, key=lambda r: -r["score"])
+    strengths = []
+    for r in sorted_rubric[:2]:
+        if r["score"] >= 55:
+            strengths.append(f"Addressed '{r['objective'][:60]}' (score {r['score']})")
+    if signals["used_name"]:
+        strengths.insert(0, f"Used the customer's name — personalizes the interaction")
+    if signals["gave_timeline"]:
+        strengths.append("Gave a specific timeline — builds confidence in resolution")
+    strengths = strengths[:3]
+
+    # Growth areas: lowest-scoring objectives with specific guidance
+    growth_rubric = sorted(rubric, key=lambda r: r["score"])
+    growth_areas = []
+    for r in growth_rubric[:2]:
+        if r["score"] < 75:
+            growth_areas.append(f"'{r['objective'][:55]}' scored {r['score']} — {r['tip']}")
+    if signals["defensive"]:
+        growth_areas.insert(0, "Defensive language detected — replace with ownership phrases like 'I've got this.'")
+    if signals["vague_count"] >= 2:
+        growth_areas.append("Vague commitments undermine trust — replace 'I'll try' with 'I will.'")
+    growth_areas = growth_areas[:3]
+
+    # Critical moment
+    if signals["offered_fix"] and signals["gave_timeline"]:
+        critical_moment = "The moment a specific remedy with a timeline was offered — this is where the customer's tension shifted."
+    elif signals["apologized"] and not signals["offered_fix"]:
+        critical_moment = "Apology was given but no concrete fix followed — the customer was left without a resolution."
+    elif not signals["acknowledged"]:
+        critical_moment = "The issue was never explicitly acknowledged — the customer may have felt unheard throughout."
+    else:
+        critical_moment = "Engagement was present but the resolution lacked the specificity needed to fully close the loop."
+
+    # Summary
     talk_note = (
-        "balanced talk-time" if 0.4 <= talk_ratio <= 0.6 else (
-            "you dominated airtime - leave room for the other party" if talk_ratio > 0.6
-            else "you spoke less than the avatar - drive the conversation more"
-        )
+        "Talk time was balanced." if 0.35 <= talk_ratio <= 0.65
+        else ("You dominated the conversation — let the other party speak more." if talk_ratio > 0.65
+              else "You under-spoke — drive the conversation more confidently.")
     )
-    minutes = duration_s // 60
-    seconds = duration_s % 60
-    return (
-        f"{rating} on '{simulation['title']}'. "
-        f"Session ran {minutes}m {seconds:02d}s with {talk_note}."
+    minutes, seconds = divmod(duration_s, 60)
+    summary = (
+        f"{_rating(overall)} performance on '{simulation['title']}'. "
+        f"Session ran {minutes}m {seconds:02d}s across {turn_count} exchanges. "
+        f"{talk_note}"
     )
 
-
-def _strengths(rubric):
-    return [r["objective"] for r in sorted(rubric, key=lambda r: -r["score"])[:2]]
-
-
-def _growth_areas(rubric):
-    return [r["objective"] for r in sorted(rubric, key=lambda r: r["score"])[:2]]
+    return {
+        "overall_score":       overall,
+        "grade":               _grade(overall),
+        "rating":              _rating(overall),
+        "user_words":          user_words,
+        "avatar_words":        avatar_words,
+        "talk_ratio":          talk_ratio,
+        "turn_count":          turn_count,
+        "avg_response_length": avg_resp_len,
+        "duration_s":          duration_s,
+        "rubric":              rubric,
+        "dimensions":          dimensions,
+        "strengths":           strengths,
+        "growth_areas":        growth_areas,
+        "critical_moment":     critical_moment,
+        "summary":             summary,
+    }
 
 
 # ---------------------------------------------------------------------------

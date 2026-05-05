@@ -1702,6 +1702,43 @@ section.light .eyebrow { color: var(--accent-deep); }
   line-height: 1.5;
 }
 
+/* Behavioral dimensions grid */
+.dim-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.dim-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(27,158,255,0.12);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.dim-bar-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(27,158,255,0.10);
+  overflow: hidden;
+}
+
+.dim-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 1s ease;
+}
+
+/* Critical moment callout */
+.critical-moment {
+  margin-top: 32px;
+  background: rgba(27,158,255,0.05);
+  border: 1px solid rgba(27,158,255,0.20);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 22px 24px;
+}
+
 /* Strengths / Growth */
 .result-panels {
   display: grid;
@@ -2123,6 +2160,7 @@ footer .footer-brand-desc {
   .runner-body { grid-template-columns: 1fr; }
   .score-card { grid-template-columns: 1fr; text-align: center; }
   .result-panels { grid-template-columns: 1fr; }
+  .dim-grid { grid-template-columns: repeat(2, 1fr); }
   .rubric-row { grid-template-columns: 1fr; gap: 10px; }
 
   .mini-cards { grid-template-columns: 1fr; }

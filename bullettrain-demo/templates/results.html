@@ -4,13 +4,16 @@
 {% block body %}
 {% set analysis = record.get('analysis', {}) %}
 {% set score = analysis.get('overall_score', 0) %}
+{% set dims  = analysis.get('dimensions', {}) %}
 
 <!-- Results hero -->
 <section class="results-hero">
   <div class="container">
     <div style="margin-bottom:14px;">
       <a href="{{ url_for('simulation_detail', sim_id=simulation.id) }}"
-         style="color:var(--text-muted);font-size:14px;display:inline-flex;align-items:center;gap:6px;transition:color 0.2s;" onmouseover="this.style.color='var(--text-secondary)'" onmouseout="this.style.color='var(--text-muted)'">
+         style="color:var(--text-muted);font-size:14px;display:inline-flex;align-items:center;gap:6px;transition:color 0.2s;"
+         onmouseover="this.style.color='var(--text-secondary)'"
+         onmouseout="this.style.color='var(--text-muted)'">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
         Back to {{ simulation.title }}
       </a>
@@ -26,31 +29,39 @@
 <section style="background:var(--bg-base);padding:0 0 80px;">
   <div class="container">
 
-    <!-- Score card -->
+    <!-- ── Score card ──────────────────────────────────────────────── -->
     <div class="score-card reveal">
       <div class="score-dial">
         <div class="dial" style="--pct:{{ score }}">
           <span>{{ score }}</span>
         </div>
         <div style="font-size:13px;color:var(--text-muted);text-align:center;margin-top:4px;">Overall score</div>
-        <div style="font-size:11px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.10em;margin-top:4px;color:
+        <div style="font-size:12px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.10em;margin-top:6px;font-weight:700;color:
           {% if score >= 85 %}var(--signal-green)
-          {% elif score >= 70 %}var(--accent)
-          {% elif score >= 55 %}#F59E0B
+          {% elif score >= 75 %}var(--accent)
+          {% elif score >= 60 %}#F59E0B
           {% else %}#EF4444{% endif %};">
-          {% if score >= 85 %}Exceeds expectations
-          {% elif score >= 70 %}On track
-          {% elif score >= 55 %}Developing
-          {% else %}Needs reps{% endif %}
+          {{ analysis.get('grade','–') }} &nbsp;·&nbsp; {{ analysis.get('rating','–') }}
         </div>
       </div>
+
       <div>
         <h2>{{ simulation.title }}</h2>
         <p class="summary">{{ analysis.get('summary', 'No summary available.') }}</p>
+
+        <!-- Stats row -->
         <div class="kv">
           <div>
             <b>{{ analysis.get('user_words', 0) }}</b>
             Words spoken
+          </div>
+          <div>
+            <b>{{ analysis.get('turn_count', 0) }}</b>
+            Exchanges
+          </div>
+          <div>
+            <b>{{ analysis.get('avg_response_length', 0) }}</b>
+            Avg words / turn
           </div>
           <div>
             <b>{{ (analysis.get('duration_s', 0) // 60) }}m {{ '%02d'|format(analysis.get('duration_s', 0) % 60) }}s</b>
@@ -61,6 +72,7 @@
             Your talk time
           </div>
         </div>
+
         <div style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;">
           <a href="{{ url_for('simulation_run', sim_id=simulation.id, mode=record.mode) }}" class="btn btn-primary">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -77,11 +89,51 @@
       </div>
     </div>
 
-    <!-- Strengths & gaps -->
+    <!-- ── Behavioral dimensions ──────────────────────────────────── -->
+    {% if dims %}
+    <div style="margin-top:48px;" class="reveal reveal-delay-1">
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:20px;color:var(--text-primary);">Behavioral dimensions</h2>
+      <div class="dim-grid">
+        {% for key, label, color in [
+            ('empathy',     'Empathy',     'var(--signal-green)'),
+            ('specificity', 'Specificity', 'var(--accent)'),
+            ('listening',   'Listening',   'var(--signal-purple)'),
+            ('resolution',  'Resolution',  '#F59E0B'),
+        ] %}
+        {% set v = dims.get(key, 0) %}
+        <div class="dim-card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--text-primary);">{{ label }}</span>
+            <span style="font-family:var(--font-display);font-size:22px;font-weight:700;color:{{ color }};">{{ v }}</span>
+          </div>
+          <div class="dim-bar-track">
+            <div class="dim-bar-fill" style="width:{{ v }}%;background:{{ color }};"></div>
+          </div>
+          <div style="margin-top:8px;font-size:11px;font-family:var(--font-mono);color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;">
+            {% if v >= 80 %}Strong
+            {% elif v >= 60 %}Adequate
+            {% elif v >= 40 %}Developing
+            {% else %}Needs work{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- ── Critical moment ────────────────────────────────────────── -->
+    {% if analysis.get('critical_moment') %}
+    <div class="critical-moment reveal reveal-delay-2">
+      <div style="font-size:10px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.15em;color:var(--accent);margin-bottom:10px;">Critical moment</div>
+      <p style="color:var(--text-primary);font-size:16px;line-height:1.65;margin:0;">{{ analysis.critical_moment }}</p>
+    </div>
+    {% endif %}
+
+    <!-- ── Strengths & gaps ───────────────────────────────────────── -->
     {% if analysis.get('strengths') or analysis.get('growth_areas') %}
-    <div class="result-panels reveal reveal-delay-1">
+    <div class="result-panels reveal reveal-delay-1" style="margin-top:40px;">
       <div class="panel" style="border-left:3px solid var(--signal-green);">
-        <h3 style="color:var(--signal-green);font-size:17px;">Top strengths</h3>
+        <h3 style="color:var(--signal-green);font-size:17px;">What worked</h3>
         <ul style="padding-left:0;margin:14px 0 0;list-style:none;display:flex;flex-direction:column;gap:12px;">
           {% for s in analysis.get('strengths', []) %}
           <li style="display:flex;gap:10px;color:var(--text-secondary);font-size:14px;line-height:1.55;">
@@ -89,47 +141,58 @@
             {{ s }}
           </li>
           {% else %}
-          <li style="color:var(--text-muted);font-size:14px;">Complete a session to see strengths.</li>
+          <li style="color:var(--text-muted);font-size:14px;">Not enough data to identify strengths.</li>
           {% endfor %}
         </ul>
       </div>
-      <div class="panel" style="border-left:3px solid var(--accent);">
-        <h3 style="color:var(--accent);font-size:17px;">Growth areas</h3>
+      <div class="panel" style="border-left:3px solid #EF4444;">
+        <h3 style="color:#EF4444;font-size:17px;">Where to improve</h3>
         <ul style="padding-left:0;margin:14px 0 0;list-style:none;display:flex;flex-direction:column;gap:12px;">
           {% for g in analysis.get('growth_areas', []) %}
           <li style="display:flex;gap:10px;color:var(--text-secondary);font-size:14px;line-height:1.55;">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--accent)" stroke-width="2.3" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#EF4444" stroke-width="2.3" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             {{ g }}
           </li>
           {% else %}
-          <li style="color:var(--text-muted);font-size:14px;">Complete a session to see growth areas.</li>
+          <li style="color:var(--text-muted);font-size:14px;">Complete a full session to see growth areas.</li>
           {% endfor %}
         </ul>
       </div>
     </div>
     {% endif %}
 
-    <!-- Rubric -->
+    <!-- ── Objective rubric ───────────────────────────────────────── -->
     {% if analysis.get('rubric') %}
     <div style="margin-top:56px;" class="reveal">
-      <h2 style="font-size:24px;font-weight:700;margin-bottom:24px;color:var(--text-primary);">Objective breakdown</h2>
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:24px;color:var(--text-primary);">Objective breakdown</h2>
       <div class="rubric">
         {% for row in analysis.rubric %}
         <div class="rubric-row">
           <div class="obj">
             {{ row.objective }}
             {% if row.evidence %}
-            <small>You said: &ldquo;{{ row.evidence[:140] }}{% if row.evidence|length > 140 %}...{% endif %}&rdquo;</small>
+            <small>You said: &ldquo;{{ row.evidence[:160] }}{% if row.evidence|length > 160 %}…{% endif %}&rdquo;</small>
             {% endif %}
           </div>
           <div>
-            <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:
-              {% if row.score >= 85 %}var(--signal-green)
-              {% elif row.score >= 70 %}var(--accent)
-              {% else %}#F59E0B{% endif %};">
+            <div style="font-family:var(--font-display);font-size:30px;font-weight:700;color:
+              {% if row.score >= 80 %}var(--signal-green)
+              {% elif row.score >= 65 %}var(--accent)
+              {% elif row.score >= 45 %}#F59E0B
+              {% else %}#EF4444{% endif %};">
               {{ row.score }}
             </div>
             <div class="gauge" style="--pct:{{ row.score }}%;margin-top:8px;"></div>
+            <div style="font-size:10px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.08em;margin-top:6px;color:
+              {% if row.score >= 80 %}var(--signal-green)
+              {% elif row.score >= 65 %}var(--accent)
+              {% elif row.score >= 45 %}#F59E0B
+              {% else %}#EF4444{% endif %};">
+              {% if row.score >= 80 %}Strong
+              {% elif row.score >= 65 %}Adequate
+              {% elif row.score >= 45 %}Developing
+              {% else %}Not met{% endif %}
+            </div>
           </div>
           <div class="tip">{{ row.tip }}</div>
         </div>
