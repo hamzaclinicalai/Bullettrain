@@ -206,7 +206,7 @@ SIMULATION_BY_ID = {s["id"]: s for s in SIMULATIONS}
 
 
 # ---------------------------------------------------------------------------
-# In-memory transcript store (demo only — would be a real DB in production)
+# In-memory transcript store (demo only - would be a real DB in production)
 # ---------------------------------------------------------------------------
 SESSION_STORE = {}
 
@@ -482,7 +482,7 @@ def _scripted_response(simulation, user_text, mode, turn_count):
     persona_name = simulation["persona"]["name"]
     text = user_text.lower()
 
-    # First avatar turn — always use the vivid opener.
+    # First avatar turn: always use the vivid opener.
     if turn_count <= 1:
         return _OPENERS.get(sim_id, f"Hi. I have a situation I need help with.")
 

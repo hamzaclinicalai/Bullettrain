@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block title %}Session Results | BulletTrain.ai{% endblock %}
-{% block nav_class %}on-dark{% endblock %}
 
 {% block body %}
 {% set analysis = record.get('analysis', {}) %}
@@ -11,34 +10,34 @@
   <div class="container">
     <div style="margin-bottom:14px;">
       <a href="{{ url_for('simulation_detail', sim_id=simulation.id) }}"
-         style="color:rgba(255,255,255,0.55);font-size:14px;display:inline-flex;align-items:center;gap:6px;">
+         style="color:var(--text-muted);font-size:14px;display:inline-flex;align-items:center;gap:6px;transition:color 0.2s;" onmouseover="this.style.color='var(--text-secondary)'" onmouseout="this.style.color='var(--text-muted)'">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
         Back to {{ simulation.title }}
       </a>
     </div>
     <span class="eyebrow on-dark">Session Analysis</span>
-    <h1>Your results are in.</h1>
-    <p style="color:rgba(255,255,255,0.70);margin-top:14px;font-size:17px;">
-      {{ simulation.title }} &nbsp;·&nbsp; {{ record.mode|title }} Mode
+    <h1 class="reveal">Your results are in.</h1>
+    <p class="reveal reveal-delay-1" style="color:var(--text-secondary);margin-top:12px;font-size:17px;">
+      {{ simulation.title }} &nbsp;&middot;&nbsp; {{ record.mode|title }} Mode
     </p>
   </div>
 </section>
 
-<section style="padding:0 0 80px;">
+<section style="background:var(--bg-base);padding:0 0 80px;">
   <div class="container">
 
     <!-- Score card -->
-    <div class="score-card">
+    <div class="score-card reveal">
       <div class="score-dial">
         <div class="dial" style="--pct:{{ score }}">
           <span>{{ score }}</span>
         </div>
-        <div style="font-size:14px;color:var(--ink-500);text-align:center;">Overall score</div>
-        <div style="font-size:12px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.08em;color:
+        <div style="font-size:13px;color:var(--text-muted);text-align:center;margin-top:4px;">Overall score</div>
+        <div style="font-size:11px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.10em;margin-top:4px;color:
           {% if score >= 85 %}var(--signal-green)
-          {% elif score >= 70 %}var(--signal-blue)
+          {% elif score >= 70 %}var(--accent)
           {% elif score >= 55 %}#F59E0B
-          {% else %}var(--accent){% endif %};">
+          {% else %}#EF4444{% endif %};">
           {% if score >= 85 %}Exceeds expectations
           {% elif score >= 70 %}On track
           {% elif score >= 55 %}Developing
@@ -80,30 +79,30 @@
 
     <!-- Strengths & gaps -->
     {% if analysis.get('strengths') or analysis.get('growth_areas') %}
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:36px;">
-      <div class="panel" style="border-left:4px solid var(--signal-green);">
-        <h3 style="color:var(--signal-green);">Top strengths</h3>
-        <ul style="padding-left:0;margin:14px 0 0;list-style:none;display:flex;flex-direction:column;gap:10px;">
+    <div class="result-panels reveal reveal-delay-1">
+      <div class="panel" style="border-left:3px solid var(--signal-green);">
+        <h3 style="color:var(--signal-green);font-size:17px;">Top strengths</h3>
+        <ul style="padding-left:0;margin:14px 0 0;list-style:none;display:flex;flex-direction:column;gap:12px;">
           {% for s in analysis.get('strengths', []) %}
-          <li style="display:flex;gap:10px;color:var(--ink-700);font-size:15px;">
+          <li style="display:flex;gap:10px;color:var(--text-secondary);font-size:14px;line-height:1.55;">
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--signal-green)" stroke-width="2.3" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
             {{ s }}
           </li>
           {% else %}
-          <li style="color:var(--ink-400);font-size:14px;">Complete a session to see strengths.</li>
+          <li style="color:var(--text-muted);font-size:14px;">Complete a session to see strengths.</li>
           {% endfor %}
         </ul>
       </div>
-      <div class="panel" style="border-left:4px solid var(--accent);">
-        <h3 style="color:var(--accent);">Growth areas</h3>
-        <ul style="padding-left:0;margin:14px 0 0;list-style:none;display:flex;flex-direction:column;gap:10px;">
+      <div class="panel" style="border-left:3px solid var(--accent);">
+        <h3 style="color:var(--accent);font-size:17px;">Growth areas</h3>
+        <ul style="padding-left:0;margin:14px 0 0;list-style:none;display:flex;flex-direction:column;gap:12px;">
           {% for g in analysis.get('growth_areas', []) %}
-          <li style="display:flex;gap:10px;color:var(--ink-700);font-size:15px;">
+          <li style="display:flex;gap:10px;color:var(--text-secondary);font-size:14px;line-height:1.55;">
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--accent)" stroke-width="2.3" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             {{ g }}
           </li>
           {% else %}
-          <li style="color:var(--ink-400);font-size:14px;">Complete a session to see growth areas.</li>
+          <li style="color:var(--text-muted);font-size:14px;">Complete a session to see growth areas.</li>
           {% endfor %}
         </ul>
       </div>
@@ -112,25 +111,25 @@
 
     <!-- Rubric -->
     {% if analysis.get('rubric') %}
-    <div style="margin-top:48px;">
-      <h2 style="font-size:26px;font-weight:600;margin-bottom:24px;">Objective breakdown</h2>
+    <div style="margin-top:56px;" class="reveal">
+      <h2 style="font-size:24px;font-weight:700;margin-bottom:24px;color:var(--text-primary);">Objective breakdown</h2>
       <div class="rubric">
         {% for row in analysis.rubric %}
         <div class="rubric-row">
           <div class="obj">
             {{ row.objective }}
             {% if row.evidence %}
-            <small>You said: "{{ row.evidence[:140] }}{% if row.evidence|length > 140 %}…{% endif %}"</small>
+            <small>You said: &ldquo;{{ row.evidence[:140] }}{% if row.evidence|length > 140 %}...{% endif %}&rdquo;</small>
             {% endif %}
           </div>
           <div>
-            <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:
+            <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:
               {% if row.score >= 85 %}var(--signal-green)
-              {% elif row.score >= 70 %}var(--signal-blue)
-              {% else %}var(--accent){% endif %};">
+              {% elif row.score >= 70 %}var(--accent)
+              {% else %}#F59E0B{% endif %};">
               {{ row.score }}
             </div>
-            <div class="gauge" style="--pct:{{ row.score }}%;margin-top:6px;"></div>
+            <div class="gauge" style="--pct:{{ row.score }}%;margin-top:8px;"></div>
           </div>
           <div class="tip">{{ row.tip }}</div>
         </div>
@@ -138,10 +137,10 @@
       </div>
     </div>
     {% else %}
-    <div class="panel" style="margin-top:36px;text-align:center;color:var(--ink-500);padding:48px;">
-      <p style="font-size:18px;">No transcript was captured in this session.</p>
-      <p style="margin-top:8px;font-size:15px;">Complete a full session to see the detailed analysis.</p>
-      <a href="{{ url_for('simulation_run', sim_id=simulation.id, mode=record.mode) }}" class="btn btn-primary" style="margin-top:24px;">Try again</a>
+    <div class="panel reveal" style="margin-top:36px;text-align:center;padding:56px;">
+      <p style="font-size:18px;color:var(--text-secondary);">No transcript was captured in this session.</p>
+      <p style="margin-top:8px;font-size:15px;color:var(--text-muted);">Complete a full session to see the detailed analysis.</p>
+      <a href="{{ url_for('simulation_run', sim_id=simulation.id, mode=record.mode) }}" class="btn btn-primary" style="margin-top:28px;">Try again</a>
     </div>
     {% endif %}
 
