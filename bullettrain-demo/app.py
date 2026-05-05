@@ -355,6 +355,176 @@ def create_session_token():
     )
 
 
+@app.post("/api/respond")
+def respond():
+    """
+    Generate an in-character avatar response to the trainee's last utterance.
+    Uses Claude (claude-haiku-4-5-20251001) if ANTHROPIC_API_KEY is set,
+    otherwise falls back to contextual scripted responses so the demo always works.
+    """
+    body = request.get_json(silent=True) or {}
+    session_id = body.get("session_id", "")
+    user_text = body.get("text", "").strip()
+
+    if not user_text:
+        return jsonify({"error": "empty_text"}), 400
+
+    record = SESSION_STORE.get(session_id)
+    if not record:
+        return jsonify({"error": "unknown_session"}), 404
+
+    simulation = SIMULATION_BY_ID.get(record["simulation_id"])
+    if not simulation:
+        return jsonify({"error": "unknown_simulation"}), 404
+
+    transcript = record.get("transcript", [])
+    mode = record.get("mode", "practice")
+
+    try:
+        response_text = _generate_avatar_response(simulation, transcript, user_text, mode)
+    except Exception as exc:
+        app.logger.error("respond error: %s", exc)
+        response_text = _scripted_response(simulation, user_text, mode, len(transcript))
+
+    return jsonify({"text": response_text})
+
+
+def _generate_avatar_response(simulation, transcript, user_text, mode):
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if api_key:
+        return _claude_response(simulation, transcript, user_text, mode, api_key)
+    return _scripted_response(simulation, user_text, mode, len(transcript))
+
+
+def _claude_response(simulation, transcript, user_text, mode, api_key):
+    import anthropic as _anthropic
+
+    system_prompt = build_system_prompt(simulation, mode)
+
+    # Build alternating user/assistant history from the stored transcript.
+    # Merge consecutive same-role turns to satisfy Claude's alternation requirement.
+    messages = []
+    for turn in transcript:
+        role = "user" if turn["speaker"] == "user" else "assistant"
+        if messages and messages[-1]["role"] == role:
+            messages[-1]["content"] += " " + turn["text"]
+        else:
+            messages.append({"role": role, "content": turn["text"]})
+
+    # Append the new user turn if not already present at the end.
+    if not messages or messages[-1]["role"] != "user":
+        messages.append({"role": "user", "content": user_text})
+
+    # Must start with a user message.
+    if messages[0]["role"] != "user":
+        messages.insert(0, {"role": "user", "content": "(conversation begins)"})
+
+    client = _anthropic.Anthropic(api_key=api_key)
+    resp = client.messages.create(
+        model="claude-haiku-4-5-20251001",
+        max_tokens=200,
+        system=system_prompt,
+        messages=messages,
+    )
+    return resp.content[0].text.strip()
+
+
+# Per-simulation scripted openers so the first avatar line is always vivid.
+_OPENERS = {
+    "qsr-customer-recovery": (
+        "Hi — I ordered the grilled chicken wrap but got a burger. "
+        "Again. This is the third time this month and I've only got 20 minutes left on my break."
+    ),
+    "fitness-membership-objections": (
+        "Thanks for the tour — it's a nice facility. "
+        "I'm just not sure I can commit to this financially right now. The monthly fee is pretty steep."
+    ),
+    "hospitality-guest-checkin": (
+        "I'm a Platinum member and I booked a suite three weeks ago. "
+        "You're telling me it's not available? I just got off a six-hour flight."
+    ),
+    "auto-service-advisor": (
+        "You said this was just going to be an oil change. "
+        "Now there are extra issues? How do I know this isn't just an upsell?"
+    ),
+    "retail-shrink-conversation": (
+        "Look — I've been a shift lead here for two years. "
+        "My section runs fine. I'm not sure why shrink is suddenly my problem."
+    ),
+    "healthcare-intake": (
+        "I've never been to this clinic before. "
+        "I'm a little nervous — I'm not sure what to expect from today."
+    ),
+}
+
+
+def _scripted_response(simulation, user_text, mode, turn_count):
+    """
+    Rule-based fallback used when ANTHROPIC_API_KEY is not set.
+    Keeps the simulation moving with contextually appropriate responses.
+    """
+    sim_id = simulation["id"]
+    persona_name = simulation["persona"]["name"]
+    text = user_text.lower()
+
+    # First avatar turn — always use the vivid opener.
+    if turn_count <= 1:
+        return _OPENERS.get(sim_id, f"Hi. I have a situation I need help with.")
+
+    # Detect trainee intent and respond accordingly.
+    apologised = any(w in text for w in ["sorry", "apologize", "apolog", "my mistake", "my bad"])
+    offered_fix = any(w in text for w in [
+        "replace", "refund", "comp", "complimentary", "free", "fix", "make it right",
+        "right away", "immediately", "take care", "resolve", "new one", "fresh"
+    ])
+    asked_question = "?" in user_text
+    named_me = persona_name.lower().split()[0] in text
+
+    if apologised and offered_fix:
+        lines = [
+            "Okay, that actually helps. How long will it take?",
+            "Alright, I appreciate that. Let's do it — and please make sure it doesn't happen again.",
+            f"Fine. I'll wait. But {persona_name.split()[0]} won't be back if this keeps happening.",
+        ]
+    elif apologised:
+        lines = [
+            "I hear the apology, but what are you actually going to do about it?",
+            "Okay — but an apology doesn't fix the problem. What's the next step?",
+            "I appreciate that, but I need a concrete solution, not just 'sorry.'",
+        ]
+    elif offered_fix:
+        lines = [
+            "Okay… that sounds reasonable. How quickly can that happen?",
+            "That works for me. Can you confirm that right now?",
+            "Alright. And what are you going to do to make sure this doesn't happen again?",
+        ]
+    elif asked_question:
+        lines = [
+            f"I'm {persona_name}. I've been a customer here for years and I expect better.",
+            "My main concern is just getting this sorted as fast as possible.",
+            "I just want to know: what can you actually do for me right now?",
+        ]
+    elif named_me:
+        lines = [
+            "Yes, that's me. So what are your options here?",
+            "I'm glad you're paying attention. What can you do?",
+        ]
+    elif mode == "practice" and turn_count > 8:
+        lines = [
+            "(Hint: try acknowledging the issue by name and offering a specific remedy.)",
+            "(Hint: use my name and commit to a concrete action — time and outcome.)",
+        ]
+    else:
+        lines = [
+            "I'm still waiting for a real answer here.",
+            "Can you tell me specifically what's going to happen next?",
+            "I don't have all day. What are my options?",
+            "I appreciate you trying, but I need something more concrete.",
+        ]
+
+    return lines[turn_count % len(lines)]
+
+
 @app.post("/api/transcript/<session_id>")
 def append_transcript(session_id):
     record = SESSION_STORE.get(session_id)

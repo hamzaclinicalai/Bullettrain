@@ -123,6 +123,27 @@ async function postTranscript(speaker, text) {
 }
 
 // ---------------------------------------------------------------------------
+// Ask the backend to generate an in-character response and have the avatar speak it.
+// Called after every confirmed USER_TRANSCRIPTION event.
+// ---------------------------------------------------------------------------
+async function fetchAndSpeakResponse(userText) {
+  if (!avatarSession) return;
+  try {
+    const res = await fetch("/api/respond", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: SESSION_ID, text: userText }),
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.text && avatarSession) {
+      // Speak the response through the avatar's voice.
+      avatarSession.message(data.text);
+    }
+  } catch (_) { /* best-effort */ }
+}
+
+// ---------------------------------------------------------------------------
 // Start session
 // ---------------------------------------------------------------------------
 async function startSession() {
@@ -191,17 +212,28 @@ async function startSession() {
       userBuffer += evt.text || "";
     });
 
-    avatarSession.on(AgentEventsEnum.USER_TRANSCRIPTION, (evt) => {
+    avatarSession.on(AgentEventsEnum.USER_TRANSCRIPTION, async (evt) => {
       const text = evt.text || userBuffer;
       userBuffer = "";
       if (!text.trim()) return;
       appendBubble("user", text);
       postTranscript("user", text);
+
+      // Stop listening while we generate + speak the response so the avatar
+      // doesn't hear its own voice and create an echo loop.
+      if (micOn) {
+        avatarSession.stopListening();
+        setMicOn(false);
+      }
+      await fetchAndSpeakResponse(text);
     });
 
-    // Avatar speak events for mic button visual feedback
-    avatarSession.on(AgentEventsEnum.AVATAR_SPEAK_STARTED, () => {
-      if (micOn) setMicOn(false); // mute while avatar speaks (optional UX choice)
+    // Re-enable mic once the avatar finishes speaking.
+    avatarSession.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, () => {
+      if (!micOn && avatarSession) {
+        avatarSession.startListening();
+        setMicOn(true);
+      }
     });
 
     // Graceful server-side stop
