@@ -2,13 +2,13 @@
  * BulletTrain.ai - simulation runner
  *
  * Architecture:
- *   - voiceChat:true  → SDK handles mic → transcription → USER_TRANSCRIPTION events
- *   - Our backend     → generates what the avatar should say
- *   - session.repeat(text) → avatar speaks text verbatim (pure TTS, no AI response)
+ *   - SDK (no voiceChat): pure avatar renderer + TTS via session.repeat()
+ *   - Web Speech API: user mic — we start/stop it ourselves, so the mic
+ *     is ONLY active when it's the user's turn to speak
  *
  * Flow:
- *   STREAM_READY → avatar speaks opener via repeat() → AVATAR_SPEAK_ENDED → mic on
- *   → user speaks → USER_TRANSCRIPTION → backend → session.repeat() → cycle
+ *   STREAM_READY → avatar speaks opener → fallback timer → mic on
+ *   → user speaks → onresult → backend → repeat() → cycle
  */
 
 import {
@@ -42,14 +42,77 @@ const timerEl        = document.getElementById("timer");
 // State
 // ---------------------------------------------------------------------------
 let avatarSession  = null;
-let micOn          = false;
 let avatarSpeaking = false;
 let streamReady    = false;
 let connectedFired = false;
+let micOn          = false;
 let timerInterval  = null;
 let elapsedSeconds = 0;
 
 window.__sessionLive = false;
+
+// ---------------------------------------------------------------------------
+// Web Speech API — we own the mic completely
+// ---------------------------------------------------------------------------
+const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let recognizing = false;
+
+function initRecognition() {
+  if (!SpeechRecognitionAPI) {
+    console.warn("[mic] Web Speech API not available in this browser/context");
+    return;
+  }
+  recognition = new SpeechRecognitionAPI();
+  recognition.continuous     = false; // fires onresult then stops; we restart manually
+  recognition.interimResults = false;
+  recognition.lang           = "en-US";
+
+  recognition.onresult = async (event) => {
+    if (avatarSpeaking) return;
+    const text = (event.results[0]?.[0]?.transcript || "").trim();
+    if (!text) return;
+    recognizing = false;
+    console.log("[USER]", text);
+    appendBubble("user", text);
+    postTranscript("user", text);
+    await fetchAndSpeakResponse(text);
+  };
+
+  recognition.onend = () => {
+    recognizing = false;
+    // Auto-restart so the user doesn't have to re-tap after each sentence
+    if (micOn && !avatarSpeaking && window.__sessionLive) {
+      _restartRecognition();
+    }
+  };
+
+  recognition.onerror = (e) => {
+    recognizing = false;
+    if (e.error !== "no-speech") console.warn("[mic] recognition error:", e.error);
+    if (micOn && !avatarSpeaking && window.__sessionLive) {
+      setTimeout(_restartRecognition, 300);
+    }
+  };
+}
+
+function _restartRecognition() {
+  if (!recognition || recognizing || avatarSpeaking || !window.__sessionLive) return;
+  try { recognition.start(); recognizing = true; } catch (_) {}
+}
+
+function openMic() {
+  if (!window.__sessionLive || avatarSpeaking) return;
+  setMicOn(true);
+  _restartRecognition();
+}
+
+function closeMic() {
+  setMicOn(false);
+  if (!recognition || !recognizing) return;
+  try { recognition.stop(); } catch (_) {}
+  recognizing = false;
+}
 
 // ---------------------------------------------------------------------------
 // Timer
@@ -105,7 +168,7 @@ async function postTranscript(speaker, text) {
 }
 
 // ---------------------------------------------------------------------------
-// Mic
+// Mic button UI
 // ---------------------------------------------------------------------------
 function setMicOn(on) {
   micOn = on;
@@ -115,54 +178,27 @@ function setMicOn(on) {
   micBtn.className = on ? "btn is-on" : "";
 }
 
-function sdkStartListening() {
-  if (!avatarSession || !window.__sessionLive) return;
-  setMicOn(true); // update UI immediately so the button feels instant
-  try { avatarSession.startListening(); } catch (e) {
-    console.warn("startListening:", e);
-    setMicOn(false); // revert if SDK rejected it
-  }
-}
-function sdkStopListening() {
-  if (!avatarSession) return;
-  setMicOn(false); // update UI immediately
-  try { avatarSession.stopListening(); } catch (_) {}
-}
-
 // ---------------------------------------------------------------------------
-// TTS: make the avatar speak text verbatim
-// Tries repeat() first (pure TTS), falls back to message() if unavailable.
+// TTS — repeat() speaks verbatim, message() is AI-response path (avoid)
 // ---------------------------------------------------------------------------
 function avatarSpeak(text) {
   if (!avatarSession) return;
-  // repeat() = pure TTS, no AI response generated
-  // message() = routed through avatar's built-in AI (wrong for our use case)
   if (typeof avatarSession.repeat === "function") {
-    try {
-      avatarSession.repeat(text);
-      console.log("[TTS] repeat() called");
-      return;
-    } catch (e) {
-      console.warn("[TTS] repeat() failed:", e);
-    }
+    try { avatarSession.repeat(text); console.log("[TTS] repeat()"); return; }
+    catch (e) { console.warn("[TTS] repeat() failed:", e); }
   }
-  // Fallback — try message() in case repeat() is unavailable in this SDK version
-  try {
-    avatarSession.message(text);
-    console.log("[TTS] message() fallback called");
-  } catch (e) {
-    console.error("[TTS] both speak methods failed:", e);
-  }
+  try { avatarSession.message(text); console.log("[TTS] message() fallback"); }
+  catch (e) { console.error("[TTS] all speak methods failed:", e); }
 }
 
 // ---------------------------------------------------------------------------
-// Core: fetch response from backend, then have avatar speak it
+// Core: fetch response, close mic, speak, reopen mic when done
 // ---------------------------------------------------------------------------
 async function fetchAndSpeakResponse(userText) {
   if (!avatarSession || !streamReady) return;
 
   avatarSpeaking = true;
-  sdkStopListening();
+  closeMic(); // hard-stop mic immediately
 
   let responseText = "";
   try {
@@ -178,28 +214,25 @@ async function fetchAndSpeakResponse(userText) {
   } catch (err) {
     console.error("fetchAndSpeakResponse:", err);
     avatarSpeaking = false;
-    sdkStartListening();
+    openMic();
     return;
   }
 
   appendBubble("avatar", responseText);
   postTranscript("avatar", responseText);
 
-  // Let the audio pipeline settle after stopListening before speaking
   await new Promise(r => setTimeout(r, 400));
-
   avatarSpeak(responseText);
 
-  // Safety fallback: re-enable mic if AVATAR_SPEAK_ENDED never fires.
-  // Use a generous estimate (750ms/word) so we don't cut in while the avatar
-  // is still talking on longer responses.
+  // Re-open mic after estimated TTS duration + settle buffer.
+  // AVATAR_SPEAK_ENDED (if it fires) will also trigger openMic below.
   const words   = responseText.split(/\s+/).length;
-  const speakMs = Math.max(words * 750, 6000) + 700; // +700 for the settle delay
+  const speakMs = Math.max(words * 750, 5000) + 1000;
   setTimeout(() => {
     if (avatarSpeaking) {
-      console.warn("[TTS] AVATAR_SPEAK_ENDED never fired — re-enabling mic via fallback");
+      console.log("[TTS] timer: opening mic");
       avatarSpeaking = false;
-      sdkStartListening();
+      openMic();
     }
   }, speakMs);
 }
@@ -208,6 +241,7 @@ async function fetchAndSpeakResponse(userText) {
 // Start session
 // ---------------------------------------------------------------------------
 async function startSession() {
+  initRecognition();
   showOverlay("", "", "Connecting to avatar…", true);
 
   let sessionToken;
@@ -229,12 +263,12 @@ async function startSession() {
   }
 
   try {
-    // voiceChat:true keeps USER_TRANSCRIPTION events firing so we hear the user.
-    // We bypass the avatar's built-in AI by using repeat() instead of message().
-    avatarSession = new LiveAvatarSession(sessionToken, { voiceChat: true });
+    // No voiceChat: SDK is a pure avatar renderer.
+    // We own the mic via Web Speech API.
+    avatarSession = new LiveAvatarSession(sessionToken);
 
     avatarSession.on(SessionEvent.SESSION_STATE_CHANGED, (state) => {
-      console.log("[SDK] SESSION_STATE_CHANGED:", state);
+      console.log("[SDK] state:", state);
       if (state === SessionState.CONNECTED) {
         hideOverlay();
         controls.style.display = "flex";
@@ -249,43 +283,30 @@ async function startSession() {
     });
 
     avatarSession.on(SessionEvent.SESSION_STREAM_READY, async () => {
-      console.log("[SDK] SESSION_STREAM_READY");
+      console.log("[SDK] STREAM_READY");
       avatarSession.attach(videoEl);
       videoEl.play().catch(() => {});
       streamReady = true;
 
-      // Wait for CONNECTED to fire if it hasn't yet (STREAM_READY can precede it)
+      // Wait for CONNECTED if it hasn't fired yet
       let waited = 0;
       while (!connectedFired && waited < 3000) {
         await new Promise(r => setTimeout(r, 100));
         waited += 100;
       }
 
-      // Avatar speaks the opening line — mic stays off until it finishes
-      setMicOn(false);
-      await fetchAndSpeakResponse(""); // empty string = request opener
+      closeMic();
+      await fetchAndSpeakResponse(""); // request opener
     });
 
-    avatarSession.on(AgentEventsEnum.USER_TRANSCRIPTION, async (evt) => {
-      if (avatarSpeaking) return; // ignore mic pickup while avatar is speaking
-
-      const text = (evt.text || "").trim();
-      if (!text) return;
-
-      console.log("[USER]", text);
-      appendBubble("user", text);
-      postTranscript("user", text);
-      await fetchAndSpeakResponse(text);
-    });
-
+    // AVATAR_SPEAK_ENDED fires when TTS completes — use it to open mic early
+    // if the timer hasn't already done so.
     avatarSession.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, () => {
       console.log("[SDK] AVATAR_SPEAK_ENDED");
+      if (!avatarSpeaking) return; // timer already handled it
       avatarSpeaking = false;
-      // Delay opening the mic so avatar echo/reverb dissipates first.
-      // Also re-check avatarSpeaking in case a new response already started.
-      setTimeout(() => {
-        if (!avatarSpeaking) sdkStartListening();
-      }, 700);
+      // Brief pause so the last audio frame clears before mic opens
+      setTimeout(() => { if (!avatarSpeaking) openMic(); }, 800);
     });
 
     avatarSession.on(AgentEventsEnum.SESSION_STOPPED, () => handleSessionEnd());
@@ -305,11 +326,7 @@ async function startSession() {
 // ---------------------------------------------------------------------------
 function toggleMic() {
   if (!window.__sessionLive || avatarSpeaking) return;
-  if (micOn) {
-    sdkStopListening();
-  } else {
-    sdkStartListening();
-  }
+  if (micOn) { closeMic(); } else { openMic(); }
 }
 
 // ---------------------------------------------------------------------------
@@ -319,7 +336,7 @@ function interruptAvatar() {
   if (!avatarSession) return;
   try { avatarSession.interrupt(); } catch (_) {}
   avatarSpeaking = false;
-  sdkStartListening();
+  openMic();
 }
 
 // ---------------------------------------------------------------------------
@@ -329,7 +346,7 @@ async function endSession() {
   if (!avatarSession) return;
   clearInterval(timerInterval);
   window.__sessionLive = false;
-  sdkStopListening();
+  closeMic();
   showOverlay("⏳", "Generating your analysis…", "Hang tight. Scoring your session against the rubric.", true);
   try { await avatarSession.stop(); } catch (_) {}
   avatarSession = null;
@@ -340,6 +357,7 @@ async function handleSessionEnd() {
   if (!window.__sessionLive) return;
   clearInterval(timerInterval);
   window.__sessionLive = false;
+  closeMic();
   showOverlay("⏳", "Session ended", "Generating analysis…", true);
   await generateAnalysis();
 }
