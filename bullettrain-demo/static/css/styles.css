@@ -207,13 +207,10 @@ p { margin: 0; }
   position: sticky;
   top: 0;
   z-index: 100;
-  isolation: isolate; /* establishes stacking context for the dropdown */
-  backdrop-filter: blur(24px) saturate(200%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%);
-  background: rgba(4,8,15,0.92);
-  border-bottom: 1px solid rgba(27,158,255,0.14);
-  box-shadow: 0 2px 24px rgba(0,0,0,0.5);
-  transition: background 0.3s;
+  isolation: isolate;
+  background: #000;
+  border-bottom: 1px solid rgba(27,158,255,0.12);
+  box-shadow: 0 1px 0 rgba(27,158,255,0.08);
 }
 
 .nav-inner {
@@ -241,9 +238,9 @@ p { margin: 0; }
 }
 
 .brand img.logo-wordmark {
-  height: 36px;
+  height: 44px;
   width: auto;
-  max-width: 200px;
+  max-width: 240px;
   object-fit: contain;
 }
 
@@ -338,9 +335,7 @@ p { margin: 0; }
     top: 72px;
     left: 0;
     right: 0;
-    background: rgba(4,8,15,0.97);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background: #000;
     flex-direction: column;
     align-items: stretch;
     padding: 16px 20px 24px;
