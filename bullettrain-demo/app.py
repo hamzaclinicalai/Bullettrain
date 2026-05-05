@@ -28,11 +28,15 @@ from flask import (
 
 
 # ---------------------------------------------------------------------------
-# Hard-coded LiveAvatar credentials (demo only).
+# Hard-coded credentials (demo only).
 # ---------------------------------------------------------------------------
 LIVEAVATAR_API_KEY = "a999720b-05d8-11f1-a99e-066a7fa2e369"
 LIVEAVATAR_AVATAR_ID = "075abc67-2fae-4548-8ca9-b815fcbd34c7"
 LIVEAVATAR_API_BASE = "https://api.liveavatar.com"
+
+# Gemini – env var takes precedence, hard-coded value ensures demo always works.
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyCnNzUFgFVHuc3YYkq6Co1kcY9wErHThLo")
+GEMINI_MODEL   = "gemini-2.5-flash"
 
 
 app = Flask(__name__)
@@ -461,26 +465,34 @@ def respond():
     try:
         response_text = _generate_avatar_response(simulation, transcript, user_text, mode)
     except Exception as exc:
-        app.logger.error("respond error: %s", exc)
-        response_text = _scripted_response(simulation, user_text, mode, len(transcript))
+        app.logger.error("respond fatal: %s", exc, exc_info=True)
+        return jsonify({"error": str(exc)}), 500
 
     return jsonify({"text": response_text})
 
 
 def _generate_avatar_response(simulation, transcript, user_text, mode):
-    gemini_key = os.environ.get("GEMINI_API_KEY", "")
-    if gemini_key:
-        return _gemini_response(simulation, transcript, user_text, mode, gemini_key)
+    # Always try Gemini first — key is guaranteed via module-level constant.
+    try:
+        return _gemini_response(simulation, transcript, user_text, mode, GEMINI_API_KEY)
+    except Exception as exc:
+        app.logger.error("gemini_response failed: %s", exc)
+
+    # Claude fallback if Gemini is unavailable.
     anthropic_key = os.environ.get("ANTHROPIC_API_KEY", "")
     if anthropic_key:
-        return _claude_response(simulation, transcript, user_text, mode, anthropic_key)
-    return _scripted_response(simulation, user_text, mode, len(transcript))
+        try:
+            return _claude_response(simulation, transcript, user_text, mode, anthropic_key)
+        except Exception as exc:
+            app.logger.error("claude_response failed: %s", exc)
+
+    raise RuntimeError("all AI backends failed")
 
 
 def _gemini_response(simulation, transcript, user_text, mode, api_key):
     system_prompt = build_system_prompt(simulation, mode)
 
-    # Build Gemini-format conversation history
+    # Build Gemini-format conversation history (must alternate user/model)
     contents = []
     for turn in transcript:
         role = "user" if turn["speaker"] == "user" else "model"
@@ -489,28 +501,27 @@ def _gemini_response(simulation, transcript, user_text, mode, api_key):
         else:
             contents.append({"role": role, "parts": [{"text": turn["text"]}]})
 
-    # Ensure conversation starts with a user turn (Gemini requirement)
+    # Gemini requires the list to start with a user turn
     if not contents or contents[0]["role"] != "user":
         contents.insert(0, {"role": "user", "parts": [{"text": "(conversation begins)"}]})
 
-    # Append current user message if not already there
-    if not contents or contents[-1]["role"] != "user":
+    # Append the new user message if the last turn isn't already user
+    if contents[-1]["role"] != "user":
         contents.append({"role": "user", "parts": [{"text": user_text}]})
 
     url = (
-        "https://generativelanguage.googleapis.com/v1beta/models/"
-        f"gemini-2.5-flash:generateContent?key={api_key}"
+        f"https://generativelanguage.googleapis.com/v1beta/models/"
+        f"{GEMINI_MODEL}:generateContent?key={api_key}"
     )
     payload = {
         "system_instruction": {"parts": [{"text": system_prompt}]},
         "contents": contents,
-        "generationConfig": {
-            "maxOutputTokens": 200,
-            "temperature": 0.85,
-        },
+        "generationConfig": {"maxOutputTokens": 200, "temperature": 0.85},
     }
     resp = requests.post(url, json=payload, timeout=15)
-    resp.raise_for_status()
+    if not resp.ok:
+        app.logger.error("gemini http %s: %s", resp.status_code, resp.text[:300])
+        resp.raise_for_status()
     data = resp.json()
     return data["candidates"][0]["content"]["parts"][0]["text"].strip()
 
