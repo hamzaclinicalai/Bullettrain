@@ -117,10 +117,11 @@ html, body { height: 100%; overflow: hidden; }
 </div><!-- /runner -->
 
 <!-- ===== JavaScript ===== -->
+<!-- esm.sh resolves all transitive deps (livekit-client, events, etc.) into one URL -->
 <script type="importmap">
 {
   "imports": {
-    "@heygen/liveavatar-web-sdk": "https://cdn.jsdelivr.net/npm/@heygen/liveavatar-web-sdk@0.0.17/dist/index.esm.js"
+    "@heygen/liveavatar-web-sdk": "https://esm.sh/@heygen/liveavatar-web-sdk@0.0.17"
   }
 }
 </script>

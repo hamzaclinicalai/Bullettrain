@@ -18,6 +18,13 @@ import {
   SessionState,
 } from "@heygen/liveavatar-web-sdk";
 
+// Surface module load errors visibly instead of silently freezing the UI.
+window.addEventListener("error", (e) => {
+  if (e.message && e.message.toLowerCase().includes("import")) {
+    showOverlay("⚠️", "SDK failed to load", `Check your internet connection and try refreshing.<br><small>${e.message}</small>`);
+  }
+});
+
 // ---------------------------------------------------------------------------
 // Read runner metadata from the DOM
 // ---------------------------------------------------------------------------
