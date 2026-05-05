@@ -246,9 +246,11 @@ async function startSession() {
   // 2. Initialize speech recognition before starting session
   initSpeechRecognition();
 
-  // 3. Create avatar session — streaming video only (no voiceChat)
+  // voiceChat:true makes session.message() behave as pure TTS — the avatar
+  // speaks the text verbatim. Without it, message() is treated as a user
+  // chat turn and the avatar's built-in AI generates its own reply instead.
   try {
-    avatarSession = new LiveAvatarSession(sessionToken);
+    avatarSession = new LiveAvatarSession(sessionToken, { voiceChat: true });
 
     avatarSession.on(SessionEvent.SESSION_STATE_CHANGED, (state) => {
       if (state === SessionState.CONNECTED) {
@@ -268,13 +270,15 @@ async function startSession() {
       videoEl.play().catch(() => {});
       streamReady = true;
 
-      // Stream is ready — now safe to call message().
-      // Avatar speaks the opener first; mic enables after avatar finishes.
-      setMicOn(true); // show mic button as "on" so user knows it will activate
-      await fetchAndSpeakResponse(""); // empty = opener
+      // Immediately kill the SDK's own mic listener — we use Web Speech API
+      // exclusively for input so we control exactly when to listen.
+      try { avatarSession.stopListening(); } catch (_) {}
+
+      // Avatar speaks the opener first; mic enables after it finishes.
+      setMicOn(true);
+      await fetchAndSpeakResponse(""); // empty string = request opener from backend
     });
 
-    // SDK may still emit AVATAR_SPEAK_ENDED even without voiceChat
     avatarSession.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, onAvatarSpeakEnded);
     avatarSession.on(AgentEventsEnum.SESSION_STOPPED, () => handleSessionEnd());
 
