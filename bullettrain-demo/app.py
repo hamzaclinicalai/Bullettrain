@@ -214,21 +214,23 @@ SESSION_STORE = {}
 def build_system_prompt(simulation, mode):
     """Construct the persona prompt for the avatar in this simulation."""
     persona = simulation["persona"]
-    objectives = "\n".join(f"- {o}" for o in simulation["objectives"])
-    mode_text = (
-        "This is PRACTICE mode. You may give the trainee gentle hints if they get "
-        "stuck for more than ~15 seconds, while still staying in character."
+    practice_note = (
+        " If the trainee goes completely silent for a long time, stay in character "
+        "and naturally press them as your character would (e.g. 'Hello? Are you still there?' "
+        "or 'I don't have all day.'). Never break character, never offer coaching advice."
         if mode == "practice"
-        else "This is TEST mode. Stay fully in character. Do not break the fourth wall."
+        else ""
     )
     return (
-        f"You are {persona['name']}, a {persona['role']}. "
+        f"You are {persona['name']}. {persona['role']}. "
         f"Your tone is {persona['voice_tone']}. "
-        f"You are a roleplay character in a workforce training simulation titled "
-        f"'{simulation['title']}' for {simulation['industry']}. "
-        f"Scenario context: {simulation['summary']} "
-        f"The trainee will be evaluated on:\n{objectives}\n"
-        f"{mode_text}"
+        f"Scenario: {simulation['summary']} "
+        f"You are NOT a trainer. You are NOT evaluating anyone. "
+        f"You are a real person in this situation. "
+        f"The person you are speaking with is trying to help you. "
+        f"React naturally and realistically to whatever they say, exactly as your character would. "
+        f"Stay fully in character at all times. Keep responses under 3 sentences."
+        f"{practice_note}"
     )
 
 
