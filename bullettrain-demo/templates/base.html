@@ -17,31 +17,12 @@
 <header class="nav">
   <div class="container nav-inner">
 
-    <!-- Logo -->
+    <!-- Logo: drop your PNG at static/img/logo-icon.png to override the SVG -->
     <a href="{{ url_for('index') }}" class="brand">
       <img src="{{ url_for('static', filename='img/logo-icon.png') }}"
            alt="BulletTrain"
            class="logo-icon"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-      <!-- Inline SVG fallback: bullet train silhouette with blue speed lines -->
-      <span class="brand-svg-fallback" style="display:none;">
-        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <!-- Train body -->
-          <rect x="6" y="12" width="24" height="14" rx="3" fill="#E8F4FF" />
-          <!-- Nose -->
-          <path d="M30 12 L34 19 L30 26 Z" fill="#C8E8FF" />
-          <!-- Windows -->
-          <rect x="9" y="15" width="5" height="4" rx="1" fill="#1B9EFF" opacity="0.8"/>
-          <rect x="16" y="15" width="5" height="4" rx="1" fill="#1B9EFF" opacity="0.8"/>
-          <!-- Wheels -->
-          <circle cx="12" cy="27" r="2.5" fill="#94A3B8" />
-          <circle cx="24" cy="27" r="2.5" fill="#94A3B8" />
-          <!-- Speed lines -->
-          <line x1="0" y1="16" x2="5" y2="16" stroke="#1B9EFF" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
-          <line x1="0" y1="19" x2="4" y2="19" stroke="#1B9EFF" stroke-width="2" stroke-linecap="round"/>
-          <line x1="0" y1="22" x2="5" y2="22" stroke="#1B9EFF" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
-        </svg>
-      </span>
+           onerror="this.src='{{ url_for('static', filename='img/logo-icon.svg') }}';" />
       <span>BulletTrain<span style="color:var(--accent);">.ai</span></span>
     </a>
 

@@ -1,14 +1,11 @@
 /**
- * BulletTrain.ai — simulation runner
+ * BulletTrain.ai - simulation runner
  *
  * Wires the LiveAvatar SDK to the UI:
  *   1. Fetches a session token from the Flask backend.
  *   2. Starts a LiveAvatarSession and attaches it to the <video> element.
  *   3. Listens to transcript events and posts them to /api/transcript/:session_id.
  *   4. On session end, calls /api/analyze/:session_id and redirects to results.
- *
- * The script is loaded as an ES module so it can use the importmap defined in
- * simulation_run.html to resolve @heygen/liveavatar-web-sdk.
  */
 
 import {
@@ -18,7 +15,6 @@ import {
   SessionState,
 } from "@heygen/liveavatar-web-sdk";
 
-// Surface module load errors visibly instead of silently freezing the UI.
 window.addEventListener("error", (e) => {
   if (e.message && e.message.toLowerCase().includes("import")) {
     showOverlay("⚠️", "SDK failed to load", `Check your internet connection and try refreshing.<br><small>${e.message}</small>`);
@@ -28,7 +24,7 @@ window.addEventListener("error", (e) => {
 // ---------------------------------------------------------------------------
 // Read runner metadata from the DOM
 // ---------------------------------------------------------------------------
-const runner    = document.getElementById("runner");
+const runner     = document.getElementById("runner");
 const SESSION_ID = runner.dataset.session;
 const SIM_ID     = runner.dataset.sim;
 const MODE       = runner.dataset.mode;
@@ -53,10 +49,10 @@ const timerEl        = document.getElementById("timer");
 // ---------------------------------------------------------------------------
 let avatarSession  = null;
 let micOn          = false;
+let avatarSpeaking = false;  // true while avatar is mid-speech; blocks mic re-echo
 let timerInterval  = null;
 let elapsedSeconds = 0;
 
-// Expose a flag so the inline confirmExit() function can check session state.
 window.__sessionLive = false;
 
 // ---------------------------------------------------------------------------
@@ -123,24 +119,37 @@ async function postTranscript(speaker, text) {
 }
 
 // ---------------------------------------------------------------------------
-// Ask the backend to generate an in-character response and have the avatar speak it.
-// Called after every confirmed USER_TRANSCRIPTION event.
+// Mute mic, ask backend for a response, speak it through the avatar.
 // ---------------------------------------------------------------------------
 async function fetchAndSpeakResponse(userText) {
   if (!avatarSession) return;
+
+  // Mute mic before speaking to prevent echo loop
+  if (micOn) {
+    avatarSession.stopListening();
+    setMicOn(false);
+  }
+  avatarSpeaking = true;
+
   try {
     const res = await fetch("/api/respond", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ session_id: SESSION_ID, text: userText }),
     });
-    if (!res.ok) return;
+    if (!res.ok) { avatarSpeaking = false; return; }
     const data = await res.json();
     if (data.text && avatarSession) {
-      // Speak the response through the avatar's voice.
       avatarSession.message(data.text);
+      // Optimistically add to transcript; AVATAR_TRANSCRIPTION may also fire
+      appendBubble("avatar", data.text);
+      postTranscript("avatar", data.text);
+    } else {
+      avatarSpeaking = false;
     }
-  } catch (_) { /* best-effort */ }
+  } catch (_) {
+    avatarSpeaking = false;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -178,6 +187,9 @@ async function startSession() {
         controls.style.display = "flex";
         window.__sessionLive = true;
         startTimer();
+        // Kick off the conversation: the avatar speaks the opener first.
+        // Mic stays OFF until avatar finishes speaking (AVATAR_SPEAK_ENDED).
+        fetchAndSpeakResponse("");
       }
       if (state === SessionState.DISCONNECTED || state === SessionState.DISCONNECTING) {
         window.__sessionLive = false;
@@ -187,64 +199,51 @@ async function startSession() {
 
     avatarSession.on(SessionEvent.SESSION_STREAM_READY, () => {
       avatarSession.attach(videoEl);
-      // Ensure video plays — some browsers require a user gesture first but
-      // since we started from a button click, the gesture is already granted.
       videoEl.play().catch(() => {});
     });
 
-    // Transcript accumulation (chunk events give us incremental text)
-    let avatarBuffer = "";
-    let userBuffer   = "";
-
-    avatarSession.on(AgentEventsEnum.AVATAR_TRANSCRIPTION_CHUNK, (evt) => {
-      avatarBuffer += evt.text || "";
+    // Track avatar transcript (the SDK may emit these in voiceChat mode)
+    // We add the bubble optimistically in fetchAndSpeakResponse, so skip duplicates here.
+    avatarSession.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, () => {
+      // Already handled in fetchAndSpeakResponse; no-op to avoid duplicates.
     });
 
-    avatarSession.on(AgentEventsEnum.AVATAR_TRANSCRIPTION, (evt) => {
-      const text = evt.text || avatarBuffer;
-      avatarBuffer = "";
-      if (!text.trim()) return;
-      appendBubble("avatar", text);
-      postTranscript("avatar", text);
-    });
-
-    avatarSession.on(AgentEventsEnum.USER_TRANSCRIPTION_CHUNK, (evt) => {
-      userBuffer += evt.text || "";
-    });
-
-    avatarSession.on(AgentEventsEnum.USER_TRANSCRIPTION, async (evt) => {
-      const text = evt.text || userBuffer;
-      userBuffer = "";
-      if (!text.trim()) return;
-      appendBubble("user", text);
-      postTranscript("user", text);
-
-      // Stop listening while we generate + speak the response so the avatar
-      // doesn't hear its own voice and create an echo loop.
-      if (micOn) {
-        avatarSession.stopListening();
-        setMicOn(false);
-      }
-      await fetchAndSpeakResponse(text);
-    });
-
-    // Re-enable mic once the avatar finishes speaking.
+    // Re-enable mic only after avatar fully finishes speaking
     avatarSession.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, () => {
-      if (!micOn && avatarSession) {
+      avatarSpeaking = false;
+      if (avatarSession && !micOn) {
         avatarSession.startListening();
         setMicOn(true);
       }
     });
 
-    // Graceful server-side stop
+    // User speech - only process when avatar is NOT speaking to prevent echo
+    let userBuffer = "";
+
+    avatarSession.on(AgentEventsEnum.USER_TRANSCRIPTION_CHUNK, (evt) => {
+      if (!avatarSpeaking) userBuffer += evt.text || "";
+    });
+
+    avatarSession.on(AgentEventsEnum.USER_TRANSCRIPTION, async (evt) => {
+      // Discard if avatar is currently speaking (echo guard)
+      if (avatarSpeaking) { userBuffer = ""; return; }
+
+      const text = evt.text || userBuffer;
+      userBuffer = "";
+      if (!text.trim()) return;
+
+      appendBubble("user", text);
+      postTranscript("user", text);
+      await fetchAndSpeakResponse(text);
+    });
+
     avatarSession.on(AgentEventsEnum.SESSION_STOPPED, () => {
       handleSessionEnd();
     });
 
     await avatarSession.start();
-
-    // Enable mic by default
-    await enableMic();
+    // NOTE: Do NOT call enableMic() here. The avatar speaks first.
+    // Mic is enabled by AVATAR_SPEAK_ENDED after the opener finishes.
 
   } catch (err) {
     showOverlay("⚠️", "Session error", `Failed to start avatar session.<br><small>${err.message}</small>`);
@@ -257,12 +256,6 @@ async function startSession() {
 // ---------------------------------------------------------------------------
 // Mic controls
 // ---------------------------------------------------------------------------
-async function enableMic() {
-  if (!avatarSession) return;
-  avatarSession.startListening();
-  setMicOn(true);
-}
-
 function setMicOn(on) {
   micOn = on;
   micBtn.innerHTML = on
@@ -272,7 +265,7 @@ function setMicOn(on) {
 }
 
 function toggleMic() {
-  if (!avatarSession) return;
+  if (!avatarSession || avatarSpeaking) return;
   if (micOn) {
     avatarSession.stopListening();
     setMicOn(false);
@@ -288,6 +281,11 @@ function toggleMic() {
 function interruptAvatar() {
   if (!avatarSession) return;
   avatarSession.interrupt();
+  avatarSpeaking = false;
+  if (!micOn) {
+    avatarSession.startListening();
+    setMicOn(true);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -298,7 +296,7 @@ async function endSession() {
   clearInterval(timerInterval);
   window.__sessionLive = false;
 
-  showOverlay("⏳", "Generating your analysis…", "Hang tight — we're scoring your session against the rubric.", true);
+  showOverlay("⏳", "Generating your analysis…", "Hang tight. We're scoring your session against the rubric.", true);
 
   try {
     await avatarSession.stop();

@@ -381,12 +381,17 @@ def respond():
     session_id = body.get("session_id", "")
     user_text = body.get("text", "").strip()
 
-    if not user_text:
-        return jsonify({"error": "empty_text"}), 400
-
     record = SESSION_STORE.get(session_id)
     if not record:
         return jsonify({"error": "unknown_session"}), 404
+
+    # Empty text = opener request (avatar speaks first to start the scenario)
+    if not user_text:
+        simulation = SIMULATION_BY_ID.get(record["simulation_id"])
+        if not simulation:
+            return jsonify({"error": "unknown_simulation"}), 404
+        opener = _OPENERS.get(simulation["id"], f"Hi. I have a situation I need help with.")
+        return jsonify({"text": opener})
 
     simulation = SIMULATION_BY_ID.get(record["simulation_id"])
     if not simulation:
