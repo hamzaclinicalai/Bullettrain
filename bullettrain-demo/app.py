@@ -57,6 +57,15 @@ SIMULATIONS = [
             "counter during a lunch rush. Your job is to listen, acknowledge, and "
             "resolve the issue while protecting service times for other guests."
         ),
+        "avatar_context": (
+            "You are Dana Whitman. You came in for a quick lunch and ordered a grilled "
+            "chicken wrap, but they gave you a burger. Again. This is the third time "
+            "this month. You only have 20 minutes left on your break and you are "
+            "genuinely frustrated. You already know exactly what the problem is - you "
+            "do NOT need anyone to explain it to you. You want the right food and some "
+            "acknowledgment that this keeps happening. React to whatever the staff member "
+            "says to you."
+        ),
         "objectives": [
             "Greet the guest and acknowledge the issue without becoming defensive",
             "Use a structured recovery: Apologize, Act, Appreciate",
@@ -82,6 +91,13 @@ SIMULATIONS = [
             "A prospect just finished a club tour. They're interested but raise "
             "objections about price and time commitment. Practice consultative "
             "selling that aligns the program to their goals."
+        ),
+        "avatar_context": (
+            "You are Alex Park. You just finished a tour of this gym and it looks "
+            "decent, but you are a busy professional and you are skeptical about "
+            "committing to a monthly fee this size. You have real doubts about whether "
+            "you'll actually use it enough to justify the cost. You are not rude, but "
+            "you are not easily sold. React to what the membership advisor says to you."
         ),
         "objectives": [
             "Discover the prospect's underlying motivation",
@@ -109,6 +125,14 @@ SIMULATIONS = [
             "their pre-paid suite oversold. You have 60 seconds of attention before "
             "this becomes a public escalation. Recover the moment."
         ),
+        "avatar_context": (
+            "You are Marcus Reyes, a Platinum loyalty member. You just got off a "
+            "six-hour flight and you booked a suite three weeks ago, pre-paid. Now the "
+            "front desk is telling you it is not available. You are exhausted and your "
+            "patience is gone. You already know your booking details - you do NOT need "
+            "anyone to ask you to explain the problem. You want them to fix it, now. "
+            "React to what the front desk person says."
+        ),
         "objectives": [
             "Acknowledge tier status and the inconvenience immediately",
             "Offer concrete alternatives within authority",
@@ -134,6 +158,14 @@ SIMULATIONS = [
             "A customer came in for an oil change. The technician flagged worn "
             "brake pads and a leaking gasket. Communicate findings, prioritize "
             "safety, and close the additional work - ethically."
+        ),
+        "avatar_context": (
+            "You are Priya Shah. You brought your 6-year-old SUV in for a routine oil "
+            "change, nothing more. Now the service advisor is telling you there are "
+            "additional issues and additional costs. You are immediately skeptical - "
+            "you've heard this upsell before. You want clear, honest answers about "
+            "what is actually necessary vs. what is optional. React to what the advisor "
+            "says to you."
         ),
         "objectives": [
             "Translate technical findings into customer language",
@@ -161,6 +193,13 @@ SIMULATIONS = [
             "shift lead - without micromanaging - to identify root causes and "
             "agree on a 30-day improvement plan."
         ),
+        "avatar_context": (
+            "You are Jordan Blake, a shift lead with two years at this store. Your "
+            "manager just pulled you aside to talk about shrink numbers being up 30%. "
+            "You feel defensive - your section runs fine and you don't think this is "
+            "your fault. You are not going to roll over and accept blame without "
+            "pushback. React to what your manager says to you."
+        ),
         "objectives": [
             "Open the coaching conversation with shared context",
             "Use open questions to surface the lead's hypotheses",
@@ -186,6 +225,13 @@ SIMULATIONS = [
             "A first-time patient is visibly anxious about a new diagnostic visit. "
             "Complete intake while protecting privacy, surfacing concerns, and "
             "preparing them for the clinician."
+        ),
+        "avatar_context": (
+            "You are Sam Carter. This is your first time at this clinic and you are "
+            "nervous about what today's diagnostic visit might reveal. You don't know "
+            "what to expect and you are a little overwhelmed by the intake process. "
+            "You will answer questions honestly but you need the staff member to make "
+            "you feel safe and not rushed. React to what the intake person says."
         ),
         "objectives": [
             "Establish psychological safety in the first 30 seconds",
@@ -214,23 +260,22 @@ SESSION_STORE = {}
 def build_system_prompt(simulation, mode):
     """Construct the persona prompt for the avatar in this simulation."""
     persona = simulation["persona"]
-    practice_note = (
-        " If the trainee goes completely silent for a long time, stay in character "
-        "and naturally press them as your character would (e.g. 'Hello? Are you still there?' "
-        "or 'I don't have all day.'). Never break character, never offer coaching advice."
+    avatar_context = simulation.get("avatar_context", simulation["summary"])
+    silence_note = (
+        " If the other person goes silent for a long time, stay in character and "
+        "press naturally (e.g. 'Hello? Are you still there?' or 'I don't have all day.')."
         if mode == "practice"
         else ""
     )
     return (
-        f"You are {persona['name']}. {persona['role']}. "
-        f"Your tone is {persona['voice_tone']}. "
-        f"Scenario: {simulation['summary']} "
-        f"You are NOT a trainer. You are NOT evaluating anyone. "
-        f"You are a real person in this situation. "
-        f"The person you are speaking with is trying to help you. "
-        f"React naturally and realistically to whatever they say, exactly as your character would. "
-        f"Stay fully in character at all times. Keep responses under 3 sentences."
-        f"{practice_note}"
+        f"{avatar_context} "
+        f"Your name is {persona['name']}. Your tone is {persona['voice_tone']}. "
+        f"IMPORTANT: You already know exactly what your situation is - do NOT ask the "
+        f"other person to describe the problem or provide details. YOU have the problem. "
+        f"THEY are the one trying to help or sell to you. "
+        f"Respond only to what they actually say. Keep every reply under 3 sentences. "
+        f"Never break character. Never offer training advice or coaching."
+        f"{silence_note}"
     )
 
 
