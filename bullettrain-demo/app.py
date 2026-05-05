@@ -11,6 +11,9 @@ import time
 import uuid
 from datetime import datetime, timezone
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import requests
 from flask import (
     Flask,
