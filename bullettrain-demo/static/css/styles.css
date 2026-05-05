@@ -233,15 +233,22 @@ p { margin: 0; }
 }
 
 .brand img.logo-icon {
-  height: 36px;
+  height: 48px;
   width: auto;
 }
 
 .brand img.logo-wordmark {
-  height: 44px;
+  height: 56px;
   width: auto;
-  max-width: 240px;
+  max-width: 320px;
   object-fit: contain;
+}
+
+@media (max-width: 480px) {
+  .brand img.logo-wordmark {
+    height: 44px;
+    max-width: 220px;
+  }
 }
 
 .brand-svg-fallback {
