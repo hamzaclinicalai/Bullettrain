@@ -188,19 +188,19 @@ SIMULATIONS = [
     {
         "id": "retail-shrink-conversation",
         "industry": "Retail Franchise",
-        "title": "Coaching a Shift Lead on Shrink",
-        "tagline": "Manager-to-lead coaching conversation about losses.",
+        "title": "Coaching a Struggling Team Member",
+        "tagline": "Manager-to-lead coaching conversation on performance and accountability.",
         "duration": "12-18 min",
         "difficulty": "Advanced",
         "color": "#F59E0B",
         "summary": (
-            "Your store's shrink is up 30% this quarter. You need to coach your "
-            "shift lead - without micromanaging - to identify root causes and "
-            "agree on a 30-day improvement plan."
+            "Your store's performance metrics are slipping this quarter. You need to "
+            "coach your shift lead - without micromanaging - to identify root causes "
+            "and agree on a 30-day improvement plan."
         ),
         "avatar_context": (
             "You are Jordan Blake, a shift lead with two years at this store. Your "
-            "manager just pulled you aside to talk about shrink numbers being up 30%. "
+            "manager just pulled you aside to talk about declining performance numbers. "
             "You feel defensive - your section runs fine and you don't think this is "
             "your fault. You are not going to roll over and accept blame without "
             "pushback. React to what your manager says to you."
@@ -524,7 +524,7 @@ _OPENERS = {
     ),
     "retail-shrink-conversation": (
         "Look, I've been a shift lead here for two years. "
-        "My section runs fine. I'm not sure why shrink is suddenly my problem."
+        "My section runs fine. I'm not sure why the numbers are suddenly my problem."
     ),
     "tech-enterprise-renewal": (
         "Look, I agreed to this call but I want to be direct. "
