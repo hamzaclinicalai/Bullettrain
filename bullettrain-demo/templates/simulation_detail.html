@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}{{ simulation.title }} — BulletTrain.ai{% endblock %}
+{% block nav_class %}on-dark{% endblock %}
+
+{% block body %}
+<!-- Hero -->
+<div class="detail-hero">
+  <div class="container">
+    <div style="margin-bottom:14px;">
+      <a href="{{ url_for('simulations') }}" style="color:rgba(255,255,255,0.55);font-size:14px;display:inline-flex;align-items:center;gap:6px;">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Simulation Library
+      </a>
+    </div>
+    <span class="eyebrow on-dark">{{ simulation.industry }}</span>
+    <h1>{{ simulation.title }}</h1>
+    <p>{{ simulation.tagline }}</p>
+    <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+      {% for skill in simulation.skills %}
+      <span style="background:rgba(255,255,255,0.10);color:rgba(255,255,255,0.85);border-radius:999px;padding:5px 12px;font-size:13px;">{{ skill }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- Detail panels -->
+<section style="padding:0 0 80px;">
+  <div class="container detail-cols">
+    <!-- Left: info -->
+    <div style="display:flex;flex-direction:column;gap:22px;">
+      <div class="panel">
+        <h3>Scenario overview</h3>
+        <p style="color:var(--ink-600);margin-top:12px;line-height:1.65;">{{ simulation.summary }}</p>
+        <div style="margin-top:22px;display:flex;gap:24px;font-size:14px;color:var(--ink-500);">
+          <div><strong style="color:var(--ink-900);display:block;font-family:var(--font-display);">{{ simulation.duration }}</strong>Estimated time</div>
+          <div><strong style="color:var(--ink-900);display:block;font-family:var(--font-display);">{{ simulation.difficulty }}</strong>Difficulty</div>
+          <div><strong style="color:var(--ink-900);display:block;font-family:var(--font-display);">{{ simulation.skills|length }}</strong>Core skills</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Learning objectives</h3>
+        <ul style="padding-left:0;margin:14px 0 0;list-style:none;display:flex;flex-direction:column;gap:10px;">
+          {% for obj in simulation.objectives %}
+          <li style="display:flex;gap:12px;align-items:flex-start;color:var(--ink-700);font-size:15px;">
+            <svg width="18" height="18" style="flex-shrink:0;margin-top:2px;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="20 6 9 17 4 12"/></svg>
+            {{ obj }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>You'll be speaking with</h3>
+        <div style="display:flex;gap:16px;align-items:center;margin-top:14px;">
+          <div style="width:48px;height:48px;border-radius:50%;background:var(--ink-100);display:flex;align-items:center;justify-content:center;font-size:22px;">
+            🎭
+          </div>
+          <div>
+            <div style="font-weight:600;color:var(--ink-900);font-size:17px;">{{ simulation.persona.name }}</div>
+            <div style="color:var(--ink-500);font-size:14px;">{{ simulation.persona.role }}</div>
+            <div style="color:var(--ink-400);font-size:13px;margin-top:4px;font-style:italic;">Tone: {{ simulation.persona.voice_tone }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: mode selector -->
+    <div style="display:flex;flex-direction:column;gap:18px;padding-top:4px;">
+      <div class="panel" style="border:2px solid var(--ink-100);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <div style="width:36px;height:36px;background:rgba(255,77,46,0.10);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3 style="font-size:20px;">Practice Mode</h3>
+        </div>
+        <p style="color:var(--ink-500);font-size:15px;line-height:1.55;">
+          The avatar stays in character but will offer a gentle hint if you pause too long. This run is <strong>ungraded</strong> — it's all about building muscle memory. Try as many times as you need.
+        </p>
+        <ul style="margin:14px 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--ink-600);">
+          <li>✓ &nbsp;Soft prompts when you're stuck</li>
+          <li>✓ &nbsp;Live transcript shown in sidebar</li>
+          <li>✓ &nbsp;No score recorded</li>
+        </ul>
+        <a href="{{ url_for('simulation_run', sim_id=simulation.id, mode='practice') }}" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Launch Practice
+        </a>
+      </div>
+
+      <div class="panel" style="border:2px solid var(--ink-100);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <div style="width:36px;height:36px;background:rgba(37,99,235,0.10);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--signal-blue)" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3 style="font-size:20px;">Test Mode</h3>
+        </div>
+        <p style="color:var(--ink-500);font-size:15px;line-height:1.55;">
+          Full blind run. The avatar gives you nothing you didn't earn. Every turn is captured and graded against the rubric. Your results appear immediately when you finish.
+        </p>
+        <ul style="margin:14px 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--ink-600);">
+          <li>✓ &nbsp;Avatar stays 100% in character</li>
+          <li>✓ &nbsp;Transcript hidden during the run</li>
+          <li>✓ &nbsp;AI analysis generated at end</li>
+        </ul>
+        <a href="{{ url_for('simulation_run', sim_id=simulation.id, mode='test') }}" class="btn btn-dark" style="width:100%;justify-content:center;margin-top:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Start Test
+        </a>
+      </div>
+
+      <div class="callout" style="background:var(--ink-50);border:1px dashed var(--ink-200);color:var(--ink-600);">
+        <strong style="color:var(--ink-800);">First time here?</strong> Run Practice first so you know the character's personality. Then attempt Test mode to see your real score.
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Simulation Library — BulletTrain.ai{% endblock %}
+{% block nav_class %}on-dark{% endblock %}
+
+{% block body %}
+<section class="detail-hero" style="padding:80px 0 110px;">
+  <div class="container">
+    <span class="eyebrow on-dark">Simulation Library</span>
+    <h1 style="color:var(--white);font-size:clamp(34px,4.8vw,58px);font-weight:600;margin-top:18px;">
+      {{ simulations|length }} live scenarios. Real moments. Real stakes.
+    </h1>
+    <p style="color:rgba(255,255,255,0.70);margin-top:18px;max-width:62ch;font-size:17px;">
+      Each simulation drops a trainee into a scenario their role will face on the job. Pick one, choose Practice or Test mode, and run it right now in the browser.
+    </p>
+  </div>
+</section>
+
+<section style="margin-top:-60px;padding:0 0 100px;">
+  <div class="container">
+    <div class="sim-grid">
+      {% for sim in simulations %}
+      <a href="{{ url_for('simulation_detail', sim_id=sim.id) }}" class="sim-card" style="text-decoration:none;">
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span class="industry">{{ sim.industry }}</span>
+            <span style="font-size:12px;font-family:var(--font-mono);color:var(--ink-400);">{{ sim.difficulty }}</span>
+          </div>
+          <h3 style="margin-top:12px;font-size:20px;">{{ sim.title }}</h3>
+          <p style="margin-top:8px;font-size:15px;">{{ sim.tagline }}</p>
+          <p style="margin-top:10px;color:var(--ink-500);font-size:14px;line-height:1.5;">{{ sim.summary[:180] }}{% if sim.summary|length > 180 %}…{% endif %}</p>
+        </div>
+        <div>
+          <div style="margin-bottom:12px;display:flex;gap:6px;flex-wrap:wrap;">
+            {% for skill in sim.skills %}
+            <span class="tag">{{ skill }}</span>
+            {% endfor %}
+          </div>
+          <div class="sim-meta">
+            <div><strong>{{ sim.duration }}</strong></div>
+            <div>&nbsp;·&nbsp; Practice &amp; Test</div>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

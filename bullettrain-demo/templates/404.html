@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found — BulletTrain.ai{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="error-card">
+    <div style="font-size:56px;">🚦</div>
+    <h2 style="margin-top:18px;font-size:28px;">Page not found</h2>
+    <p style="color:var(--ink-500);margin-top:10px;">That URL doesn't exist. Head back to the simulation library.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-top:24px;">Back to home</a>
+  </div>
+</div>
+{% endblock %}
+{% endblock %}

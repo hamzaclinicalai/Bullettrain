@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block title %}Session Results — BulletTrain.ai{% endblock %}
+{% block nav_class %}on-dark{% endblock %}
+
+{% block body %}
+{% set analysis = record.get('analysis', {}) %}
+{% set score = analysis.get('overall_score', 0) %}
+
+<!-- Results hero -->
+<section class="results-hero">
+  <div class="container">
+    <div style="margin-bottom:14px;">
+      <a href="{{ url_for('simulation_detail', sim_id=simulation.id) }}"
+         style="color:rgba(255,255,255,0.55);font-size:14px;display:inline-flex;align-items:center;gap:6px;">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Back to {{ simulation.title }}
+      </a>
+    </div>
+    <span class="eyebrow on-dark">Session Analysis</span>
+    <h1>Your results are in.</h1>
+    <p style="color:rgba(255,255,255,0.70);margin-top:14px;font-size:17px;">
+      {{ simulation.title }} &nbsp;·&nbsp; {{ record.mode|title }} Mode
+    </p>
+  </div>
+</section>
+
+<section style="padding:0 0 80px;">
+  <div class="container">
+
+    <!-- Score card -->
+    <div class="score-card">
+      <div class="score-dial">
+        <div class="dial" style="--pct:{{ score }}">
+          <span>{{ score }}</span>
+        </div>
+        <div style="font-size:14px;color:var(--ink-500);text-align:center;">Overall score</div>
+        <div style="font-size:12px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.08em;color:
+          {% if score >= 85 %}var(--signal-green)
+          {% elif score >= 70 %}var(--signal-blue)
+          {% elif score >= 55 %}#F59E0B
+          {% else %}var(--accent){% endif %};">
+          {% if score >= 85 %}Exceeds expectations
+          {% elif score >= 70 %}On track
+          {% elif score >= 55 %}Developing
+          {% else %}Needs reps{% endif %}
+        </div>
+      </div>
+      <div>
+        <h2>{{ simulation.title }}</h2>
+        <p class="summary">{{ analysis.get('summary', 'No summary available.') }}</p>
+        <div class="kv">
+          <div>
+            <b>{{ analysis.get('user_words', 0) }}</b>
+            Words spoken
+          </div>
+          <div>
+            <b>{{ (analysis.get('duration_s', 0) // 60) }}m {{ '%02d'|format(analysis.get('duration_s', 0) % 60) }}s</b>
+            Session length
+          </div>
+          <div>
+            <b>{{ (analysis.get('talk_ratio', 0) * 100)|int }}%</b>
+            Your talk time
+          </div>
+        </div>
+        <div style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="{{ url_for('simulation_run', sim_id=simulation.id, mode=record.mode) }}" class="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run again
+          </a>
+          {% if record.mode == 'practice' %}
+          <a href="{{ url_for('simulation_run', sim_id=simulation.id, mode='test') }}" class="btn btn-dark">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Take the test
+          </a>
+          {% endif %}
+          <a href="{{ url_for('simulations') }}" class="btn btn-ghost">Browse simulations</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Strengths & gaps -->
+    {% if analysis.get('strengths') or analysis.get('growth_areas') %}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:36px;">
+      <div class="panel" style="border-left:4px solid var(--signal-green);">
+        <h3 style="color:var(--signal-green);">Top strengths</h3>
+        <ul style="padding-left:0;margin:14px 0 0;list-style:none;display:flex;flex-direction:column;gap:10px;">
+          {% for s in analysis.get('strengths', []) %}
+          <li style="display:flex;gap:10px;color:var(--ink-700);font-size:15px;">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--signal-green)" stroke-width="2.3" style="flex-shrink:0;margin-top:2px;"><polyline points="20 6 9 17 4 12"/></svg>
+            {{ s }}
+          </li>
+          {% else %}
+          <li style="color:var(--ink-400);font-size:14px;">Complete a session to see strengths.</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="panel" style="border-left:4px solid var(--accent);">
+        <h3 style="color:var(--accent);">Growth areas</h3>
+        <ul style="padding-left:0;margin:14px 0 0;list-style:none;display:flex;flex-direction:column;gap:10px;">
+          {% for g in analysis.get('growth_areas', []) %}
+          <li style="display:flex;gap:10px;color:var(--ink-700);font-size:15px;">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--accent)" stroke-width="2.3" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {{ g }}
+          </li>
+          {% else %}
+          <li style="color:var(--ink-400);font-size:14px;">Complete a session to see growth areas.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Rubric -->
+    {% if analysis.get('rubric') %}
+    <div style="margin-top:48px;">
+      <h2 style="font-size:26px;font-weight:600;margin-bottom:24px;">Objective breakdown</h2>
+      <div class="rubric">
+        {% for row in analysis.rubric %}
+        <div class="rubric-row">
+          <div class="obj">
+            {{ row.objective }}
+            {% if row.evidence %}
+            <small>You said: "{{ row.evidence[:140] }}{% if row.evidence|length > 140 %}…{% endif %}"</small>
+            {% endif %}
+          </div>
+          <div>
+            <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:
+              {% if row.score >= 85 %}var(--signal-green)
+              {% elif row.score >= 70 %}var(--signal-blue)
+              {% else %}var(--accent){% endif %};">
+              {{ row.score }}
+            </div>
+            <div class="gauge" style="--pct:{{ row.score }}%;margin-top:6px;"></div>
+          </div>
+          <div class="tip">{{ row.tip }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <div class="panel" style="margin-top:36px;text-align:center;color:var(--ink-500);padding:48px;">
+      <p style="font-size:18px;">No transcript was captured in this session.</p>
+      <p style="margin-top:8px;font-size:15px;">Complete a full session to see the detailed analysis.</p>
+      <a href="{{ url_for('simulation_run', sim_id=simulation.id, mode=record.mode) }}" class="btn btn-primary" style="margin-top:24px;">Try again</a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

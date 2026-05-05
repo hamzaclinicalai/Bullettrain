@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{% block title %}BulletTrain.ai — Enterprise Training Simulations{% endblock %}</title>
+<meta name="description" content="{% block description %}Interactive avatar-powered enterprise training simulations for franchise and corporate teams.{% endblock %}" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+{% block head %}{% endblock %}
+</head>
+<body>
+
+{% block navbar %}
+<header class="nav {% block nav_class %}{% endblock %}">
+  <div class="container nav-inner">
+    <a href="{{ url_for('index') }}" class="brand">
+      <span class="brand-mark"></span>
+      BulletTrain<span style="color:var(--accent)">.</span>ai
+    </a>
+    <nav class="nav-links">
+      <a href="{{ url_for('simulations') }}">Simulations</a>
+      <a href="{{ url_for('platform') }}">Platform</a>
+      <a href="{{ url_for('simulations') }}" class="btn btn-primary" style="padding:9px 18px;font-size:13px;">Try a Demo</a>
+    </nav>
+  </div>
+</header>
+{% endblock %}
+
+{% block body %}{% endblock %}
+
+{% block footer %}
+<footer>
+  <div class="container">
+    <div>
+      <a href="{{ url_for('index') }}" class="brand" style="color:#fff;font-size:22px;">
+        <span class="brand-mark"></span>
+        BulletTrain<span style="color:var(--accent)">.</span>ai
+      </a>
+      <p style="margin-top:14px;font-size:14px;max-width:32ch;">
+        Enterprise training reimagined — practice real conversations with AI avatars, track skill growth, and build confident teams.
+      </p>
+    </div>
+    <div>
+      <h4>Platform</h4>
+      <ul>
+        <li><a href="{{ url_for('simulations') }}">Simulation Library</a></li>
+        <li><a href="{{ url_for('platform') }}">How It Works</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Integrations</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Privacy</a></li>
+      </ul>
+    </div>
+    <div class="colophon">
+      <span>&copy; 2025 BulletTrain AI, Inc. All rights reserved.</span>
+      <span>Powered by LiveAvatar.com</span>
+    </div>
+  </div>
+</footer>
+{% endblock %}
+
+</body>
+</html>

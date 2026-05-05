@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}{{ simulation.title }} ({{ mode|title }}) — BulletTrain.ai{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block head %}
+<style>
+html, body { height: 100%; overflow: hidden; }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="runner" id="runner" data-session="{{ session_id }}" data-sim="{{ simulation.id }}" data-mode="{{ mode }}">
+
+  <!-- Top bar -->
+  <div class="runner-bar">
+    <div class="meta">
+      <a href="{{ url_for('simulation_detail', sim_id=simulation.id) }}"
+         style="color:rgba(255,255,255,0.6);display:inline-flex;align-items:center;gap:6px;font-size:13px;"
+         id="back-link"
+         onclick="return confirmExit(event);">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Exit
+      </a>
+      <span style="color:rgba(255,255,255,0.25);">|</span>
+      <span>{{ simulation.industry }} — {{ simulation.title }}</span>
+    </div>
+    <div class="meta">
+      <span class="mode-pill {% if mode == 'test' %}test{% endif %}">
+        {{ mode|upper }} MODE
+      </span>
+      <span id="timer" style="font-family:var(--font-mono);color:rgba(255,255,255,0.55);">00:00</span>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="runner-body">
+
+    <!-- Avatar stage -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="stage" id="avatar-stage">
+        <video id="avatar-video" autoplay playsinline></video>
+
+        <!-- Pre-session overlay -->
+        <div class="stage-overlay" id="stage-overlay">
+          <div class="spinner" id="spinner" style="display:none;"></div>
+          <div id="overlay-icon" style="font-size:48px;">🎭</div>
+          <div id="overlay-title" style="font-family:var(--font-display);font-size:22px;font-weight:600;">Ready to start?</div>
+          <div id="overlay-msg" style="color:rgba(255,255,255,0.65);font-size:15px;max-width:36ch;text-align:center;">
+            {{ simulation.persona.name }} is standing by.
+            <br>Click <strong>Start</strong> to begin your {{ mode }} session.
+          </div>
+          <button class="btn btn-primary btn-lg" id="start-btn" onclick="startSession()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Start Session
+          </button>
+        </div>
+      </div>
+
+      <!-- Controls bar (hidden until session live) -->
+      <div class="stage-controls" id="controls" style="position:static;transform:none;background:rgba(255,255,255,0.05);justify-content:center;display:none;">
+        <button id="mic-btn" onclick="toggleMic()">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          Mic On
+        </button>
+        <button onclick="interruptAvatar()">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          Interrupt
+        </button>
+        <button class="danger" id="end-btn" onclick="endSession()">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          End Session
+        </button>
+      </div>
+
+      <!-- Persona card -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:center;">
+        <div style="font-size:28px;">🎭</div>
+        <div>
+          <div style="font-weight:600;color:var(--white);">{{ simulation.persona.name }}</div>
+          <div style="color:rgba(255,255,255,0.55);font-size:13px;">{{ simulation.persona.role }} &nbsp;·&nbsp; Tone: {{ simulation.persona.voice_tone }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transcript panel -->
+    <div class="transcript">
+      <div class="transcript-head">
+        <span>
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Conversation
+        </span>
+        {% if mode == 'test' %}
+        <span style="font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,0.45);">Hidden in test mode</span>
+        {% endif %}
+      </div>
+      <div class="transcript-list" id="transcript-list"
+           {% if mode == 'test' %}style="filter:blur(6px);pointer-events:none;user-select:none;"{% endif %}>
+        <div style="text-align:center;color:rgba(255,255,255,0.35);font-size:13px;padding:24px 0;">
+          Conversation will appear here once the session starts.
+        </div>
+      </div>
+
+      <!-- Objectives quick-ref (practice only) -->
+      {% if mode == 'practice' %}
+      <div style="padding:14px 18px;border-top:1px solid rgba(255,255,255,0.08);">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.10em;color:rgba(255,255,255,0.4);font-family:var(--font-mono);margin-bottom:10px;">Your objectives</div>
+        {% for obj in simulation.objectives %}
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);padding:5px 0;border-top:1px solid rgba(255,255,255,0.06);">{{ obj }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+  </div><!-- /runner-body -->
+</div><!-- /runner -->
+
+<!-- ===== JavaScript ===== -->
+<script type="importmap">
+{
+  "imports": {
+    "@heygen/liveavatar-web-sdk": "https://cdn.jsdelivr.net/npm/@heygen/liveavatar-web-sdk@0.0.17/dist/index.esm.js"
+  }
+}
+</script>
+<script type="module" src="{{ url_for('static', filename='js/sim.js') }}"></script>
+
+<script>
+  // Pass server-side data into the module via dataset attributes (already set on #runner).
+  // These helpers are called by the control buttons (inline onclick).
+
+  function confirmExit(e) {
+    if (window.__sessionLive) {
+      if (!confirm('Are you sure you want to exit the session? Your progress will be lost.')) {
+        e.preventDefault();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function startSession()   { window.dispatchEvent(new CustomEvent('bt:start')); }
+  function toggleMic()      { window.dispatchEvent(new CustomEvent('bt:toggleMic')); }
+  function interruptAvatar(){ window.dispatchEvent(new CustomEvent('bt:interrupt')); }
+  function endSession()     { window.dispatchEvent(new CustomEvent('bt:end')); }
+</script>
+{% endblock %}
