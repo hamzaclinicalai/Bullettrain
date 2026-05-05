@@ -465,10 +465,51 @@ def respond():
 
 
 def _generate_avatar_response(simulation, transcript, user_text, mode):
-    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if api_key:
-        return _claude_response(simulation, transcript, user_text, mode, api_key)
+    gemini_key = os.environ.get("GEMINI_API_KEY", "")
+    if gemini_key:
+        return _gemini_response(simulation, transcript, user_text, mode, gemini_key)
+    anthropic_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if anthropic_key:
+        return _claude_response(simulation, transcript, user_text, mode, anthropic_key)
     return _scripted_response(simulation, user_text, mode, len(transcript))
+
+
+def _gemini_response(simulation, transcript, user_text, mode, api_key):
+    system_prompt = build_system_prompt(simulation, mode)
+
+    # Build Gemini-format conversation history
+    contents = []
+    for turn in transcript:
+        role = "user" if turn["speaker"] == "user" else "model"
+        if contents and contents[-1]["role"] == role:
+            contents[-1]["parts"][0]["text"] += " " + turn["text"]
+        else:
+            contents.append({"role": role, "parts": [{"text": turn["text"]}]})
+
+    # Ensure conversation starts with a user turn (Gemini requirement)
+    if not contents or contents[0]["role"] != "user":
+        contents.insert(0, {"role": "user", "parts": [{"text": "(conversation begins)"}]})
+
+    # Append current user message if not already there
+    if not contents or contents[-1]["role"] != "user":
+        contents.append({"role": "user", "parts": [{"text": user_text}]})
+
+    url = (
+        "https://generativelanguage.googleapis.com/v1beta/models/"
+        f"gemini-2.5-flash:generateContent?key={api_key}"
+    )
+    payload = {
+        "system_instruction": {"parts": [{"text": system_prompt}]},
+        "contents": contents,
+        "generationConfig": {
+            "maxOutputTokens": 200,
+            "temperature": 0.85,
+        },
+    }
+    resp = requests.post(url, json=payload, timeout=15)
+    resp.raise_for_status()
+    data = resp.json()
+    return data["candidates"][0]["content"]["parts"][0]["text"].strip()
 
 
 def _claude_response(simulation, transcript, user_text, mode, api_key):
