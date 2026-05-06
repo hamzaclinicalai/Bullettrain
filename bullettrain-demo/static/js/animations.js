@@ -1,4 +1,4 @@
-/* BulletTrain.ai — UI animations */
+/* BulletTrain.ai - UI animations */
 'use strict';
 
 // ── Scroll reveal ──────────────────────────────────────────────────────────

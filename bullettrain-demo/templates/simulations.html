@@ -98,11 +98,11 @@
               <ul class="sim-detail-list">
                 <li>Acknowledge the issue without being defensive.</li>
                 <li>Offer a specific remedy with a timeline.</li>
-                <li>Maintain brand tone — sincere, not corporate.</li>
+                <li>Maintain brand tone - sincere, not corporate.</li>
                 <li>Recover the relationship for the next visit.</li>
               </ul>
               <div class="sim-detail-section-label">Difficulty</div>
-              <p>Foundational — appropriate for first-day lead training and recurring quarterly recerts.</p>
+              <p>Foundational - appropriate for first-day lead training and recurring quarterly recerts.</p>
               <div class="sim-detail-section-label">What success looks like</div>
               <p>Customer leaves calm, with a corrected order and a small goodwill gesture. Conversation stays under 90 seconds.</p>
             </div>
@@ -242,7 +242,7 @@
               </div>
             </div>
             <div class="sim-results-grade-block">
-              <div class="sim-grade-letter" id="sim4-grade">—</div>
+              <div class="sim-grade-letter" id="sim4-grade">-</div>
               <div class="sim-grade-label" id="sim4-status">Calculating</div>
               <div class="sim-grade-meta">Customer Recovery</div>
             </div>
@@ -252,17 +252,17 @@
             <div class="sim-result-row" data-w="94" data-grade="A">
               <span class="sim-result-row-label">Acknowledge the issue</span>
               <div class="sim-result-bar"><div class="sim-result-fill"></div></div>
-              <span class="sim-result-val">—</span>
+              <span class="sim-result-val">-</span>
             </div>
             <div class="sim-result-row" data-w="88" data-grade="B+">
               <span class="sim-result-row-label">Offer a specific remedy</span>
               <div class="sim-result-bar"><div class="sim-result-fill"></div></div>
-              <span class="sim-result-val">—</span>
+              <span class="sim-result-val">-</span>
             </div>
             <div class="sim-result-row" data-w="76" data-grade="B−">
               <span class="sim-result-row-label">Maintain brand tone</span>
               <div class="sim-result-bar"><div class="sim-result-fill"></div></div>
-              <span class="sim-result-val">—</span>
+              <span class="sim-result-val">-</span>
             </div>
           </div>
 
@@ -400,7 +400,7 @@
     whenInView(frame, () => setTimeout(cycle, 200));
   }
 
-  // ── Step 2: practice mode — turns + hints + final feedback ───
+  // ── Step 2: practice mode - turns + hints + final feedback ───
   function initStep2() {
     const frame = document.getElementById('sim-frame-2');
     if (!frame) return;
@@ -411,12 +411,12 @@
     const turns = [
       { who: 'avatar', text: "I ordered the chicken wrap but got a burger. Again. Third time this month." },
       { who: 'hint',   text: "Lead with ownership before asking a question." },
-      { who: 'user',   text: "I'm so sorry — let me make this right. Can I get your name?" },
+      { who: 'user',   text: "I'm so sorry - let me make this right. Can I get your name?" },
       { who: 'avatar', text: "It's Sarah. Honestly, I'm running out of patience here." },
       { who: 'hint',   text: "Name a specific timeline alongside the remedy." },
       { who: 'user',   text: "Sarah, completely fair. Hot wrap in two minutes, on the house." }
     ];
-    const finalFeedback = "Strong recovery — clean acknowledge, named timeline, goodwill gesture. Try mirroring the customer's frustration in turn 1.";
+    const finalFeedback = "Strong recovery - clean acknowledge, named timeline, goodwill gesture. Try mirroring the customer's frustration in turn 1.";
 
     function addBubble(who, text) {
       const b = document.createElement('div');
@@ -458,7 +458,7 @@
     whenInView(frame, () => setTimeout(cycle, 200));
   }
 
-  // ── Step 3: test mode — turns only, no hints, no feedback ────
+  // ── Step 3: test mode - turns only, no hints, no feedback ────
   function initStep3() {
     const frame = document.getElementById('sim-frame-3');
     if (!frame) return;
@@ -466,7 +466,7 @@
 
     const turns = [
       { who: 'avatar', text: "I ordered the chicken wrap but got a burger. Again. Third time this month." },
-      { who: 'user',   text: "I'm so sorry — let me make this right. Can I get your name?" },
+      { who: 'user',   text: "I'm so sorry - let me make this right. Can I get your name?" },
       { who: 'avatar', text: "It's Sarah. Honestly, I'm running out of patience here." },
       { who: 'user',   text: "Sarah, completely fair. Hot wrap in two minutes, on the house." }
     ];
@@ -493,7 +493,7 @@
     whenInView(frame, () => setTimeout(cycle, 300));
   }
 
-  // ── Step 4: results — dial, rubric bars, AI coach line ───────
+  // ── Step 4: results - dial, rubric bars, AI coach line ───────
   function initStep4() {
     const frame = document.getElementById('sim-frame-4');
     if (!frame) return;
@@ -508,7 +508,7 @@
     const finalScore = 86;
     const finalGrade = 'A−';
     const finalStatus = 'On track';
-    const coachLine = "Strong open and recovery. Slight tone slip at turn 4 — keep it warm even when the customer escalates.";
+    const coachLine = "Strong open and recovery. Slight tone slip at turn 4 - keep it warm even when the customer escalates.";
 
     function animateDial(target, duration) {
       return new Promise(resolve => {
@@ -529,13 +529,13 @@
     function reset() {
       if (num)  num.textContent = '0';
       if (arc)  arc.setAttribute('stroke-dashoffset', '100');
-      if (grade)  grade.textContent = '—';
+      if (grade)  grade.textContent = '-';
       if (status) status.textContent = 'Calculating';
       rows.forEach(r => {
         const fill = r.querySelector('.sim-result-fill');
         const val  = r.querySelector('.sim-result-val');
         if (fill) fill.style.width = '0%';
-        if (val)  val.textContent  = '—';
+        if (val)  val.textContent  = '-';
         r.classList.remove('is-shown');
       });
       if (coach) coach.classList.remove('is-shown');

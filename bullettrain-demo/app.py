@@ -708,7 +708,7 @@ def analyze(session_id):
 
 
 # ---------------------------------------------------------------------------
-# Analysis engine — Claude LLM path + strict rule-based fallback
+# Analysis engine - Claude LLM path + strict rule-based fallback
 # ---------------------------------------------------------------------------
 
 def generate_analysis(record, simulation):
@@ -773,7 +773,7 @@ def _claude_analysis(simulation, record, user_turns, avatar_turns,
 
     system = (
         "You are a strict, senior performance coach evaluating enterprise training simulations. "
-        "Score honestly — do not inflate. Most trainees score 40–70. "
+        "Score honestly - do not inflate. Most trainees score 40–70. "
         "Reserve 85+ for genuinely exceptional execution. "
         "Base scores only on what was actually said, not intent."
     )
@@ -781,7 +781,7 @@ def _claude_analysis(simulation, record, user_turns, avatar_turns,
     prompt = f"""Evaluate the following training simulation and return a JSON object only.
 
 SIMULATION: {simulation['title']}
-PERSONA: {simulation['persona']['name']} — {simulation['persona']['role']} (tone: {simulation['persona']['voice_tone']})
+PERSONA: {simulation['persona']['name']} - {simulation['persona']['role']} (tone: {simulation['persona']['voice_tone']})
 SCENARIO: {simulation['summary']}
 
 LEARNING OBJECTIVES:
@@ -797,12 +797,12 @@ SESSION STATS:
 - Talk-time share: {int(talk_ratio * 100)}%
 
 SCORING SCALE (use strictly):
-0–29   Not addressed — no meaningful attempt
-30–49  Attempted but largely failed — vague, incomplete, or missed the point
-50–64  Partial execution — some elements present, key parts missing
-65–79  Adequate — objective met but could be sharper
-80–89  Strong — skillful execution with clear impact
-90–100 Exceptional — model response, nothing materially missing
+0–29   Not addressed - no meaningful attempt
+30–49  Attempted but largely failed - vague, incomplete, or missed the point
+50–64  Partial execution - some elements present, key parts missing
+65–79  Adequate - objective met but could be sharper
+80–89  Strong - skillful execution with clear impact
+90–100 Exceptional - model response, nothing materially missing
 
 Also score these four behavioral dimensions on the same 0–100 scale:
 - empathy: Did the trainee validate feelings, name emotions, or make the other person feel heard?
@@ -810,7 +810,7 @@ Also score these four behavioral dimensions on the same 0–100 scale:
 - listening: Did they reference what was said, ask follow-up questions, or track the conversation?
 - resolution: Did they commit to a clear, specific, actionable outcome?
 
-Return ONLY valid JSON — no markdown, no commentary:
+Return ONLY valid JSON - no markdown, no commentary:
 {{
   "rubric": [
     {{"objective": "<exact text>", "score": <int>, "evidence": "<direct quote or null>", "tip": "<one specific coaching sentence>"}}
@@ -946,7 +946,7 @@ def _score_objective(objective, idx, signals, user_turns, persona_name):
 
     # Tip
     if score >= 80:
-        tip = "Solid execution — maintain this consistency under pressure."
+        tip = "Solid execution - maintain this consistency under pressure."
     elif score >= 65:
         tip = f"Adequate, but missing {'a specific timeline' if not signals['gave_timeline'] else 'stronger acknowledgment'}. Name the action explicitly."
     elif score >= 45:
@@ -1017,9 +1017,9 @@ def _rule_based_analysis(simulation, user_turns, avatar_turns,
         if r["score"] >= 55:
             strengths.append(f"Addressed '{r['objective'][:60]}' (score {r['score']})")
     if signals["used_name"]:
-        strengths.insert(0, f"Used the customer's name — personalizes the interaction")
+        strengths.insert(0, f"Used the customer's name - personalizes the interaction")
     if signals["gave_timeline"]:
-        strengths.append("Gave a specific timeline — builds confidence in resolution")
+        strengths.append("Gave a specific timeline - builds confidence in resolution")
     strengths = strengths[:3]
 
     # Growth areas: lowest-scoring objectives with specific guidance
@@ -1027,28 +1027,28 @@ def _rule_based_analysis(simulation, user_turns, avatar_turns,
     growth_areas = []
     for r in growth_rubric[:2]:
         if r["score"] < 75:
-            growth_areas.append(f"'{r['objective'][:55]}' scored {r['score']} — {r['tip']}")
+            growth_areas.append(f"'{r['objective'][:55]}' scored {r['score']} - {r['tip']}")
     if signals["defensive"]:
-        growth_areas.insert(0, "Defensive language detected — replace with ownership phrases like 'I've got this.'")
+        growth_areas.insert(0, "Defensive language detected - replace with ownership phrases like 'I've got this.'")
     if signals["vague_count"] >= 2:
-        growth_areas.append("Vague commitments undermine trust — replace 'I'll try' with 'I will.'")
+        growth_areas.append("Vague commitments undermine trust - replace 'I'll try' with 'I will.'")
     growth_areas = growth_areas[:3]
 
     # Critical moment
     if signals["offered_fix"] and signals["gave_timeline"]:
-        critical_moment = "The moment a specific remedy with a timeline was offered — this is where the customer's tension shifted."
+        critical_moment = "The moment a specific remedy with a timeline was offered - this is where the customer's tension shifted."
     elif signals["apologized"] and not signals["offered_fix"]:
-        critical_moment = "Apology was given but no concrete fix followed — the customer was left without a resolution."
+        critical_moment = "Apology was given but no concrete fix followed - the customer was left without a resolution."
     elif not signals["acknowledged"]:
-        critical_moment = "The issue was never explicitly acknowledged — the customer may have felt unheard throughout."
+        critical_moment = "The issue was never explicitly acknowledged - the customer may have felt unheard throughout."
     else:
         critical_moment = "Engagement was present but the resolution lacked the specificity needed to fully close the loop."
 
     # Summary
     talk_note = (
         "Talk time was balanced." if 0.35 <= talk_ratio <= 0.65
-        else ("You dominated the conversation — let the other party speak more." if talk_ratio > 0.65
-              else "You under-spoke — drive the conversation more confidently.")
+        else ("You dominated the conversation - let the other party speak more." if talk_ratio > 0.65
+              else "You under-spoke - drive the conversation more confidently.")
     )
     minutes, seconds = divmod(duration_s, 60)
     summary = (

@@ -3,7 +3,7 @@
  *
  * Architecture:
  *   - SDK (no voiceChat): pure avatar renderer + TTS via session.repeat()
- *   - Web Speech API: user mic — we start/stop it ourselves, so the mic
+ *   - Web Speech API: user mic - we start/stop it ourselves, so the mic
  *     is ONLY active when it's the user's turn to speak
  *
  * Flow:
@@ -52,7 +52,7 @@ let elapsedSeconds = 0;
 window.__sessionLive = false;
 
 // ---------------------------------------------------------------------------
-// Web Speech API — we own the mic completely
+// Web Speech API - we own the mic completely
 // ---------------------------------------------------------------------------
 const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
@@ -179,7 +179,7 @@ function setMicOn(on) {
 }
 
 // ---------------------------------------------------------------------------
-// TTS — repeat() speaks verbatim, message() is AI-response path (avoid)
+// TTS - repeat() speaks verbatim, message() is AI-response path (avoid)
 // ---------------------------------------------------------------------------
 function avatarSpeak(text) {
   if (!avatarSession) return;
@@ -307,7 +307,7 @@ async function startSession() {
       await fetchAndSpeakResponse(""); // request opener
     });
 
-    // AVATAR_SPEAK_ENDED fires when TTS completes — use it to open mic early
+    // AVATAR_SPEAK_ENDED fires when TTS completes - use it to open mic early
     // if the timer hasn't already done so.
     avatarSession.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, () => {
       console.log("[SDK] AVATAR_SPEAK_ENDED");

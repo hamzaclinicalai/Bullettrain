@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
-   BulletTrain.ai Design System — v2
+   BulletTrain.ai Design System - v2
    Dark, futuristic, speed-inspired. Mobile-first.
    Brand: electric blue #1B9EFF on deep black #000 / #04080F
    --------------------------------------------------------------------------- */
@@ -61,7 +61,7 @@ html, body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Global persistent glow — visible through all dark sections */
+  /* Global persistent glow - visible through all dark sections */
   background-image:
     radial-gradient(ellipse 80% 40% at 50% 0%, rgba(27,158,255,0.18) 0%, transparent 60%);
   background-attachment: fixed;
@@ -849,7 +849,7 @@ p { margin: 0; }
   z-index: 2;
 }
 
-/* Head group — contains ears, hair, face as layered siblings */
+/* Head group - contains ears, hair, face as layered siblings */
 .hav-head-group {
   width: 110px;
   height: 130px;
@@ -878,7 +878,7 @@ p { margin: 0; }
   border-radius: 50%;
 }
 
-/* Hair — single continuous shape, sits behind the face-ball */
+/* Hair - single continuous shape, sits behind the face-ball */
 .hav-hair-cap {
   position: absolute;
   top: -2px; left: -4px; right: -4px;
@@ -890,7 +890,7 @@ p { margin: 0; }
   z-index: 2;
   box-shadow: 0 8px 16px rgba(0,0,0,0.55);
 }
-/* No separate side flaps for male — single shape only */
+/* No separate side flaps for male - single shape only */
 .hav-hair-cap::before,
 .hav-hair-cap::after {
   content: none;
@@ -913,7 +913,7 @@ p { margin: 0; }
     inset  4px -8px 16px rgba(0,0,0,0.30);
 }
 
-/* Face sphere — Pixar-style warm skin, more vertical / less smushed */
+/* Face sphere - Pixar-style warm skin, more vertical / less smushed */
 .hav-face-ball {
   position: absolute;
   bottom: 0; left: 4px; right: 4px;
@@ -958,7 +958,7 @@ p { margin: 0; }
 .hav-ebrow-l { left: 13px;  transform: rotate(-7deg);  transform-origin: right center; }
 .hav-ebrow-r { right: 13px; transform: rotate(7deg);   transform-origin: left center; }
 
-/* Eye sockets — proportional, slightly smaller */
+/* Eye sockets - proportional, slightly smaller */
 .hav-eye-socket {
   position: absolute;
   width: 23px; height: 19px;
@@ -1001,7 +1001,7 @@ p { margin: 0; }
   top: 1px; right: 1.5px;
 }
 
-/* Nose — visible bridge with shadow + warm highlight */
+/* Nose - visible bridge with shadow + warm highlight */
 .hav-nose-btn {
   position: absolute;
   bottom: 36px;
@@ -1067,7 +1067,7 @@ p { margin: 0; }
 .hav-blush-l { left: 4px;  }
 .hav-blush-r { right: 4px; }
 
-/* Front bangs / forehead hair — sits in front of face-ball. Matches the
+/* Front bangs / forehead hair - sits in front of face-ball. Matches the
    top position, side widths, and top-corner curvature of .hav-hair-cap so
    there's no visible seam between the front and back hair shapes. */
 .hav-bangs {
@@ -1228,7 +1228,7 @@ p { margin: 0; }
   border-color: rgba(0,229,160,0.85);
   animation: speakingGlow 1.6s ease-in-out infinite;
 }
-/* PiP self-view — Pixar-style mini bust */
+/* PiP self-view - Pixar-style mini bust */
 .hav-pip-bg {
   position: absolute;
   inset: 0;
@@ -1317,7 +1317,7 @@ p { margin: 0; }
     inset 2px 2px 4px rgba(255,210,160,0.20);
 }
 
-/* Eyebrows — symmetric whole-pixel positioning */
+/* Eyebrows - symmetric whole-pixel positioning */
 .hav-pip-brow {
   position: absolute;
   width: 4px; height: 1px;
@@ -1328,7 +1328,7 @@ p { margin: 0; }
 .hav-pip-brow-l { left: 6px;  }
 .hav-pip-brow-r { right: 6px; }
 
-/* Eyes — small friendly dark dots, whole-pixel for even rendering */
+/* Eyes - small friendly dark dots, whole-pixel for even rendering */
 .hav-pip-eye {
   position: absolute;
   width: 4px; height: 4px;
@@ -1349,7 +1349,7 @@ p { margin: 0; }
 .hav-pip-eye-l { left: 6px; }
 .hav-pip-eye-r { right: 6px; }
 
-/* Nose — barely-there hint */
+/* Nose - barely-there hint */
 .hav-pip-nose {
   position: absolute;
   bottom: 8px;
@@ -1360,7 +1360,7 @@ p { margin: 0; }
   border-radius: 50%;
 }
 
-/* Mouth — subtle smile curve */
+/* Mouth - subtle smile curve */
 .hav-pip-mouth {
   position: absolute;
   bottom: 4.5px;
@@ -1596,7 +1596,7 @@ p { margin: 0; }
   padding: 6px 0;
 }
 
-/* Microphone icon — animates when the user is speaking */
+/* Microphone icon - animates when the user is speaking */
 .hav-mic {
   width: 30px;
   height: 30px;
@@ -1849,7 +1849,7 @@ p { margin: 0; }
   letter-spacing: 0.06em;
 }
 
-/* Scroll viewport for long lists — scrollbars hidden so users cannot
+/* Scroll viewport for long lists - scrollbars hidden so users cannot
    drag them and interrupt the auto-cycle. Programmatic scrollTop still
    works for any auto-scroll JS uses. */
 .ent-dash-scroll {
@@ -2585,7 +2585,7 @@ p { margin: 0; }
    PASSCODE GATE
    ============================================================ */
 .gate-card {
-  max-width: 560px;
+  max-width: 620px;
   margin: 0 auto;
   text-align: center;
   background: rgba(8, 16, 28, 0.55);
@@ -2597,6 +2597,91 @@ p { margin: 0; }
               0 0 0 1px rgba(27, 158, 255, 0.05) inset;
 }
 
+/* Primary discovery-call CTA card (highlighted, glowing) */
+.gate-cta-card {
+  position: relative;
+  margin: 0 auto 8px;
+  padding: 30px 28px 24px;
+  border-radius: 20px;
+  background:
+    radial-gradient(120% 120% at 50% 0%, rgba(27, 158, 255, 0.18), transparent 60%),
+    linear-gradient(180deg, rgba(27, 158, 255, 0.10), rgba(13, 111, 204, 0.06));
+  border: 1px solid rgba(27, 158, 255, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(27, 158, 255, 0.15) inset,
+    0 18px 50px rgba(13, 111, 204, 0.30),
+    0 0 60px rgba(27, 158, 255, 0.18);
+  overflow: hidden;
+}
+.gate-cta-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(800px circle at 50% -20%, rgba(27, 158, 255, 0.12), transparent 60%);
+  pointer-events: none;
+}
+
+.gate-cta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(0, 229, 160, 0.12);
+  border: 1px solid rgba(0, 229, 160, 0.35);
+  color: #00E5A0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.gate-cta-pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #00E5A0;
+  box-shadow: 0 0 10px rgba(0, 229, 160, 0.7);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.gate-cta-big {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 460px;
+  padding: 22px 32px;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  border-radius: 16px;
+  box-shadow:
+    0 12px 32px rgba(13, 111, 204, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.gate-cta-big:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 44px rgba(13, 111, 204, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+.gate-cta-big svg { flex-shrink: 0; }
+
+.gate-cta-sub {
+  margin: 16px auto 0;
+  font-size: 13px;
+  font-family: var(--font-mono);
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  max-width: 44ch;
+}
+
+/* Secondary passcode form */
 .gate-form {
   display: flex;
   gap: 10px;
@@ -2608,15 +2693,15 @@ p { margin: 0; }
 .gate-input {
   flex: 1 1 280px;
   min-width: 0;
-  padding: 16px 20px;
-  font-size: 16px;
+  padding: 14px 18px;
+  font-size: 15px;
   font-family: inherit;
   font-weight: 500;
   letter-spacing: 0.04em;
   color: var(--white);
   background: rgba(4, 8, 15, 0.7);
-  border: 1px solid rgba(27, 158, 255, 0.28);
-  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
   outline: none;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
   text-transform: uppercase;
@@ -2628,11 +2713,15 @@ p { margin: 0; }
   font-weight: 400;
 }
 .gate-input:focus {
-  border-color: rgba(27, 158, 255, 0.7);
-  box-shadow: 0 0 0 3px rgba(27, 158, 255, 0.18);
+  border-color: rgba(27, 158, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(27, 158, 255, 0.14);
 }
 
-.gate-submit { white-space: nowrap; }
+.gate-submit {
+  white-space: nowrap;
+  padding: 14px 24px;
+  font-size: 14px;
+}
 
 .gate-error {
   color: #FF7A8A;
@@ -2649,33 +2738,27 @@ p { margin: 0; }
   display: flex;
   align-items: center;
   gap: 14px;
-  margin: 32px auto 24px;
-  max-width: 320px;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 13px;
+  margin: 36px auto 22px;
+  max-width: 380px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
 }
 .gate-divider::before,
 .gate-divider::after {
   content: "";
   flex: 1;
   height: 1px;
-  background: rgba(27, 158, 255, 0.18);
-}
-
-.gate-discovery-text {
-  color: var(--text-secondary);
-  font-size: 15px;
-  line-height: 1.6;
-  margin: 0 auto 18px;
-  max-width: 42ch;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 @media (max-width: 520px) {
-  .gate-card { padding: 36px 22px; }
-  .gate-form { flex-direction: column; }
-  .gate-submit { width: 100%; }
+  .gate-card     { padding: 36px 22px; }
+  .gate-cta-card { padding: 26px 20px 22px; }
+  .gate-cta-big  { padding: 18px 22px; font-size: 16px; gap: 10px; }
+  .gate-form     { flex-direction: column; }
+  .gate-submit   { width: 100%; }
 }
 
 .onb-hero-row {
@@ -2797,7 +2880,7 @@ p { margin: 0; }
 }
 
 /* Each card occupies ~50% of the carousel width, leaving ~25% peek
-   of the previous and next cards on either side — about half of each
+   of the previous and next cards on either side - about half of each
    neighbor card is visible. */
 .industry-card {
   flex: 0 0 42%;
@@ -3063,7 +3146,7 @@ section.light .eyebrow { color: var(--accent-deep); }
   transform: translateY(-4px);
 }
 
-/* tilt card — JS handles transform */
+/* tilt card - JS handles transform */
 .tilt-card {
   transform-style: preserve-3d;
   transition: transform 0.15s ease, border-color 0.3s, box-shadow 0.3s;
@@ -4745,7 +4828,7 @@ footer .footer-brand-desc {
 }
 
 /* ============================================================
-   ONBOARDING WIZARD — animated 4-step flow on the Platform page
+   ONBOARDING WIZARD - animated 4-step flow on the Platform page
    ============================================================ */
 .onb {
   display: flex;
@@ -4911,7 +4994,7 @@ footer .footer-brand-desc {
   box-shadow: 0 0 8px rgba(27,158,255,0.50);
 }
 
-/* Pane visual (right) — common */
+/* Pane visual (right) - common */
 .onb-pane-visual {
   background: rgba(8,12,24,0.85);
   border: 1px solid rgba(27,158,255,0.18);
@@ -5115,7 +5198,7 @@ footer .footer-brand-desc {
   background-clip: text;
 }
 
-/* Blur out pricing — figures hidden in the public-facing demo */
+/* Blur out pricing - figures hidden in the public-facing demo */
 .onb-blur {
   filter: blur(6px);
   -webkit-filter: blur(6px);
@@ -5406,7 +5489,7 @@ footer .footer-brand-desc {
 }
 
 /* ============================================================
-   ENTERPRISE LMS — animated console for the Platform page
+   ENTERPRISE LMS - animated console for the Platform page
    ============================================================ */
 .lms-frame {
   position: relative;
@@ -5878,7 +5961,7 @@ footer .footer-brand-desc {
 }
 
 /* ============================================================
-   SIMULATIONS PAGE — animated step visuals
+   SIMULATIONS PAGE - animated step visuals
    ============================================================ */
 .sim-frame {
   position: relative;
