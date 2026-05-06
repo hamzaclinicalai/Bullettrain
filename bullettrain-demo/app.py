@@ -379,10 +379,11 @@ def unlock():
 
 @app.route("/catalog")
 def catalog():
-    gate = _gate_redirect(url_for("catalog"))
-    if gate:
-        return gate
-    return render_template("catalog.html", simulations=SIMULATIONS)
+    return render_template(
+        "catalog.html",
+        simulations=SIMULATIONS,
+        simulations_unlocked=_simulations_unlocked(),
+    )
 
 
 @app.route("/onboarding")
@@ -397,13 +398,14 @@ def simulations():
 
 @app.route("/simulations/<sim_id>")
 def simulation_detail(sim_id):
-    gate = _gate_redirect(url_for("simulation_detail", sim_id=sim_id))
-    if gate:
-        return gate
     simulation = SIMULATION_BY_ID.get(sim_id)
     if not simulation:
         abort(404)
-    return render_template("simulation_detail.html", simulation=simulation)
+    return render_template(
+        "simulation_detail.html",
+        simulation=simulation,
+        simulations_unlocked=_simulations_unlocked(),
+    )
 
 
 @app.route("/simulations/<sim_id>/<mode>")
