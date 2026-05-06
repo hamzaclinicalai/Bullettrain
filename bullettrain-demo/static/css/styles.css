@@ -832,7 +832,7 @@ p { margin: 0; }
 
 .industry-card-desc {
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   line-height: 1.55;
 }
 
