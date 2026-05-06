@@ -1292,25 +1292,125 @@
       <h2>From scenario to skill in a single session.</h2>
       <p>Three phases. One cohesive experience. No trainers required on repeat visits.</p>
     </div>
-    <div class="cap-grid">
-      <div class="cap reveal reveal-delay-1">
-        <div class="cap-rail"></div>
+
+    <div class="phase-flow" id="phase-flow">
+
+      <!-- Connector rail spanning the row -->
+      <div class="phase-flow-rail">
+        <div class="phase-flow-rail-fill" id="phase-rail-fill"></div>
+        <div class="phase-flow-orb" id="phase-orb"></div>
+      </div>
+
+      <!-- Phase 1 -->
+      <div class="phase-flow-card" data-phase="0">
+        <div class="phase-flow-marker"><span>01</span></div>
         <h3>Scenario-first library</h3>
         <p>Every simulation is built around a real franchise moment: a service recovery, an objection, a coaching conversation. Not a generic script.</p>
+        <div class="phase-flow-mini phase-flow-mini-tags">
+          <span class="pf-tag" style="--c:#4DCFFF">Customer Recovery</span>
+          <span class="pf-tag" style="--c:#00E5A0">Membership Close</span>
+          <span class="pf-tag" style="--c:#c4b5fd">Account Renewal</span>
+          <span class="pf-tag" style="--c:#FCD34D">Guest Recovery</span>
+          <span class="pf-tag" style="--c:#F472B6">Coaching Conversation</span>
+        </div>
       </div>
-      <div class="cap reveal reveal-delay-2">
-        <div class="cap-rail" style="background:var(--signal-green);"></div>
+
+      <!-- Phase 2 -->
+      <div class="phase-flow-card" data-phase="1">
+        <div class="phase-flow-marker"><span>02</span></div>
         <h3>Practice then Test</h3>
         <p>Trainees warm up in practice mode with light guidance, then unlock test mode for a blind run. Skills are locked in, not just demonstrated once.</p>
+        <div class="phase-flow-mini phase-flow-mini-modes">
+          <div class="pf-mode-row">
+            <span class="pf-mode pf-mode-practice"><span class="pf-dot"></span>Practice</span>
+            <span class="pf-mode-arrow">
+              <svg width="22" height="10" viewBox="0 0 22 10" fill="none"><path d="M1 5h18m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="pf-mode pf-mode-test"><span class="pf-dot"></span>Test</span>
+          </div>
+          <div class="pf-bubbles">
+            <span class="pf-bubble pf-bubble-avatar"></span>
+            <span class="pf-bubble pf-bubble-user"></span>
+            <span class="pf-bubble pf-bubble-avatar"></span>
+          </div>
+        </div>
       </div>
-      <div class="cap reveal reveal-delay-3">
-        <div class="cap-rail" style="background:var(--signal-purple);"></div>
+
+      <!-- Phase 3 -->
+      <div class="phase-flow-card" data-phase="2">
+        <div class="phase-flow-marker"><span>03</span></div>
         <h3>AI performance analysis</h3>
         <p>After every session the platform grades each objective, shows the trainee exactly where they succeeded or stumbled, and recommends their next rep.</p>
+        <div class="phase-flow-mini phase-flow-mini-scores">
+          <div class="pf-score-row">
+            <span class="pf-score-label">Listen</span>
+            <div class="pf-score-bar"><div class="pf-score-fill" data-w="92"></div></div>
+            <span class="pf-score-val">92</span>
+          </div>
+          <div class="pf-score-row">
+            <span class="pf-score-label">Reframe</span>
+            <div class="pf-score-bar"><div class="pf-score-fill" data-w="78"></div></div>
+            <span class="pf-score-val">78</span>
+          </div>
+          <div class="pf-score-row">
+            <span class="pf-score-label">Resolve</span>
+            <div class="pf-score-bar"><div class="pf-score-fill" data-w="88"></div></div>
+            <span class="pf-score-val">88</span>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 </section>
+
+<script>
+(function () {
+  const flow = document.getElementById('phase-flow');
+  if (!flow) return;
+  const cards = flow.querySelectorAll('.phase-flow-card');
+  const railFill = document.getElementById('phase-rail-fill');
+  const orb = document.getElementById('phase-orb');
+  if (!cards.length) return;
+
+  let phase = 0;
+  let started = false;
+
+  function activate(p) {
+    cards.forEach((c, n) => c.classList.toggle('is-active', n === p));
+    cards.forEach((c, n) => c.classList.toggle('is-past', n < p));
+    // Advance the rail fill to align with the active marker
+    const stops = ['16.66%', '50%', '83.33%'];
+    if (railFill) railFill.style.width = stops[p];
+    if (orb) orb.style.left = stops[p];
+    // Re-trigger the score-bar fills when phase 3 is active
+    if (p === 2) {
+      const fills = flow.querySelectorAll('.pf-score-fill');
+      fills.forEach((f, i) => {
+        f.style.width = '0%';
+        setTimeout(() => { f.style.width = (f.dataset.w || 0) + '%'; }, 150 + i * 180);
+      });
+    }
+  }
+
+  function tick() {
+    phase = (phase + 1) % cards.length;
+    activate(phase);
+  }
+
+  function maybeStart() {
+    if (started) return;
+    const r = flow.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      started = true;
+      activate(0);
+      setInterval(tick, 3400);
+    }
+  }
+  window.addEventListener('scroll', maybeStart, { passive: true });
+  maybeStart();
+})();
+</script>
 
 <!-- ================================================================
      DARK CTA
