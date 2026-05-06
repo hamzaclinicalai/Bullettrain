@@ -302,13 +302,26 @@
 (function () {
   function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+  function nearestScrollY(el) {
+    let n = el && el.parentElement;
+    while (n) {
+      const cs = getComputedStyle(n);
+      if (cs.overflowY === 'auto' || cs.overflowY === 'scroll') return n;
+      n = n.parentElement;
+    }
+    return null;
+  }
+
   function typewrite(el, text, speed) {
+    const scroller = nearestScrollY(el);
     return new Promise(resolve => {
       el.textContent = '';
       el.classList.add('is-typing');
+      if (scroller) scroller.scrollTop = scroller.scrollHeight;
       let i = 0;
       const t = setInterval(() => {
         el.textContent += text[i++];
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
         if (i >= text.length) { clearInterval(t); el.classList.remove('is-typing'); setTimeout(resolve, 180); }
       }, speed);
     });
@@ -422,6 +435,7 @@
       const b = document.createElement('div');
       b.className = 'sim-bubble sim-bubble-' + who;
       convo.appendChild(b);
+      convo.scrollTop = convo.scrollHeight;
       return typewrite(b, text, who === 'user' ? 10 : 12);
     }
     function addHint(text) {
@@ -429,6 +443,7 @@
       h.className = 'sim-hint';
       h.innerHTML = '<span class="sim-hint-icon">💡</span><span class="sim-hint-label">Hint:</span><span class="sim-hint-text"></span>';
       convo.appendChild(h);
+      convo.scrollTop = convo.scrollHeight;
       const tx = h.querySelector('.sim-hint-text');
       return typewrite(tx, text, 9);
     }
@@ -475,6 +490,7 @@
       const b = document.createElement('div');
       b.className = 'sim-bubble sim-bubble-' + who;
       convo.appendChild(b);
+      convo.scrollTop = convo.scrollHeight;
       return typewrite(b, text, who === 'user' ? 10 : 12);
     }
 

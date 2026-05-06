@@ -4631,6 +4631,8 @@ footer .footer-brand-desc {
   gap: 0;
   position: relative;
   overflow: hidden;
+  text-decoration: none;
+  color: inherit;
   transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
 }
 
