@@ -55,31 +55,68 @@
       <!-- Main card -->
       <div class="hav-card">
 
-        <!-- Top bar -->
-        <div class="hav-topbar">
-          <div class="hav-live">
-            <span class="hav-live-dot"></span>
-            Live Session
+        <!-- VIDEO CALL WINDOW -->
+        <div class="hav-video-window" id="hav-video-window">
+
+          <!-- Office background environment -->
+          <div class="hav-video-env"></div>
+
+          <!-- CSS Person: head + face + body -->
+          <div class="hav-person-wrap">
+            <div class="hav-head-container">
+              <div class="hav-hair"></div>
+              <div class="hav-face-skin">
+                <div class="hav-eyes">
+                  <div class="hav-eyeball"></div>
+                  <div class="hav-eyeball"></div>
+                </div>
+                <div class="hav-mouth" id="hav-mouth"></div>
+              </div>
+            </div>
+            <div class="hav-neck"></div>
+            <div class="hav-shoulders">
+              <div class="hav-collar"></div>
+            </div>
           </div>
+
+          <!-- macOS-style top chrome -->
+          <div class="hav-vc-topbar">
+            <div class="hav-vc-dots">
+              <i style="background:#FF5F57"></i>
+              <i style="background:#FEBC2E"></i>
+              <i style="background:#28C840"></i>
+            </div>
+            <span class="hav-vc-title">Training Session · AI Avatar</span>
+            <div class="hav-vc-bars"><i></i><i></i><i></i></div>
+          </div>
+
+          <!-- Name plate bottom-left -->
+          <div class="hav-vc-nameplate">
+            <span class="hav-vc-dot" id="hav-vc-dot"></span>
+            <span>AI Training Avatar</span>
+          </div>
+
+          <!-- PiP: trainee self-view bottom-right -->
+          <div class="hav-pip">
+            <div class="hav-pip-inner">
+              <div class="hav-pip-figure"></div>
+            </div>
+            <span class="hav-pip-lbl">You</span>
+          </div>
+
+        </div><!-- /.hav-video-window -->
+
+        <!-- Status bar: live + waveform + mode -->
+        <div class="hav-statusbar">
+          <div class="hav-live">
+            <span class="hav-live-dot"></span>Live
+          </div>
+          <div class="hav-waveform" id="hav-waveform"></div>
           <div class="hav-mode-badge" id="hav-mode-badge">Practice Mode</div>
         </div>
 
-        <!-- Avatar face + rings -->
-        <div class="hav-avatar-area">
-          <div class="hav-rings">
-            <div class="hav-ring hav-ring-1"></div>
-            <div class="hav-ring hav-ring-2"></div>
-            <div class="hav-ring hav-ring-3"></div>
-            <div class="hav-face">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style="color:rgba(27,158,255,0.55);" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            </div>
-          </div>
-          <!-- Waveform -->
-          <div class="hav-waveform" id="hav-waveform"></div>
-        </div>
-
         <!-- Industry label -->
-        <div style="text-align:center;margin-bottom:14px;">
+        <div style="text-align:center;margin-bottom:10px;">
           <span class="hav-industry-label" id="hav-industry-label">Quick Service · Customer Recovery</span>
         </div>
 
@@ -149,16 +186,33 @@
     }
   ];
 
-  let idx = 0;
-  let running = false;
+  let idx = 0, running = false, mouthTimer = null;
 
-  function typewrite(el, text, speed, cb) {
+  function startSpeaking() {
+    const win   = document.getElementById('hav-video-window');
+    const mouth = document.getElementById('hav-mouth');
+    const dot   = document.getElementById('hav-vc-dot');
+    if (win)   win.classList.add('is-speaking');
+    if (dot)   dot.classList.add('active');
+    if (mouth) mouthTimer = setInterval(() => mouth.classList.toggle('open'), 140);
+  }
+
+  function stopSpeaking() {
+    const win   = document.getElementById('hav-video-window');
+    const mouth = document.getElementById('hav-mouth');
+    const dot   = document.getElementById('hav-vc-dot');
+    if (win)   win.classList.remove('is-speaking');
+    if (dot)   dot.classList.remove('active');
+    if (mouth) { mouth.classList.remove('open'); clearInterval(mouthTimer); mouthTimer = null; }
+  }
+
+  function typewrite(el, text, speed, onDone) {
     el.textContent = '';
     el.style.opacity = '1';
     let i = 0;
     const t = setInterval(() => {
       el.textContent += text[i++];
-      if (i >= text.length) { clearInterval(t); if (cb) setTimeout(cb, 700); }
+      if (i >= text.length) { clearInterval(t); if (onDone) setTimeout(onDone, 600); }
     }, speed);
   }
 
@@ -178,7 +232,7 @@
   function runScenario() {
     if (running) return;
     running = true;
-    const s = scenarios[idx];
+    const s           = scenarios[idx];
     const avatarBubble = document.getElementById('hav-avatar-bubble');
     const userBubble   = document.getElementById('hav-user-bubble');
     const badge        = document.getElementById('hav-mode-badge');
@@ -187,51 +241,52 @@
     const val          = document.getElementById('hav-score-val');
     if (!avatarBubble) return;
 
-    // Reset
     avatarBubble.style.opacity = '0';
     userBubble.style.opacity   = '0';
     fill.style.transition = 'none';
     fill.style.width = '0%';
     val.textContent  = '—';
+    stopSpeaking();
 
-    // Update labels
-    label.textContent = s.industry;
-    badge.textContent = s.mode;
+    label.textContent       = s.industry;
+    badge.textContent       = s.mode;
     badge.style.background  = s.modeColor;
     badge.style.borderColor = s.modeBorder;
     badge.style.color       = s.modeText;
 
     setTimeout(() => {
-      typewrite(avatarBubble, s.avatar, 28, () => {
-        typewrite(userBubble, s.user, 22, () => {
-          fill.style.transition = 'width 1.2s ease';
-          animateScore(s.score);
-          setTimeout(() => {
-            running = false;
-            idx = (idx + 1) % scenarios.length;
-            runScenario();
-          }, 3800);
-        });
+      startSpeaking();
+      typewrite(avatarBubble, s.avatar, 30, () => {
+        stopSpeaking();
+        setTimeout(() => {
+          typewrite(userBubble, s.user, 24, () => {
+            fill.style.transition = 'width 1.2s ease';
+            animateScore(s.score);
+            setTimeout(() => {
+              running = false;
+              idx = (idx + 1) % scenarios.length;
+              runScenario();
+            }, 3800);
+          });
+        }, 400);
       });
-    }, 500);
+    }, 600);
   }
 
-  // Generate waveform bars
+  // Build waveform
   const wf = document.getElementById('hav-waveform');
   if (wf) {
-    const heights = [12,20,28,16,34,22,12,30,18,34,14,26,32,16,22,12,28,20,14,30,24,10,28,18];
-    heights.forEach((h, i) => {
+    [12,20,28,16,34,22,12,30,18,34,14,26,32,16,22,12,28,20,14,30,24,10,28,18].forEach((h, i) => {
       const b = document.createElement('div');
       b.className = 'hav-wave-bar';
       b.style.setProperty('--bar-h', h + 'px');
-      b.style.animationDelay  = (i * 0.055) + 's';
+      b.style.animationDelay    = (i * 0.055) + 's';
       b.style.animationDuration = (0.45 + (i % 5) * 0.12) + 's';
       wf.appendChild(b);
     });
   }
 
-  // Kick off after brief delay
-  setTimeout(runScenario, 1200);
+  setTimeout(runScenario, 1400);
 })();
 </script>
 

@@ -745,6 +745,294 @@ p { margin: 0; }
   66%      { transform: translateY(5px)  translateX(-3px); }
 }
 
+/* ── Video call window ─────────────────────────────────────── */
+.hav-video-window {
+  width: 100%;
+  height: 230px;
+  background: linear-gradient(155deg, #0C1A2E 0%, #071018 100%);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 14px;
+  border: 1.5px solid rgba(27,158,255,0.14);
+  transition: border-color 0.35s, box-shadow 0.35s;
+}
+.hav-video-window.is-speaking {
+  border-color: rgba(0,229,160,0.55);
+  box-shadow: 0 0 0 3px rgba(0,229,160,0.10), 0 0 20px rgba(0,229,160,0.06);
+}
+
+/* Office environment behind person */
+.hav-video-env {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 65% 55% at 85% 15%, rgba(255,235,200,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 60% at 10% 85%, rgba(0,0,0,0.45) 0%, transparent 55%);
+}
+.hav-video-env::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 28%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px, transparent 20px,
+    rgba(255,255,255,0.016) 20px, rgba(255,255,255,0.016) 21px
+  );
+}
+
+/* ── Person figure ──────────────────────────────────────────── */
+.hav-person-wrap {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hav-head-container {
+  width: 76px;
+  height: 96px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Hair */
+.hav-hair {
+  position: absolute;
+  top: 0; left: 3px; right: 3px;
+  height: 48px;
+  background: linear-gradient(170deg, #1a0e06 0%, #2d1b0e 100%);
+  border-radius: 50% 50% 12% 12%;
+  z-index: 2;
+}
+.hav-hair::before,
+.hav-hair::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  width: 11px;
+  height: 17px;
+  background: #2d1b0e;
+  border-radius: 0 0 6px 6px;
+}
+.hav-hair::before { left: -2px; }
+.hav-hair::after  { right: -2px; }
+
+/* Face skin */
+.hav-face-skin {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 74px;
+  background: linear-gradient(165deg, #D4A574 0%, #C28552 55%, #B07040 100%);
+  border-radius: 44% 44% 40% 40% / 40% 40% 46% 46%;
+  z-index: 1;
+  overflow: visible;
+}
+/* Eyebrows */
+.hav-face-skin::before {
+  content: '';
+  position: absolute;
+  top: 20px; left: 12px;
+  width: 14px; height: 3px;
+  background: #2d1b0e;
+  border-radius: 2px;
+  box-shadow: 26px 0 0 #2d1b0e;
+}
+
+/* Eyes */
+.hav-eyes {
+  position: absolute;
+  top: 28px; left: 0; right: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 13px;
+}
+.hav-eyeball {
+  width: 9px; height: 10px;
+  background: #1a0f08;
+  border-radius: 50%;
+  position: relative;
+}
+.hav-eyeball::after {
+  content: '';
+  width: 3px; height: 3px;
+  background: rgba(255,255,255,0.65);
+  border-radius: 50%;
+  position: absolute;
+  top: 1px; right: 1px;
+}
+
+/* Mouth */
+.hav-mouth {
+  position: absolute;
+  bottom: 13px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px; height: 5px;
+  background: #8B4513;
+  border-radius: 0 0 10px 10px;
+  transition: height 0.08s, width 0.08s, border-radius 0.08s, background 0.08s;
+}
+.hav-mouth.open {
+  height: 11px; width: 16px;
+  background: #5C2208;
+  border-radius: 3px 3px 9px 9px;
+}
+
+/* Neck */
+.hav-neck {
+  width: 24px; height: 13px;
+  background: #C28552;
+  flex-shrink: 0;
+  margin-top: -1px;
+}
+
+/* Shoulders / jacket */
+.hav-shoulders {
+  width: 140px; height: 68px;
+  background: linear-gradient(175deg, #1E3A5F 0%, #0F2140 100%);
+  border-radius: 50% 50% 0 0 / 22% 22% 0 0;
+  position: relative;
+  flex-shrink: 0;
+}
+/* White shirt collar */
+.hav-collar {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 30px; height: 18px;
+  background: #F0EDE8;
+  clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
+}
+
+/* ── macOS window chrome ────────────────────────────────────── */
+.hav-vc-topbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 30px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.60), transparent);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+  z-index: 10;
+}
+.hav-vc-dots {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.hav-vc-dots i {
+  display: block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.hav-vc-title {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.40);
+  letter-spacing: 0.06em;
+}
+.hav-vc-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 11px;
+}
+.hav-vc-bars i {
+  display: block;
+  width: 3px;
+  background: rgba(255,255,255,0.35);
+  border-radius: 1px;
+}
+.hav-vc-bars i:nth-child(1) { height: 4px; }
+.hav-vc-bars i:nth-child(2) { height: 7px; }
+.hav-vc-bars i:nth-child(3) { height: 11px; }
+
+/* Name plate */
+.hav-vc-nameplate {
+  position: absolute;
+  bottom: 9px; left: 9px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(8px);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.78);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 10;
+}
+.hav-vc-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  display: inline-block;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.hav-vc-dot.active {
+  background: var(--signal-green);
+  box-shadow: 0 0 7px rgba(0,229,160,0.9);
+  animation: pulse 0.9s ease-in-out infinite;
+}
+
+/* PiP self-view */
+.hav-pip {
+  position: absolute;
+  bottom: 9px; right: 9px;
+  z-index: 10;
+}
+.hav-pip-inner {
+  width: 66px; height: 50px;
+  background: linear-gradient(145deg, #0D1B2A, #071018);
+  border-radius: 8px;
+  border: 1.5px solid rgba(255,255,255,0.13);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+}
+.hav-pip-figure {
+  width: 34px; height: 42px;
+  background: linear-gradient(180deg, #1B3461 28%, #0D1F3C 100%);
+  border-radius: 50% 50% 0 0 / 28% 28% 0 0;
+  position: relative;
+}
+.hav-pip-figure::before {
+  content: '';
+  position: absolute;
+  top: -17px; left: 50%;
+  transform: translateX(-50%);
+  width: 20px; height: 22px;
+  background: linear-gradient(145deg, #D4A574, #B87040);
+  border-radius: 50%;
+}
+.hav-pip-lbl {
+  position: absolute;
+  bottom: 3px; right: 5px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(255,255,255,0.55);
+}
+
+/* ── Status bar below video ─────────────────────────────────── */
+.hav-statusbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 0 2px;
+}
+
 /* Responsive */
 @media (max-width: 960px) {
   .hav-hero-grid {
