@@ -7,7 +7,7 @@
 <!-- ================================================================
      HERO
      ================================================================ -->
-<section class="hero">
+<section class="hero" style="min-height:90vh;">
   <!-- Background layers -->
   <div class="hero-orbs">
     <div class="orb orb-1"></div>
@@ -23,26 +23,217 @@
     <div class="speed-line"></div>
   </div>
 
-  <div class="container hero-inner">
-    <span class="eyebrow on-dark">Interactive Avatar Powered Enterprise Training</span>
+  <div class="container hav-hero-grid">
 
-    <h1 class="gradient-text">
-      Train your team with real conversations.
-    </h1>
-
-    <p class="hero-sub">
-      BulletTrain puts your people inside real custom scenarios built to simulate your business processes. They practice, get scored, and improve. No trainer required.
-    </p>
-
-    <div class="hero-cta">
-      <a href="{{ url_for('simulations') }}" class="btn btn-primary btn-lg">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        Explore Simulations
-      </a>
-      <a href="{{ url_for('platform') }}" class="btn btn-ghost on-dark btn-lg">Platform Overview</a>
+    <!-- LEFT: Text -->
+    <div class="hav-text-col">
+      <span class="eyebrow on-dark">Interactive Avatar Powered Enterprise Training</span>
+      <h1 class="gradient-text" style="margin-top:18px;">
+        Train your team with real conversations.
+      </h1>
+      <p class="hero-sub">
+        BulletTrain puts your people inside real custom scenarios built to simulate your business processes. They practice, get scored, and improve. No trainer required.
+      </p>
+      <div class="hero-cta" style="justify-content:flex-start;">
+        <a href="{{ url_for('simulations') }}" class="btn btn-primary btn-lg">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Explore Simulations
+        </a>
+        <a href="{{ url_for('platform') }}" class="btn btn-ghost on-dark btn-lg">Platform Overview</a>
+      </div>
     </div>
-  </div>
+
+    <!-- RIGHT: Live avatar animation -->
+    <div class="hav-stage">
+
+      <!-- Floating skill tags -->
+      <div class="hav-tag hav-tag-1">Active Listening</div>
+      <div class="hav-tag hav-tag-2">Objection Handling</div>
+      <div class="hav-tag hav-tag-3">Empathy</div>
+      <div class="hav-tag hav-tag-4">Resolution</div>
+
+      <!-- Main card -->
+      <div class="hav-card">
+
+        <!-- Top bar -->
+        <div class="hav-topbar">
+          <div class="hav-live">
+            <span class="hav-live-dot"></span>
+            Live Session
+          </div>
+          <div class="hav-mode-badge" id="hav-mode-badge">Practice Mode</div>
+        </div>
+
+        <!-- Avatar face + rings -->
+        <div class="hav-avatar-area">
+          <div class="hav-rings">
+            <div class="hav-ring hav-ring-1"></div>
+            <div class="hav-ring hav-ring-2"></div>
+            <div class="hav-ring hav-ring-3"></div>
+            <div class="hav-face">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style="color:rgba(27,158,255,0.55);" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            </div>
+          </div>
+          <!-- Waveform -->
+          <div class="hav-waveform" id="hav-waveform"></div>
+        </div>
+
+        <!-- Industry label -->
+        <div style="text-align:center;margin-bottom:14px;">
+          <span class="hav-industry-label" id="hav-industry-label">Quick Service · Customer Recovery</span>
+        </div>
+
+        <!-- Conversation bubbles -->
+        <div class="hav-convo">
+          <div class="hav-bubble hav-avatar-bubble" id="hav-avatar-bubble"></div>
+          <div class="hav-bubble hav-user-bubble" id="hav-user-bubble"></div>
+        </div>
+
+        <!-- Score row -->
+        <div class="hav-score-row">
+          <span class="hav-score-label">Session Score</span>
+          <div class="hav-score-bar-wrap">
+            <div class="hav-score-bar-fill" id="hav-score-fill"></div>
+          </div>
+          <span class="hav-score-val" id="hav-score-val">—</span>
+        </div>
+
+      </div><!-- /.hav-card -->
+    </div><!-- /.hav-stage -->
+
+  </div><!-- /.hav-hero-grid -->
 </section>
+
+<script>
+(function () {
+  const scenarios = [
+    {
+      industry: "Quick Service · Customer Recovery",
+      mode: "Practice Mode",
+      modeColor: "rgba(27,158,255,0.18)",
+      modeBorder: "rgba(27,158,255,0.30)",
+      modeText: "#4DCFFF",
+      avatar: "I ordered the grilled chicken wrap but got a burger. Again. This is the third time this month.",
+      user: "I'm so sorry about that — let me fix this right away. Can I get your name?",
+      score: 87
+    },
+    {
+      industry: "Fitness · Membership Close",
+      mode: "Test Mode",
+      modeColor: "rgba(139,92,246,0.15)",
+      modeBorder: "rgba(139,92,246,0.30)",
+      modeText: "#c4b5fd",
+      avatar: "Honestly, $49 a month sounds like a lot for something I might not even use consistently.",
+      user: "That's fair — most members see measurable results in the first 30 days. Let me show you our guarantee.",
+      score: 91
+    },
+    {
+      industry: "Technology · Account Renewal",
+      mode: "Practice Mode",
+      modeColor: "rgba(0,229,160,0.12)",
+      modeBorder: "rgba(0,229,160,0.25)",
+      modeText: "#00E5A0",
+      avatar: "Our team hasn't fully adopted the platform yet. I'm not sure renewal makes sense right now.",
+      user: "Completely fair to raise. Can we pull up your adoption data together and find where we can add value?",
+      score: 89
+    },
+    {
+      industry: "Hospitality · Guest Recovery",
+      mode: "Test Mode",
+      modeColor: "rgba(139,92,246,0.15)",
+      modeBorder: "rgba(139,92,246,0.30)",
+      modeText: "#c4b5fd",
+      avatar: "I specifically requested a high-floor room away from the elevator. This is not what I booked.",
+      user: "I sincerely apologize. Let me check availability right now and make this right for you.",
+      score: 93
+    }
+  ];
+
+  let idx = 0;
+  let running = false;
+
+  function typewrite(el, text, speed, cb) {
+    el.textContent = '';
+    el.style.opacity = '1';
+    let i = 0;
+    const t = setInterval(() => {
+      el.textContent += text[i++];
+      if (i >= text.length) { clearInterval(t); if (cb) setTimeout(cb, 700); }
+    }, speed);
+  }
+
+  function animateScore(pct) {
+    const fill = document.getElementById('hav-score-fill');
+    const val  = document.getElementById('hav-score-val');
+    if (!fill) return;
+    fill.style.width = pct + '%';
+    let n = 0, step = pct / 40;
+    const t = setInterval(() => {
+      n = Math.min(n + step, pct);
+      val.textContent = Math.round(n) + '%';
+      if (n >= pct) clearInterval(t);
+    }, 25);
+  }
+
+  function runScenario() {
+    if (running) return;
+    running = true;
+    const s = scenarios[idx];
+    const avatarBubble = document.getElementById('hav-avatar-bubble');
+    const userBubble   = document.getElementById('hav-user-bubble');
+    const badge        = document.getElementById('hav-mode-badge');
+    const label        = document.getElementById('hav-industry-label');
+    const fill         = document.getElementById('hav-score-fill');
+    const val          = document.getElementById('hav-score-val');
+    if (!avatarBubble) return;
+
+    // Reset
+    avatarBubble.style.opacity = '0';
+    userBubble.style.opacity   = '0';
+    fill.style.transition = 'none';
+    fill.style.width = '0%';
+    val.textContent  = '—';
+
+    // Update labels
+    label.textContent = s.industry;
+    badge.textContent = s.mode;
+    badge.style.background  = s.modeColor;
+    badge.style.borderColor = s.modeBorder;
+    badge.style.color       = s.modeText;
+
+    setTimeout(() => {
+      typewrite(avatarBubble, s.avatar, 28, () => {
+        typewrite(userBubble, s.user, 22, () => {
+          fill.style.transition = 'width 1.2s ease';
+          animateScore(s.score);
+          setTimeout(() => {
+            running = false;
+            idx = (idx + 1) % scenarios.length;
+            runScenario();
+          }, 3800);
+        });
+      });
+    }, 500);
+  }
+
+  // Generate waveform bars
+  const wf = document.getElementById('hav-waveform');
+  if (wf) {
+    const heights = [12,20,28,16,34,22,12,30,18,34,14,26,32,16,22,12,28,20,14,30,24,10,28,18];
+    heights.forEach((h, i) => {
+      const b = document.createElement('div');
+      b.className = 'hav-wave-bar';
+      b.style.setProperty('--bar-h', h + 'px');
+      b.style.animationDelay  = (i * 0.055) + 's';
+      b.style.animationDuration = (0.45 + (i % 5) * 0.12) + 's';
+      wf.appendChild(b);
+    });
+  }
+
+  // Kick off after brief delay
+  setTimeout(runScenario, 1200);
+})();
+</script>
 
 <!-- ================================================================
      INDUSTRIES

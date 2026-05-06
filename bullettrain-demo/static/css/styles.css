@@ -475,6 +475,288 @@ p { margin: 0; }
 .btn-sm { padding: 8px 16px; font-size: 13px; }
 
 /* ============================================================
+   HOMEPAGE AVATAR HERO
+   ============================================================ */
+
+.hav-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.hav-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Stage + card */
+.hav-stage {
+  position: relative;
+  padding: 24px 28px;
+}
+
+.hav-card {
+  background: rgba(8,12,24,0.85);
+  border: 1px solid rgba(27,158,255,0.18);
+  border-radius: 24px;
+  padding: 24px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+  animation: floatPanel 6s ease-in-out infinite;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(27,158,255,0.07), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.hav-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at 50% 0%, rgba(27,158,255,0.07), transparent 60%);
+  pointer-events: none;
+}
+
+/* Top bar */
+.hav-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.hav-live {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--signal-green);
+  letter-spacing: 0.06em;
+}
+
+.hav-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--signal-green);
+  box-shadow: 0 0 8px rgba(0,229,160,0.9);
+  animation: pulse 1.4s ease-in-out infinite;
+  display: inline-block;
+}
+
+.hav-mode-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  border-radius: 20px;
+  padding: 3px 12px;
+  border: 1px solid rgba(27,158,255,0.30);
+  background: rgba(27,158,255,0.18);
+  color: #4DCFFF;
+  transition: background 0.5s, border-color 0.5s, color 0.5s;
+}
+
+/* Avatar rings */
+.hav-avatar-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.hav-rings {
+  position: relative;
+  width: 148px;
+  height: 148px;
+  margin-bottom: 16px;
+}
+
+.hav-ring {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.hav-ring-1 {
+  inset: 0;
+  border: 2px solid transparent;
+  border-top-color: rgba(27,158,255,0.7);
+  border-bottom-color: rgba(27,158,255,0.2);
+  animation: spin 3s linear infinite;
+}
+
+.hav-ring-2 {
+  inset: 12px;
+  border: 2px solid transparent;
+  border-left-color: rgba(0,229,160,0.6);
+  border-right-color: rgba(0,229,160,0.15);
+  animation: spin 5s linear infinite reverse;
+}
+
+.hav-ring-3 {
+  inset: 26px;
+  border: 2px solid transparent;
+  border-top-color: rgba(139,92,246,0.55);
+  border-bottom-color: rgba(139,92,246,0.1);
+  animation: spin 8s linear infinite;
+}
+
+.hav-face {
+  position: absolute;
+  inset: 40px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #1a2744, #0d1830);
+  border: 1px solid rgba(27,158,255,0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 24px rgba(27,158,255,0.22), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* Waveform */
+.hav-waveform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 36px;
+}
+
+.hav-wave-bar {
+  width: 3px;
+  height: var(--bar-h, 16px);
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-soft));
+  animation: wave 0.6s ease-in-out infinite alternate;
+  opacity: 0.75;
+}
+
+/* Industry label */
+.hav-industry-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  transition: color 0.4s;
+}
+
+/* Conversation */
+.hav-convo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+  min-height: 90px;
+}
+
+.hav-bubble {
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 12px;
+  line-height: 1.55;
+  opacity: 0;
+  transition: opacity 0.3s;
+  max-width: 88%;
+}
+
+.hav-avatar-bubble {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  color: var(--text-secondary);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.hav-user-bubble {
+  background: rgba(27,158,255,0.12);
+  border: 1px solid rgba(27,158,255,0.24);
+  color: var(--text-primary);
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+/* Score row */
+.hav-score-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hav-score-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  white-space: nowrap;
+}
+
+.hav-score-bar-wrap {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.hav-score-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+  width: 0%;
+}
+
+.hav-score-val {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-soft);
+  min-width: 32px;
+  text-align: right;
+}
+
+/* Floating skill tags */
+.hav-tag {
+  position: absolute;
+  background: rgba(8,12,24,0.92);
+  border: 1px solid rgba(27,158,255,0.22);
+  border-radius: 20px;
+  padding: 5px 13px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--accent-soft);
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hav-tag-1 { top: 4px;   left: 10px;  animation: floatTag 5.0s ease-in-out infinite 0.0s; }
+.hav-tag-2 { top: 18px;  right: 0px;  animation: floatTag 6.2s ease-in-out infinite 1.1s; }
+.hav-tag-3 { bottom: 54px; right: -8px; animation: floatTag 5.8s ease-in-out infinite 0.6s; }
+.hav-tag-4 { bottom: 12px; left: 6px;  animation: floatTag 6.6s ease-in-out infinite 1.8s; }
+
+@keyframes floatTag {
+  0%,100% { transform: translateY(0)   translateX(0);   }
+  33%      { transform: translateY(-7px) translateX(4px);  }
+  66%      { transform: translateY(5px)  translateX(-3px); }
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .hav-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .hav-text-col { align-items: center; text-align: center; }
+  .hav-text-col .hero-cta { justify-content: center; }
+  .hav-stage { max-width: 440px; margin: 0 auto; }
+}
+
+/* ============================================================
    HERO SECTION
    ============================================================ */
 .hero {
