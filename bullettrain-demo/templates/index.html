@@ -109,23 +109,12 @@
             <div class="hav-pip-inner">
               <div class="hav-pip-bg"></div>
               <div class="hav-pip-torso"></div>
-              <div class="hav-pip-head"></div>
+              <div class="hav-pip-head">
+                <div class="hav-pip-eye hav-pip-eye-l"></div>
+                <div class="hav-pip-eye hav-pip-eye-r"></div>
+              </div>
             </div>
             <span class="hav-pip-lbl">You</span>
-          </div>
-
-          <!-- Dashboard popup (between scenarios) -->
-          <div class="hav-dash-popup" id="hav-dash-popup">
-            <div class="hav-dash-header">
-              <div class="hav-dash-check">✓</div>
-              <div class="hav-dash-meta">
-                <div class="hav-dash-title" id="hav-dash-title">Session Complete</div>
-                <div class="hav-dash-sub" id="hav-dash-sub">—</div>
-              </div>
-              <div class="hav-dash-score-big" id="hav-dash-score-big">—%</div>
-            </div>
-            <div class="hav-dash-rubric" id="hav-dash-rubric"></div>
-            <div class="hav-dash-tip" id="hav-dash-tip"></div>
           </div>
 
         </div><!-- /.hav-video-window -->
@@ -148,6 +137,27 @@
           <div class="hav-bubble hav-user-bubble" id="hav-user-bubble"></div>
         </div>
 
+        <!-- Full-card debrief popup -->
+        <div class="hav-dash-popup" id="hav-dash-popup">
+          <div class="hav-dash-top">
+            <div class="hav-dash-eyebrow">Session Debrief</div>
+            <div class="hav-dash-headline" id="hav-dash-sub">—</div>
+          </div>
+
+          <div class="hav-dash-overall">
+            <div class="hav-dash-overall-score">
+              <span class="hav-dash-overall-num" id="hav-dash-score-big">0</span>
+              <span class="hav-dash-overall-pct">%</span>
+            </div>
+            <div class="hav-dash-overall-meta">
+              <div class="hav-dash-overall-grade" id="hav-dash-grade">—</div>
+              <div class="hav-dash-overall-label">Overall Score</div>
+            </div>
+          </div>
+
+          <div class="hav-dash-categories" id="hav-dash-rubric"></div>
+        </div>
+
       </div><!-- /.hav-card -->
     </div><!-- /.hav-stage -->
 
@@ -167,11 +177,10 @@
       user: "I'm so sorry about that — let me fix this right away. Can I get your name?",
       score: 87,
       rubric: [
-        { label: "Acknowledged issue without blame", pct: 92 },
-        { label: "Offered a specific remedy", pct: 78 },
-        { label: "Maintained brand tone", pct: 88 }
-      ],
-      tip: "Next: offer a concrete timeline for the fix before asking for their name."
+        { label: "Acknowledged the issue without blame", pct: 92, feedback: "Strong opening — you took ownership immediately instead of deflecting. Try mirroring their frustration verbally before transitioning to the fix to deepen rapport." },
+        { label: "Offered a specific remedy", pct: 78, feedback: "Promised a fix but stopped short of a concrete timeline. Next time, name the action and the wait window (\"hot off the line in two minutes\")." },
+        { label: "Maintained brand tone", pct: 88, feedback: "Apology landed sincerely without sounding scripted. A small empathy phrase (\"that's frustrating\") would make it feel more human." }
+      ]
     },
     {
       industry: "Fitness · Membership Close",
@@ -183,11 +192,10 @@
       user: "That's fair — most members see measurable results in the first 30 days. Let me show you our guarantee.",
       score: 91,
       rubric: [
-        { label: "Validated the objection", pct: 95 },
-        { label: "Reframed value proposition", pct: 88 },
-        { label: "Moved toward a close", pct: 82 }
-      ],
-      tip: "Strong close. Try a discovery question to personalize the guarantee offer."
+        { label: "Validated the objection", pct: 95, feedback: "You acknowledged the cost concern without minimizing it — a strong trust move. Keep leading with validation in pricing pushback." },
+        { label: "Reframed value proposition", pct: 88, feedback: "Pivoted to the 30-day result framing, which works. Try anchoring on a specific personal goal first to make the value feel tailored." },
+        { label: "Moved toward a close", pct: 82, feedback: "Mention of the guarantee opens the door, but doesn't ask for the next step. Follow with a soft trial close (\"want me to walk you through it?\")." }
+      ]
     },
     {
       industry: "Technology · Account Renewal",
@@ -199,11 +207,10 @@
       user: "Completely fair to raise. Can we pull up your adoption data together and find where we can add value?",
       score: 89,
       rubric: [
-        { label: "Acknowledged the adoption gap", pct: 90 },
-        { label: "Proposed a data-driven next step", pct: 94 },
-        { label: "Maintained consultative tone", pct: 80 }
-      ],
-      tip: "Excellent. Tie the next step to a specific date to sharpen urgency."
+        { label: "Acknowledged the adoption gap", pct: 90, feedback: "You met them where they are — refusing to deny the friction earns credibility. Strong consultative posture." },
+        { label: "Proposed a data-driven next step", pct: 94, feedback: "Inviting them to look at their own data shifts the conversation from defense to discovery. Excellent move." },
+        { label: "Maintained consultative tone", pct: 80, feedback: "The tone was steady, but ended slightly open. Tie the data review to a specific date to sharpen urgency." }
+      ]
     },
     {
       industry: "Hospitality · Guest Recovery",
@@ -215,13 +222,24 @@
       user: "I sincerely apologize. Let me check availability right now and make this right for you.",
       score: 93,
       rubric: [
-        { label: "Immediate sincere apology", pct: 98 },
-        { label: "Took ownership of resolution", pct: 92 },
-        { label: "Set a clear next-action expectation", pct: 85 }
-      ],
-      tip: "Near-perfect recovery. A small goodwill gesture would push this to a 10."
+        { label: "Immediate sincere apology", pct: 98, feedback: "Apology was unqualified and direct — exactly what an upset guest needs in the first 5 seconds. Textbook." },
+        { label: "Took ownership of resolution", pct: 92, feedback: "Said \"let me\" rather than \"I'll see what we can do.\" That word choice signals real commitment." },
+        { label: "Set a clear next-action expectation", pct: 85, feedback: "Action was clear but timeline was implicit. Add \"give me 60 seconds\" to set a measurable expectation." }
+      ]
     }
   ];
+
+  function letterGrade(pct) {
+    if (pct >= 93) return 'A';
+    if (pct >= 90) return 'A-';
+    if (pct >= 87) return 'B+';
+    if (pct >= 83) return 'B';
+    if (pct >= 80) return 'B-';
+    if (pct >= 77) return 'C+';
+    if (pct >= 73) return 'C';
+    if (pct >= 70) return 'C-';
+    return 'D';
+  }
 
   let idx = 0, running = false, mouthTimer = null;
 
@@ -255,36 +273,48 @@
 
   function showDashboard(s) {
     const popup    = document.getElementById('hav-dash-popup');
-    const title    = document.getElementById('hav-dash-title');
     const sub      = document.getElementById('hav-dash-sub');
     const scoreBig = document.getElementById('hav-dash-score-big');
+    const grade    = document.getElementById('hav-dash-grade');
     const rubric   = document.getElementById('hav-dash-rubric');
-    const tip      = document.getElementById('hav-dash-tip');
     if (!popup) return;
 
-    title.textContent    = 'Session Complete';
-    sub.textContent      = s.industry;
-    scoreBig.textContent = s.score + '%';
-    tip.textContent      = s.tip || '';
+    sub.textContent   = s.industry;
+    grade.textContent = letterGrade(s.score);
 
     rubric.innerHTML = '';
     s.rubric.forEach(row => {
       const d = document.createElement('div');
-      d.className = 'hav-dash-row';
+      d.className = 'hav-dash-cat';
       d.innerHTML =
-        '<div class="hav-dash-row-label">' + row.label + '</div>' +
-        '<div class="hav-dash-row-bar-wrap"><div class="hav-dash-row-bar" style="width:0%"></div></div>';
+        '<div class="hav-dash-cat-head">' +
+          '<span class="hav-dash-cat-label">' + row.label + '</span>' +
+          '<span class="hav-dash-cat-score">' + row.pct + ' · ' + letterGrade(row.pct) + '</span>' +
+        '</div>' +
+        '<div class="hav-dash-cat-bar-wrap"><div class="hav-dash-cat-bar" style="width:0%"></div></div>' +
+        '<div class="hav-dash-cat-feedback">' + row.feedback + '</div>';
       rubric.appendChild(d);
     });
 
     popup.classList.add('visible');
 
+    // Animate the overall score counter
+    let n = 0;
+    scoreBig.textContent = '0';
+    const target = s.score;
+    const counter = setInterval(() => {
+      n = Math.min(n + Math.max(1, Math.floor(target / 30)), target);
+      scoreBig.textContent = n;
+      if (n >= target) clearInterval(counter);
+    }, 28);
+
+    // Animate each category bar
     setTimeout(() => {
-      const bars = rubric.querySelectorAll('.hav-dash-row-bar');
+      const bars = rubric.querySelectorAll('.hav-dash-cat-bar');
       bars.forEach((bar, i) => {
-        setTimeout(() => { bar.style.width = s.rubric[i].pct + '%'; }, i * 200);
+        setTimeout(() => { bar.style.width = s.rubric[i].pct + '%'; }, i * 220);
       });
-    }, 100);
+    }, 350);
   }
 
   function hideDashboard() {
@@ -326,8 +356,8 @@
                 running = false;
                 idx = (idx + 1) % scenarios.length;
                 runScenario();
-              }, 500);
-            }, 3200);
+              }, 600);
+            }, 6500);
           });
         }, 400);
       });

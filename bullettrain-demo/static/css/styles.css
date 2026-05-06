@@ -152,6 +152,38 @@ p { margin: 0; }
   to   { opacity:1; transform: translateY(0); }
 }
 
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.32); }
+  50%      { transform: scaleY(1.05); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1);   opacity: 1;   }
+  50%      { transform: scale(0.78); opacity: 0.55; }
+}
+
+@keyframes dashRise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes speakingGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 3px rgba(0,229,160,0.18),
+      0 0 22px rgba(0,229,160,0.40),
+      0 0 50px rgba(0,229,160,0.22),
+      inset 0 0 30px rgba(0,229,160,0.06);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(0,229,160,0.30),
+      0 0 32px rgba(0,229,160,0.65),
+      0 0 70px rgba(0,229,160,0.40),
+      inset 0 0 38px rgba(0,229,160,0.12);
+  }
+}
+
 /* ============================================================
    SCROLL REVEAL
    ============================================================ */
@@ -622,16 +654,21 @@ p { margin: 0; }
   align-items: center;
   justify-content: center;
   gap: 3px;
-  height: 36px;
+  height: 32px;
 }
 
 .hav-wave-bar {
   width: 3px;
   height: var(--bar-h, 16px);
   border-radius: 2px;
-  background: linear-gradient(180deg, var(--accent), var(--accent-soft));
-  animation: wave 0.6s ease-in-out infinite alternate;
-  opacity: 0.75;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-soft) 50%, var(--signal-green) 100%);
+  animation-name: wave;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+  transform-origin: 50% 50%;
+  opacity: 0.85;
+  box-shadow: 0 0 6px rgba(27,158,255,0.45);
 }
 
 /* Industry label */
@@ -748,7 +785,7 @@ p { margin: 0; }
 /* ── Video call window ─────────────────────────────────────── */
 .hav-video-window {
   width: 100%;
-  height: 230px;
+  height: 290px;
   background: linear-gradient(155deg, #0C1A2E 0%, #071018 100%);
   border-radius: 16px;
   position: relative;
@@ -758,8 +795,8 @@ p { margin: 0; }
   transition: border-color 0.35s, box-shadow 0.35s;
 }
 .hav-video-window.is-speaking {
-  border-color: rgba(0,229,160,0.55);
-  box-shadow: 0 0 0 3px rgba(0,229,160,0.10), 0 0 20px rgba(0,229,160,0.06);
+  border-color: rgba(0,229,160,0.85);
+  animation: speakingGlow 1.6s ease-in-out infinite;
 }
 
 /* Office environment behind person */
@@ -785,7 +822,7 @@ p { margin: 0; }
 /* ── Pixar-style person figure ──────────────────────────────── */
 .hav-person-wrap {
   position: absolute;
-  bottom: 8px;
+  bottom: -2px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -796,8 +833,8 @@ p { margin: 0; }
 
 /* Head group — contains ears, hair, face as layered siblings */
 .hav-head-group {
-  width: 92px;
-  height: 102px;
+  width: 110px;
+  height: 130px;
   position: relative;
   flex-shrink: 0;
 }
@@ -805,102 +842,126 @@ p { margin: 0; }
 /* Ears */
 .hav-ear {
   position: absolute;
-  width: 17px; height: 22px;
+  width: 17px; height: 24px;
   background: linear-gradient(160deg, #E8A870 0%, #C97A48 100%);
-  border-radius: 50%;
-  top: 44px;
+  border-radius: 60% 60% 50% 50% / 55% 55% 45% 45%;
+  top: 64px;
   z-index: 1;
-  box-shadow: inset 2px 0 4px rgba(0,0,0,0.18);
+  box-shadow: inset 2px 0 4px rgba(0,0,0,0.20), 0 2px 4px rgba(0,0,0,0.30);
 }
-.hav-ear-l { left: -6px; }
-.hav-ear-r { right: -6px; }
+.hav-ear-l { left: -5px; }
+.hav-ear-r { right: -5px; }
+/* Inner ear */
+.hav-ear::after {
+  content: '';
+  position: absolute;
+  inset: 5px 4px 5px 4px;
+  background: rgba(0,0,0,0.14);
+  border-radius: 50%;
+}
 
-/* Hair cap — sits above face-ball, higher z-index */
+/* Hair cap — taller, more voluminous, with proper hairline */
 .hav-hair-cap {
   position: absolute;
-  top: 0; left: 1px; right: 1px;
-  height: 44px;
-  background: linear-gradient(170deg, #1A0E05 0%, #2C1808 55%, #1A0E05 100%);
-  border-radius: 54% 54% 20% 20% / 60% 60% 18% 18%;
+  top: 0; left: -2px; right: -2px;
+  height: 58px;
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 100%, rgba(255,255,255,0.04) 0%, transparent 60%),
+    linear-gradient(170deg, #2A1808 0%, #0E0703 50%, #2A1808 100%);
+  border-radius: 60% 60% 28% 28% / 78% 78% 22% 22%;
   z-index: 3;
   box-shadow:
-    -3px 4px 0 rgba(0,0,0,0.35),
-     3px 4px 0 rgba(0,0,0,0.25),
-     0 6px 12px rgba(0,0,0,0.50);
+    -3px 5px 0 rgba(0,0,0,0.40),
+     3px 5px 0 rgba(0,0,0,0.30),
+     0 8px 16px rgba(0,0,0,0.55),
+    inset 0 -3px 6px rgba(0,0,0,0.50);
 }
-/* Side hair tufts */
+/* Hair side flaps that come down past the temples */
 .hav-hair-cap::before,
 .hav-hair-cap::after {
   content: '';
   position: absolute;
-  bottom: -6px;
-  width: 10px; height: 12px;
-  background: #1A0E05;
-  border-radius: 0 0 5px 5px;
+  bottom: -10px;
+  width: 12px; height: 18px;
+  background: linear-gradient(180deg, #1A0E05, #0E0703);
+  border-radius: 50% 50% 40% 40% / 30% 30% 70% 70%;
 }
 .hav-hair-cap::before { left: 2px; }
 .hav-hair-cap::after  { right: 2px; }
 
-/* Face sphere — Pixar-style warm skin with 3-D radial shading */
+/* Face sphere — Pixar-style warm skin, more vertical / less smushed */
 .hav-face-ball {
   position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 96px;
+  bottom: 0; left: 4px; right: 4px;
+  height: 116px;
   background: radial-gradient(
-    ellipse 58% 55% at 40% 34%,
-    #F2C898 0%,
-    #E0A466 32%,
-    #C97A42 62%,
-    #A85E28 100%
+    ellipse 60% 58% at 40% 32%,
+    #F4CC9A 0%,
+    #E2A66A 28%,
+    #CA7E46 58%,
+    #A65A26 100%
   );
-  border-radius: 46% 46% 43% 43% / 44% 44% 48% 48%;
+  border-radius: 44% 44% 46% 46% / 46% 46% 50% 50%;
   z-index: 2;
   overflow: hidden;
   box-shadow:
-    inset -6px -4px 14px rgba(0,0,0,0.22),
-    inset  4px 6px 10px rgba(255,200,140,0.25);
+    inset -8px -6px 18px rgba(0,0,0,0.26),
+    inset  6px 8px 14px rgba(255,206,150,0.28);
+}
+
+/* Subtle chin shadow inside face-ball */
+.hav-face-ball::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 18px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.18) 0%, transparent 70%);
+  border-radius: 50%;
 }
 
 /* Eyebrows */
 .hav-eyebrow {
   position: absolute;
-  width: 24px; height: 4px;
-  background: #1C0E04;
-  border-radius: 3px 3px 2px 2px;
-  top: 40px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.40);
+  width: 22px; height: 4px;
+  background: linear-gradient(180deg, #2A1808 0%, #1C0E04 100%);
+  border-radius: 4px 4px 2px 2px;
+  top: 53px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.45);
 }
-.hav-ebrow-l { left: 10px;  transform: rotate(-6deg);  transform-origin: right center; }
-.hav-ebrow-r { right: 10px; transform: rotate(6deg);   transform-origin: left center; }
+.hav-ebrow-l { left: 13px;  transform: rotate(-7deg);  transform-origin: right center; }
+.hav-ebrow-r { right: 13px; transform: rotate(7deg);   transform-origin: left center; }
 
-/* Eye sockets — large expressive whites */
+/* Eye sockets — proportional, slightly smaller */
 .hav-eye-socket {
   position: absolute;
-  width: 28px; height: 22px;
-  background: #FEFEFE;
+  width: 23px; height: 19px;
+  background: linear-gradient(180deg, #FAFAFA 0%, #ECECE8 100%);
   border-radius: 50%;
-  top: 48px;
+  top: 60px;
   overflow: hidden;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.18), 0 1px 3px rgba(0,0,0,0.20);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.20), 0 1px 2px rgba(0,0,0,0.25);
 }
-.hav-eye-l { left: 9px;  }
-.hav-eye-r { right: 9px; }
+.hav-eye-l { left: 13px;  }
+.hav-eye-r { right: 13px; }
 
 /* Iris */
 .hav-iris {
   position: absolute;
-  width: 17px; height: 18px;
-  background: radial-gradient(circle at 36% 32%, #5BAEFF 0%, #1A72D4 50%, #0A4490 100%);
+  width: 14px; height: 15px;
+  background: radial-gradient(circle at 36% 32%, #6FBCFF 0%, #1A72D4 48%, #0A4490 100%);
   border-radius: 50%;
   top: 50%; left: 50%;
-  transform: translate(-50%, -46%);
-  box-shadow: 0 1px 4px rgba(0,0,80,0.35);
+  transform: translate(-50%, -42%);
+  box-shadow: 0 1px 3px rgba(0,0,80,0.35);
 }
 
 /* Pupil */
 .hav-pupil {
   position: absolute;
-  width: 9px; height: 9px;
+  width: 7px; height: 7px;
   background: #080808;
   border-radius: 50%;
   top: 50%; left: 50%;
@@ -910,49 +971,61 @@ p { margin: 0; }
 /* Specular highlight */
 .hav-shine {
   position: absolute;
-  width: 3px; height: 3px;
-  background: rgba(255,255,255,0.92);
+  width: 2.5px; height: 2.5px;
+  background: rgba(255,255,255,0.95);
   border-radius: 50%;
-  top: 1px; right: 2px;
+  top: 1px; right: 1.5px;
 }
 
-/* Nose — subtle shadow bumps */
+/* Nose — visible bridge with shadow + warm highlight */
 .hav-nose-btn {
   position: absolute;
-  bottom: 28px;
+  bottom: 36px;
   left: 50%;
   transform: translateX(-50%);
-  width: 12px; height: 7px;
-  background: transparent;
-  border-radius: 50%;
+  width: 10px; height: 14px;
+  background: linear-gradient(170deg, rgba(255,210,160,0.45) 0%, rgba(180,90,40,0.30) 100%);
+  border-radius: 50% 50% 60% 60% / 50% 50% 60% 60%;
   box-shadow:
-    -5px 0 0 2px rgba(0,0,0,0.09),
-     5px 0 0 2px rgba(0,0,0,0.09),
-     0   1px 3px rgba(0,0,0,0.12);
+    -1px 2px 3px rgba(0,0,0,0.20),
+     2px 0 4px rgba(0,0,0,0.10);
 }
+/* Nostril hint */
+.hav-nose-btn::before,
+.hav-nose-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  width: 2px; height: 1.5px;
+  background: rgba(0,0,0,0.30);
+  border-radius: 50%;
+}
+.hav-nose-btn::before { left: 1.5px; }
+.hav-nose-btn::after  { right: 1.5px; }
 
 /* Mouth */
 .hav-mouth {
   position: absolute;
-  bottom: 11px;
+  bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
-  width: 28px; height: 6px;
-  background: #7A3A1E;
-  border-radius: 0 0 14px 14px;
+  width: 30px; height: 7px;
+  background: linear-gradient(180deg, #8E4525 0%, #5C2A14 100%);
+  border-radius: 0 0 16px 16px;
   overflow: hidden;
   transition: height 0.07s, width 0.07s, border-radius 0.07s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.30);
 }
 .hav-mouth.open {
-  height: 15px;
+  height: 16px;
   width: 22px;
-  border-radius: 4px 4px 13px 13px;
+  border-radius: 5px 5px 14px 14px;
 }
 .hav-teeth {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 8px;
-  background: #F4EFE8;
+  background: linear-gradient(180deg, #FBF8F1 0%, #E8E4DC 100%);
   border-radius: 0 0 3px 3px;
   opacity: 0;
   transition: opacity 0.07s;
@@ -963,40 +1036,43 @@ p { margin: 0; }
 .hav-blush {
   position: absolute;
   width: 22px; height: 11px;
-  background: radial-gradient(ellipse, rgba(255,120,90,0.26) 0%, transparent 80%);
+  background: radial-gradient(ellipse, rgba(255,120,90,0.30) 0%, transparent 80%);
   border-radius: 50%;
-  bottom: 28px;
+  bottom: 30px;
 }
-.hav-blush-l { left: 3px;  }
-.hav-blush-r { right: 3px; }
+.hav-blush-l { left: 4px;  }
+.hav-blush-r { right: 4px; }
 
 /* Neck */
 .hav-neck {
-  width: 28px; height: 14px;
-  background: linear-gradient(180deg, #C97A42 0%, #B86832 100%);
+  width: 32px; height: 16px;
+  background: linear-gradient(180deg, #B86832 0%, #9A5226 100%);
   flex-shrink: 0;
-  margin-top: -2px;
+  margin-top: -3px;
   z-index: 2;
+  box-shadow: inset -2px 0 4px rgba(0,0,0,0.30);
 }
 
 /* Torso / jacket */
 .hav-torso {
-  width: 156px; height: 74px;
-  background: linear-gradient(175deg, #1C3658 0%, #102240 55%, #0A1830 100%);
-  border-radius: 50% 50% 0 0 / 26% 26% 0 0;
+  width: 168px; height: 80px;
+  background:
+    linear-gradient(175deg, #1E3A5E 0%, #102240 60%, #081428 100%);
+  border-radius: 50% 50% 0 0 / 30% 30% 0 0;
   position: relative;
   flex-shrink: 0;
   z-index: 2;
-  box-shadow: inset 0 8px 16px rgba(0,0,0,0.35);
+  box-shadow: inset 0 8px 18px rgba(0,0,0,0.40);
 }
 /* White shirt collar */
 .hav-collar {
   position: absolute;
   top: 0; left: 50%;
   transform: translateX(-50%);
-  width: 32px; height: 20px;
-  background: linear-gradient(160deg, #F5F2EC 0%, #E8E4DE 100%);
+  width: 36px; height: 22px;
+  background: linear-gradient(160deg, #F5F2EC 0%, #E2DED7 100%);
   clip-path: polygon(16% 0, 84% 0, 100% 100%, 0 100%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.20);
 }
 
 /* ── macOS window chrome ────────────────────────────────────── */
@@ -1109,7 +1185,7 @@ p { margin: 0; }
   position: absolute;
   bottom: 22px; left: 50%;
   transform: translateX(-50%);
-  width: 28px; height: 32px;
+  width: 30px; height: 34px;
   background: radial-gradient(
     ellipse 55% 52% at 42% 36%,
     #F0C490 0%,
@@ -1117,8 +1193,51 @@ p { margin: 0; }
     #B86E30 100%
   );
   border-radius: 50% 50% 44% 44% / 50% 50% 46% 46%;
-  box-shadow: inset -2px -2px 5px rgba(0,0,0,0.2);
+  box-shadow: inset -2px -2px 5px rgba(0,0,0,0.20);
 }
+/* Mini hair cap */
+.hav-pip-head::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -1px; right: -1px;
+  height: 14px;
+  background: linear-gradient(170deg, #2A1808, #0E0703);
+  border-radius: 60% 60% 30% 30% / 80% 80% 20% 20%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.40);
+}
+/* Mouth on PiP */
+.hav-pip-head::after {
+  content: '';
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 1.6px;
+  background: #6A2A10;
+  border-radius: 0 0 4px 4px;
+}
+/* PiP eyes */
+.hav-pip-eye {
+  position: absolute;
+  width: 4.5px; height: 5px;
+  background: #FAFAFA;
+  border-radius: 50%;
+  top: 14px;
+  z-index: 2;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.20);
+}
+.hav-pip-eye::after {
+  content: '';
+  position: absolute;
+  width: 2.6px; height: 2.6px;
+  background: #1965C0;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -45%);
+}
+.hav-pip-eye-l { left: 7px; }
+.hav-pip-eye-r { right: 7px; }
 .hav-pip-lbl {
   position: absolute;
   bottom: 3px; right: 5px;
@@ -1128,103 +1247,169 @@ p { margin: 0; }
   z-index: 2;
 }
 
-/* ── Dashboard popup (shown between scenarios) ──────────────── */
+/* ── Full-card dashboard popup (shown between scenarios) ─────── */
 .hav-dash-popup {
   position: absolute;
   inset: 0;
-  background: rgba(4, 8, 15, 0.93);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 20;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,229,160,0.10) 0%, transparent 60%),
+    linear-gradient(165deg, rgba(8, 12, 24, 0.97) 0%, rgba(4, 8, 15, 0.99) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 30;
   display: flex;
   flex-direction: column;
-  padding: 12px 14px 10px;
-  gap: 7px;
+  padding: 24px 24px 22px;
+  gap: 18px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.45s ease;
-  border-radius: 16px;
+  transition: opacity 0.5s ease;
+  border-radius: 24px;
+  overflow: hidden;
 }
 .hav-dash-popup.visible {
   opacity: 1;
   pointer-events: auto;
 }
-.hav-dash-header {
+.hav-dash-popup.visible > * {
+  animation: dashRise 0.55s cubic-bezier(.16,1,.3,1) backwards;
+}
+.hav-dash-popup.visible > *:nth-child(1) { animation-delay: 0.05s; }
+.hav-dash-popup.visible > *:nth-child(2) { animation-delay: 0.18s; }
+.hav-dash-popup.visible > *:nth-child(3) { animation-delay: 0.30s; }
+
+/* Top eyebrow + headline */
+.hav-dash-top {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(27,158,255,0.14);
+  flex-direction: column;
+  gap: 4px;
 }
-.hav-dash-check {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: rgba(0,229,160,0.12);
-  border: 1.5px solid rgba(0,229,160,0.50);
-  color: #00E5A0;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.hav-dash-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--signal-green);
 }
-.hav-dash-meta {
-  flex: 1;
-  min-width: 0;
-}
-.hav-dash-title {
-  font-size: 11px;
+.hav-dash-headline {
+  font-family: var(--font-display);
+  font-size: 17px;
   font-weight: 700;
   color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
 }
-.hav-dash-sub {
-  font-size: 10px;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  margin-top: 2px;
-  white-space: nowrap;
+
+/* Overall score block */
+.hav-dash-overall {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(0,229,160,0.10) 0%, rgba(27,158,255,0.06) 100%);
+  border: 1px solid rgba(0,229,160,0.22);
+  border-radius: 14px;
+  position: relative;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
-.hav-dash-score-big {
+.hav-dash-overall::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 0% 0%, rgba(0,229,160,0.10), transparent 50%);
+  pointer-events: none;
+}
+.hav-dash-overall-score {
+  display: flex;
+  align-items: baseline;
+  position: relative;
+}
+.hav-dash-overall-num {
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: 44px;
   font-weight: 800;
+  line-height: 1;
   background: linear-gradient(135deg, #ffffff 0%, #00E5A0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  flex-shrink: 0;
-  line-height: 1;
 }
-.hav-dash-rubric {
+.hav-dash-overall-pct {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(0,229,160,0.85);
+  margin-left: 3px;
+}
+.hav-dash-overall-meta {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
+  position: relative;
+}
+.hav-dash-overall-grade {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--signal-green);
+  letter-spacing: -0.01em;
+}
+.hav-dash-overall-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+}
+
+/* Categories container */
+.hav-dash-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+/* One category card */
+.hav-dash-cat {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+}
+.hav-dash-cat-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.hav-dash-cat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
   flex: 1;
 }
-.hav-dash-row {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+.hav-dash-cat-score {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-soft);
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
 }
-.hav-dash-row-label {
-  font-size: 10px;
-  color: var(--text-secondary);
-  line-height: 1.3;
-}
-.hav-dash-row-bar-wrap {
+.hav-dash-cat-bar-wrap {
   position: relative;
   height: 4px;
   background: rgba(255,255,255,0.07);
   border-radius: 2px;
   overflow: hidden;
 }
-.hav-dash-row-bar {
+.hav-dash-cat-bar {
   position: absolute;
   left: 0; top: 0; bottom: 0;
   border-radius: 2px;
@@ -1232,22 +1417,21 @@ p { margin: 0; }
   width: 0%;
   transition: width 0.85s cubic-bezier(.16,1,.3,1);
 }
-.hav-dash-tip {
-  font-size: 10px;
-  color: rgba(240,244,255,0.45);
-  font-style: italic;
-  padding-top: 5px;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  line-height: 1.45;
+.hav-dash-cat-feedback {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 1px;
 }
 
 /* ── Status bar below video ─────────────────────────────────── */
 .hav-statusbar {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  padding: 0 2px;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 14px;
+  padding: 6px 0;
 }
 
 /* Responsive */
