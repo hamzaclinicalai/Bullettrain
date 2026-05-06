@@ -39,8 +39,8 @@
     <!-- Nav links -->
     <nav class="nav-links" id="nav-menu">
       <a href="{{ url_for('index') }}">Home</a>
-      <a href="{{ url_for('simulations') }}">Simulations</a>
       <a href="{{ url_for('platform') }}">Platform</a>
+      <a href="{{ url_for('simulations') }}">User Experience</a>
       <a href="{{ url_for('about') }}">About</a>
       <a href="{{ url_for('catalog') }}" class="btn btn-primary" style="padding:9px 20px;font-size:13px;">Try a Demo</a>
     </nav>
@@ -79,9 +79,9 @@
         <h4>Platform</h4>
         <ul>
           <li><a href="{{ url_for('index') }}">Home</a></li>
-          <li><a href="{{ url_for('simulations') }}">Simulations</a></li>
+          <li><a href="{{ url_for('platform') }}">Platform</a></li>
+          <li><a href="{{ url_for('simulations') }}">User Experience</a></li>
           <li><a href="{{ url_for('catalog') }}">Simulation Library</a></li>
-          <li><a href="{{ url_for('platform') }}">How It Works</a></li>
         </ul>
       </div>
 
