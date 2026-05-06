@@ -46,40 +46,48 @@
     <!-- RIGHT: Live avatar animation -->
     <div class="hav-stage">
 
-      <!-- Floating skill tags -->
-      <div class="hav-tag hav-tag-1">Active Listening</div>
-      <div class="hav-tag hav-tag-2">Objection Handling</div>
-      <div class="hav-tag hav-tag-3">Empathy</div>
-      <div class="hav-tag hav-tag-4">Resolution</div>
-
       <!-- Main card -->
       <div class="hav-card">
 
         <!-- VIDEO CALL WINDOW -->
         <div class="hav-video-window" id="hav-video-window">
 
-          <!-- Office background environment -->
+          <!-- Office environment -->
           <div class="hav-video-env"></div>
 
-          <!-- CSS Person: head + face + body -->
+          <!-- PIXAR-STYLE PERSON -->
           <div class="hav-person-wrap">
-            <div class="hav-head-container">
-              <div class="hav-hair"></div>
-              <div class="hav-face-skin">
-                <div class="hav-eyes">
-                  <div class="hav-eyeball"></div>
-                  <div class="hav-eyeball"></div>
+            <div class="hav-head-group">
+              <!-- Ears behind face -->
+              <div class="hav-ear hav-ear-l"></div>
+              <div class="hav-ear hav-ear-r"></div>
+              <!-- Hair cap (behind face) -->
+              <div class="hav-hair-cap"></div>
+              <!-- Face sphere -->
+              <div class="hav-face-ball">
+                <div class="hav-eyebrow hav-ebrow-l"></div>
+                <div class="hav-eyebrow hav-ebrow-r"></div>
+                <div class="hav-eye-socket hav-eye-l">
+                  <div class="hav-iris"><div class="hav-pupil"><div class="hav-shine"></div></div></div>
                 </div>
-                <div class="hav-mouth" id="hav-mouth"></div>
+                <div class="hav-eye-socket hav-eye-r">
+                  <div class="hav-iris"><div class="hav-pupil"><div class="hav-shine"></div></div></div>
+                </div>
+                <div class="hav-nose-btn"></div>
+                <div class="hav-mouth" id="hav-mouth">
+                  <div class="hav-teeth"></div>
+                </div>
+                <div class="hav-blush hav-blush-l"></div>
+                <div class="hav-blush hav-blush-r"></div>
               </div>
             </div>
             <div class="hav-neck"></div>
-            <div class="hav-shoulders">
+            <div class="hav-torso">
               <div class="hav-collar"></div>
             </div>
           </div>
 
-          <!-- macOS-style top chrome -->
+          <!-- macOS chrome -->
           <div class="hav-vc-topbar">
             <div class="hav-vc-dots">
               <i style="background:#FF5F57"></i>
@@ -90,27 +98,41 @@
             <div class="hav-vc-bars"><i></i><i></i><i></i></div>
           </div>
 
-          <!-- Name plate bottom-left -->
+          <!-- Name plate -->
           <div class="hav-vc-nameplate">
             <span class="hav-vc-dot" id="hav-vc-dot"></span>
             <span>AI Training Avatar</span>
           </div>
 
-          <!-- PiP: trainee self-view bottom-right -->
+          <!-- PiP self-view -->
           <div class="hav-pip">
             <div class="hav-pip-inner">
-              <div class="hav-pip-figure"></div>
+              <div class="hav-pip-bg"></div>
+              <div class="hav-pip-torso"></div>
+              <div class="hav-pip-head"></div>
             </div>
             <span class="hav-pip-lbl">You</span>
           </div>
 
+          <!-- Dashboard popup (between scenarios) -->
+          <div class="hav-dash-popup" id="hav-dash-popup">
+            <div class="hav-dash-header">
+              <div class="hav-dash-check">✓</div>
+              <div class="hav-dash-meta">
+                <div class="hav-dash-title" id="hav-dash-title">Session Complete</div>
+                <div class="hav-dash-sub" id="hav-dash-sub">—</div>
+              </div>
+              <div class="hav-dash-score-big" id="hav-dash-score-big">—%</div>
+            </div>
+            <div class="hav-dash-rubric" id="hav-dash-rubric"></div>
+            <div class="hav-dash-tip" id="hav-dash-tip"></div>
+          </div>
+
         </div><!-- /.hav-video-window -->
 
-        <!-- Status bar: live + waveform + mode -->
+        <!-- Status bar -->
         <div class="hav-statusbar">
-          <div class="hav-live">
-            <span class="hav-live-dot"></span>Live
-          </div>
+          <div class="hav-live"><span class="hav-live-dot"></span>Live</div>
           <div class="hav-waveform" id="hav-waveform"></div>
           <div class="hav-mode-badge" id="hav-mode-badge">Practice Mode</div>
         </div>
@@ -124,15 +146,6 @@
         <div class="hav-convo">
           <div class="hav-bubble hav-avatar-bubble" id="hav-avatar-bubble"></div>
           <div class="hav-bubble hav-user-bubble" id="hav-user-bubble"></div>
-        </div>
-
-        <!-- Score row -->
-        <div class="hav-score-row">
-          <span class="hav-score-label">Session Score</span>
-          <div class="hav-score-bar-wrap">
-            <div class="hav-score-bar-fill" id="hav-score-fill"></div>
-          </div>
-          <span class="hav-score-val" id="hav-score-val">—</span>
         </div>
 
       </div><!-- /.hav-card -->
@@ -152,7 +165,13 @@
       modeText: "#4DCFFF",
       avatar: "I ordered the grilled chicken wrap but got a burger. Again. This is the third time this month.",
       user: "I'm so sorry about that — let me fix this right away. Can I get your name?",
-      score: 87
+      score: 87,
+      rubric: [
+        { label: "Acknowledged issue without blame", pct: 92 },
+        { label: "Offered a specific remedy", pct: 78 },
+        { label: "Maintained brand tone", pct: 88 }
+      ],
+      tip: "Next: offer a concrete timeline for the fix before asking for their name."
     },
     {
       industry: "Fitness · Membership Close",
@@ -162,7 +181,13 @@
       modeText: "#c4b5fd",
       avatar: "Honestly, $49 a month sounds like a lot for something I might not even use consistently.",
       user: "That's fair — most members see measurable results in the first 30 days. Let me show you our guarantee.",
-      score: 91
+      score: 91,
+      rubric: [
+        { label: "Validated the objection", pct: 95 },
+        { label: "Reframed value proposition", pct: 88 },
+        { label: "Moved toward a close", pct: 82 }
+      ],
+      tip: "Strong close. Try a discovery question to personalize the guarantee offer."
     },
     {
       industry: "Technology · Account Renewal",
@@ -172,7 +197,13 @@
       modeText: "#00E5A0",
       avatar: "Our team hasn't fully adopted the platform yet. I'm not sure renewal makes sense right now.",
       user: "Completely fair to raise. Can we pull up your adoption data together and find where we can add value?",
-      score: 89
+      score: 89,
+      rubric: [
+        { label: "Acknowledged the adoption gap", pct: 90 },
+        { label: "Proposed a data-driven next step", pct: 94 },
+        { label: "Maintained consultative tone", pct: 80 }
+      ],
+      tip: "Excellent. Tie the next step to a specific date to sharpen urgency."
     },
     {
       industry: "Hospitality · Guest Recovery",
@@ -182,7 +213,13 @@
       modeText: "#c4b5fd",
       avatar: "I specifically requested a high-floor room away from the elevator. This is not what I booked.",
       user: "I sincerely apologize. Let me check availability right now and make this right for you.",
-      score: 93
+      score: 93,
+      rubric: [
+        { label: "Immediate sincere apology", pct: 98 },
+        { label: "Took ownership of resolution", pct: 92 },
+        { label: "Set a clear next-action expectation", pct: 85 }
+      ],
+      tip: "Near-perfect recovery. A small goodwill gesture would push this to a 10."
     }
   ];
 
@@ -216,17 +253,43 @@
     }, speed);
   }
 
-  function animateScore(pct) {
-    const fill = document.getElementById('hav-score-fill');
-    const val  = document.getElementById('hav-score-val');
-    if (!fill) return;
-    fill.style.width = pct + '%';
-    let n = 0, step = pct / 40;
-    const t = setInterval(() => {
-      n = Math.min(n + step, pct);
-      val.textContent = Math.round(n) + '%';
-      if (n >= pct) clearInterval(t);
-    }, 25);
+  function showDashboard(s) {
+    const popup    = document.getElementById('hav-dash-popup');
+    const title    = document.getElementById('hav-dash-title');
+    const sub      = document.getElementById('hav-dash-sub');
+    const scoreBig = document.getElementById('hav-dash-score-big');
+    const rubric   = document.getElementById('hav-dash-rubric');
+    const tip      = document.getElementById('hav-dash-tip');
+    if (!popup) return;
+
+    title.textContent    = 'Session Complete';
+    sub.textContent      = s.industry;
+    scoreBig.textContent = s.score + '%';
+    tip.textContent      = s.tip || '';
+
+    rubric.innerHTML = '';
+    s.rubric.forEach(row => {
+      const d = document.createElement('div');
+      d.className = 'hav-dash-row';
+      d.innerHTML =
+        '<div class="hav-dash-row-label">' + row.label + '</div>' +
+        '<div class="hav-dash-row-bar-wrap"><div class="hav-dash-row-bar" style="width:0%"></div></div>';
+      rubric.appendChild(d);
+    });
+
+    popup.classList.add('visible');
+
+    setTimeout(() => {
+      const bars = rubric.querySelectorAll('.hav-dash-row-bar');
+      bars.forEach((bar, i) => {
+        setTimeout(() => { bar.style.width = s.rubric[i].pct + '%'; }, i * 200);
+      });
+    }, 100);
+  }
+
+  function hideDashboard() {
+    const popup = document.getElementById('hav-dash-popup');
+    if (popup) popup.classList.remove('visible');
   }
 
   function runScenario() {
@@ -237,16 +300,12 @@
     const userBubble   = document.getElementById('hav-user-bubble');
     const badge        = document.getElementById('hav-mode-badge');
     const label        = document.getElementById('hav-industry-label');
-    const fill         = document.getElementById('hav-score-fill');
-    const val          = document.getElementById('hav-score-val');
     if (!avatarBubble) return;
 
     avatarBubble.style.opacity = '0';
     userBubble.style.opacity   = '0';
-    fill.style.transition = 'none';
-    fill.style.width = '0%';
-    val.textContent  = '—';
     stopSpeaking();
+    hideDashboard();
 
     label.textContent       = s.industry;
     badge.textContent       = s.mode;
@@ -260,13 +319,15 @@
         stopSpeaking();
         setTimeout(() => {
           typewrite(userBubble, s.user, 24, () => {
-            fill.style.transition = 'width 1.2s ease';
-            animateScore(s.score);
+            showDashboard(s);
             setTimeout(() => {
-              running = false;
-              idx = (idx + 1) % scenarios.length;
-              runScenario();
-            }, 3800);
+              hideDashboard();
+              setTimeout(() => {
+                running = false;
+                idx = (idx + 1) % scenarios.length;
+                runScenario();
+              }, 500);
+            }, 3200);
           });
         }, 400);
       });
