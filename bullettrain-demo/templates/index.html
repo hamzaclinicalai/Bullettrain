@@ -80,6 +80,8 @@
                 <div class="hav-blush hav-blush-l"></div>
                 <div class="hav-blush hav-blush-r"></div>
               </div>
+              <!-- Front bangs / forehead hair (in front of face-ball) -->
+              <div class="hav-bangs"></div>
             </div>
             <div class="hav-neck"></div>
             <div class="hav-torso"></div>
@@ -528,6 +530,12 @@
       <p style="margin-top:14px;font-size:15px;color:var(--text-secondary);">Select an industry below to launch a live demo simulation — no account required.</p>
     </div>
     <div class="industry-carousel-wrap">
+      <button class="industry-carousel-arrow industry-carousel-arrow-prev" id="industry-carousel-prev" type="button" aria-label="Previous industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="industry-carousel-arrow industry-carousel-arrow-next" id="industry-carousel-next" type="button" aria-label="Next industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
       <div class="industry-carousel" id="industry-carousel">
 
         <a href="{{ url_for('simulation_detail', sim_id='qsr-customer-recovery') }}" class="industry-card" style="text-decoration:none;">
@@ -613,17 +621,49 @@
     const card = cards[i];
     if (!card) return;
     isProgScroll = true;
-    const target = card.offsetLeft - (grid.clientWidth - card.offsetWidth) / 2;
-    grid.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+    grid.scrollTo({ left: card.offsetLeft, behavior: 'smooth' });
     setTimeout(() => { isProgScroll = false; }, 700);
   }
 
-  // Pause auto-cycle when user manually scrolls / touches
+  // Arrow navigation
+  const prevBtn = document.getElementById('industry-carousel-prev');
+  const nextBtn = document.getElementById('industry-carousel-next');
+  if (prevBtn) prevBtn.addEventListener('click', () => {
+    idx = (idx - 1 + cards.length) % cards.length;
+    highlight(idx);
+    pauseUntil = Date.now() + 6000;
+  });
+  if (nextBtn) nextBtn.addEventListener('click', () => {
+    idx = (idx + 1) % cards.length;
+    highlight(idx);
+    pauseUntil = Date.now() + 6000;
+  });
+
+  // Pause auto-cycle when user manually scrolls / touches / swipes
   grid.addEventListener('scroll', () => {
     if (!isProgScroll) pauseUntil = Date.now() + 6000;
   }, { passive: true });
   grid.addEventListener('touchstart', () => { pauseUntil = Date.now() + 6000; }, { passive: true });
   grid.addEventListener('mouseenter', () => { pauseUntil = Date.now() + 1500; });
+
+  // After user swipe / drag ends, snap-align by finding the closest card to scroll position
+  let scrollEndTimer;
+  grid.addEventListener('scroll', () => {
+    if (isProgScroll) return;
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(() => {
+      // Find the closest card to current scroll position
+      let closestI = 0;
+      let closestDelta = Infinity;
+      cards.forEach((c, i) => {
+        const d = Math.abs(c.offsetLeft - grid.scrollLeft);
+        if (d < closestDelta) { closestDelta = d; closestI = i; }
+      });
+      idx = closestI;
+      cards.forEach((c, n) => c.classList.toggle('is-active', n === idx));
+      dots.forEach((d, n) => d.classList.toggle('is-active', n === idx));
+    }, 220);
+  }, { passive: true });
 
   // Initial highlight (first card)
   highlight(0);
@@ -633,7 +673,7 @@
     if (Date.now() < pauseUntil) return;
     idx = (idx + 1) % cards.length;
     highlight(idx);
-  }, 2800);
+  }, 3200);
 })();
 </script>
 
