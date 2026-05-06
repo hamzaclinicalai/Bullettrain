@@ -523,7 +523,11 @@ def _gemini_response(simulation, transcript, user_text, mode, api_key):
     payload = {
         "system_instruction": {"parts": [{"text": system_prompt}]},
         "contents": contents,
-        "generationConfig": {"maxOutputTokens": 200, "temperature": 0.85},
+        "generationConfig": {
+            "maxOutputTokens": 500,
+            "temperature": 0.85,
+            "thinkingConfig": {"thinkingBudget": 0},
+        },
     }
     resp = requests.post(url, json=payload, timeout=15)
     if not resp.ok:
