@@ -82,9 +82,7 @@
               </div>
             </div>
             <div class="hav-neck"></div>
-            <div class="hav-torso">
-              <div class="hav-collar"></div>
-            </div>
+            <div class="hav-torso"></div>
           </div>
 
           <!-- macOS chrome -->
@@ -104,14 +102,26 @@
             <span>AI Training Avatar</span>
           </div>
 
-          <!-- PiP self-view -->
-          <div class="hav-pip">
-            <div class="hav-pip-inner">
+          <!-- PiP self-view (Pixar-style mini bust) -->
+          <div class="hav-pip" id="hav-pip">
+            <div class="hav-pip-inner" id="hav-pip-inner">
               <div class="hav-pip-bg"></div>
-              <div class="hav-pip-torso"></div>
-              <div class="hav-pip-head">
-                <div class="hav-pip-eye hav-pip-eye-l"></div>
-                <div class="hav-pip-eye hav-pip-eye-r"></div>
+              <div class="hav-pip-person">
+                <div class="hav-pip-head">
+                  <div class="hav-pip-ear hav-pip-ear-l"></div>
+                  <div class="hav-pip-ear hav-pip-ear-r"></div>
+                  <div class="hav-pip-hair"></div>
+                  <div class="hav-pip-face">
+                    <div class="hav-pip-brow hav-pip-brow-l"></div>
+                    <div class="hav-pip-brow hav-pip-brow-r"></div>
+                    <div class="hav-pip-eye hav-pip-eye-l"></div>
+                    <div class="hav-pip-eye hav-pip-eye-r"></div>
+                    <div class="hav-pip-nose"></div>
+                    <div class="hav-pip-mouth" id="hav-pip-mouth"></div>
+                  </div>
+                </div>
+                <div class="hav-pip-neck"></div>
+                <div class="hav-pip-torso"></div>
               </div>
             </div>
             <span class="hav-pip-lbl">You</span>
@@ -123,7 +133,6 @@
         <div class="hav-statusbar">
           <div class="hav-live"><span class="hav-live-dot"></span>Live</div>
           <div class="hav-waveform" id="hav-waveform"></div>
-          <div class="hav-mode-badge" id="hav-mode-badge">Practice Mode</div>
         </div>
 
         <!-- Industry label -->
@@ -131,11 +140,8 @@
           <span class="hav-industry-label" id="hav-industry-label">Quick Service · Customer Recovery</span>
         </div>
 
-        <!-- Conversation bubbles -->
-        <div class="hav-convo">
-          <div class="hav-bubble hav-avatar-bubble" id="hav-avatar-bubble"></div>
-          <div class="hav-bubble hav-user-bubble" id="hav-user-bubble"></div>
-        </div>
+        <!-- Conversation bubbles (scrollable) -->
+        <div class="hav-convo" id="hav-convo"></div>
 
         <!-- Full-card debrief popup -->
         <div class="hav-dash-popup" id="hav-dash-popup">
@@ -169,62 +175,62 @@
   const scenarios = [
     {
       industry: "Quick Service · Customer Recovery",
-      mode: "Practice Mode",
-      modeColor: "rgba(27,158,255,0.18)",
-      modeBorder: "rgba(27,158,255,0.30)",
-      modeText: "#4DCFFF",
-      avatar: "I ordered the grilled chicken wrap but got a burger. Again. This is the third time this month.",
-      user: "I'm so sorry about that — let me fix this right away. Can I get your name?",
+      turns: [
+        { who: 'avatar', text: "I ordered the grilled chicken wrap but got a burger. Again. This is the third time this month." },
+        { who: 'user',   text: "I'm so sorry about that — let me fix this right away. Can I get your name?" },
+        { who: 'avatar', text: "It's Sarah. Honestly, I'm running out of patience here. I just want my lunch." },
+        { who: 'user',   text: "Sarah, completely fair. Your wrap will be hot off the line in two minutes, on the house." }
+      ],
       score: 87,
       rubric: [
         { label: "Acknowledged the issue without blame", pct: 92, feedback: "Strong opening — you took ownership immediately instead of deflecting. Try mirroring their frustration verbally before transitioning to the fix to deepen rapport." },
-        { label: "Offered a specific remedy", pct: 78, feedback: "Promised a fix but stopped short of a concrete timeline. Next time, name the action and the wait window (\"hot off the line in two minutes\")." },
-        { label: "Maintained brand tone", pct: 88, feedback: "Apology landed sincerely without sounding scripted. A small empathy phrase (\"that's frustrating\") would make it feel more human." }
+        { label: "Offered a specific remedy", pct: 78, feedback: "Promised a fix but stopped short of a concrete timeline at first. Naming the action and the wait window (\"two minutes\") in turn two recovered the moment." },
+        { label: "Maintained brand tone", pct: 88, feedback: "Apology landed sincerely without sounding scripted. The \"on the house\" gesture was the right level of generosity." }
       ]
     },
     {
       industry: "Fitness · Membership Close",
-      mode: "Test Mode",
-      modeColor: "rgba(139,92,246,0.15)",
-      modeBorder: "rgba(139,92,246,0.30)",
-      modeText: "#c4b5fd",
-      avatar: "Honestly, $49 a month sounds like a lot for something I might not even use consistently.",
-      user: "That's fair — most members see measurable results in the first 30 days. Let me show you our guarantee.",
+      turns: [
+        { who: 'avatar', text: "Honestly, $49 a month sounds like a lot for something I might not even use consistently." },
+        { who: 'user',   text: "That's fair — most members see measurable results in the first 30 days. Let me show you our guarantee." },
+        { who: 'avatar', text: "What guarantee? Because I've heard the \"results\" pitch from every gym in town." },
+        { who: 'user',   text: "If you don't hit your first goal in 30 days, we extend it free. Want me to walk you through how we'd build that out for you?" }
+      ],
       score: 91,
       rubric: [
         { label: "Validated the objection", pct: 95, feedback: "You acknowledged the cost concern without minimizing it — a strong trust move. Keep leading with validation in pricing pushback." },
-        { label: "Reframed value proposition", pct: 88, feedback: "Pivoted to the 30-day result framing, which works. Try anchoring on a specific personal goal first to make the value feel tailored." },
-        { label: "Moved toward a close", pct: 82, feedback: "Mention of the guarantee opens the door, but doesn't ask for the next step. Follow with a soft trial close (\"want me to walk you through it?\")." }
+        { label: "Reframed value proposition", pct: 88, feedback: "Pivoted to the 30-day result framing, which works. Anchoring on a specific personal goal in turn 4 made the value feel tailored." },
+        { label: "Moved toward a close", pct: 82, feedback: "The trial close at the end was excellent. Earlier in the conversation you could've earned the right to ask sooner." }
       ]
     },
     {
       industry: "Technology · Account Renewal",
-      mode: "Practice Mode",
-      modeColor: "rgba(0,229,160,0.12)",
-      modeBorder: "rgba(0,229,160,0.25)",
-      modeText: "#00E5A0",
-      avatar: "Our team hasn't fully adopted the platform yet. I'm not sure renewal makes sense right now.",
-      user: "Completely fair to raise. Can we pull up your adoption data together and find where we can add value?",
+      turns: [
+        { who: 'avatar', text: "Our team hasn't fully adopted the platform yet. I'm not sure renewal makes sense right now." },
+        { who: 'user',   text: "Completely fair to raise. Can we pull up your adoption data together and find where we can add value?" },
+        { who: 'avatar', text: "Sure, but I don't want to spend an hour on a slide deck. We've been burned by that." },
+        { who: 'user',   text: "Twenty minutes, your numbers, three concrete next steps. Thursday at 2pm work?" }
+      ],
       score: 89,
       rubric: [
-        { label: "Acknowledged the adoption gap", pct: 90, feedback: "You met them where they are — refusing to deny the friction earns credibility. Strong consultative posture." },
+        { label: "Acknowledged the adoption gap", pct: 90, feedback: "You met them where they were — refusing to deny the friction earns credibility. Strong consultative posture." },
         { label: "Proposed a data-driven next step", pct: 94, feedback: "Inviting them to look at their own data shifts the conversation from defense to discovery. Excellent move." },
-        { label: "Maintained consultative tone", pct: 80, feedback: "The tone was steady, but ended slightly open. Tie the data review to a specific date to sharpen urgency." }
+        { label: "Booked a concrete next action", pct: 84, feedback: "Naming the time, the agenda, and the duration removes friction from saying yes. A clean disqualifying close." }
       ]
     },
     {
       industry: "Hospitality · Guest Recovery",
-      mode: "Test Mode",
-      modeColor: "rgba(139,92,246,0.15)",
-      modeBorder: "rgba(139,92,246,0.30)",
-      modeText: "#c4b5fd",
-      avatar: "I specifically requested a high-floor room away from the elevator. This is not what I booked.",
-      user: "I sincerely apologize. Let me check availability right now and make this right for you.",
+      turns: [
+        { who: 'avatar', text: "I specifically requested a high-floor room away from the elevator. This is not what I booked." },
+        { who: 'user',   text: "I sincerely apologize. Let me check availability right now and make this right for you." },
+        { who: 'avatar', text: "I've already been waiting twenty minutes at this front desk. Don't make it worse." },
+        { who: 'user',   text: "I hear you. Give me sixty seconds — I'll have a high-floor key in your hand and your bag delivered." }
+      ],
       score: 93,
       rubric: [
         { label: "Immediate sincere apology", pct: 98, feedback: "Apology was unqualified and direct — exactly what an upset guest needs in the first 5 seconds. Textbook." },
-        { label: "Took ownership of resolution", pct: 92, feedback: "Said \"let me\" rather than \"I'll see what we can do.\" That word choice signals real commitment." },
-        { label: "Set a clear next-action expectation", pct: 85, feedback: "Action was clear but timeline was implicit. Add \"give me 60 seconds\" to set a measurable expectation." }
+        { label: "Took ownership of resolution", pct: 92, feedback: "\"Let me\" rather than \"I'll see what we can do\" — that word choice signals real commitment, not deflection." },
+        { label: "Set a clear next-action expectation", pct: 90, feedback: "Adding the 60-second window plus the bag delivery turned a complaint into a moment of recovery. Strong close." }
       ]
     }
   ];
@@ -241,34 +247,56 @@
     return 'D';
   }
 
-  let idx = 0, running = false, mouthTimer = null;
+  let idx = 0, running = false, avatarMouthTimer = null, userMouthTimer = null;
 
-  function startSpeaking() {
+  function startAvatarSpeaking() {
     const win   = document.getElementById('hav-video-window');
     const mouth = document.getElementById('hav-mouth');
     const dot   = document.getElementById('hav-vc-dot');
     if (win)   win.classList.add('is-speaking');
     if (dot)   dot.classList.add('active');
-    if (mouth) mouthTimer = setInterval(() => mouth.classList.toggle('open'), 140);
+    if (mouth) avatarMouthTimer = setInterval(() => mouth.classList.toggle('open'), 140);
   }
-
-  function stopSpeaking() {
+  function stopAvatarSpeaking() {
     const win   = document.getElementById('hav-video-window');
     const mouth = document.getElementById('hav-mouth');
     const dot   = document.getElementById('hav-vc-dot');
     if (win)   win.classList.remove('is-speaking');
     if (dot)   dot.classList.remove('active');
-    if (mouth) { mouth.classList.remove('open'); clearInterval(mouthTimer); mouthTimer = null; }
+    if (mouth) { mouth.classList.remove('open'); clearInterval(avatarMouthTimer); avatarMouthTimer = null; }
+  }
+
+  function startUserSpeaking() {
+    const pip   = document.getElementById('hav-pip-inner');
+    const mouth = document.getElementById('hav-pip-mouth');
+    if (pip)   pip.classList.add('is-speaking');
+    if (mouth) userMouthTimer = setInterval(() => mouth.classList.toggle('open'), 150);
+  }
+  function stopUserSpeaking() {
+    const pip   = document.getElementById('hav-pip-inner');
+    const mouth = document.getElementById('hav-pip-mouth');
+    if (pip)   pip.classList.remove('is-speaking');
+    if (mouth) { mouth.classList.remove('open'); clearInterval(userMouthTimer); userMouthTimer = null; }
   }
 
   function typewrite(el, text, speed, onDone) {
     el.textContent = '';
     el.style.opacity = '1';
+    const convo = document.getElementById('hav-convo');
     let i = 0;
     const t = setInterval(() => {
       el.textContent += text[i++];
-      if (i >= text.length) { clearInterval(t); if (onDone) setTimeout(onDone, 600); }
+      if (convo) convo.scrollTop = convo.scrollHeight;
+      if (i >= text.length) { clearInterval(t); if (onDone) setTimeout(onDone, 500); }
     }, speed);
+  }
+
+  function addBubble(isUser) {
+    const convo = document.getElementById('hav-convo');
+    const b = document.createElement('div');
+    b.className = 'hav-bubble ' + (isUser ? 'hav-user-bubble' : 'hav-avatar-bubble');
+    convo.appendChild(b);
+    return b;
   }
 
   function showDashboard(s) {
@@ -325,43 +353,42 @@
   function runScenario() {
     if (running) return;
     running = true;
-    const s           = scenarios[idx];
-    const avatarBubble = document.getElementById('hav-avatar-bubble');
-    const userBubble   = document.getElementById('hav-user-bubble');
-    const badge        = document.getElementById('hav-mode-badge');
-    const label        = document.getElementById('hav-industry-label');
-    if (!avatarBubble) return;
+    const s     = scenarios[idx];
+    const convo = document.getElementById('hav-convo');
+    const label = document.getElementById('hav-industry-label');
+    if (!convo) return;
 
-    avatarBubble.style.opacity = '0';
-    userBubble.style.opacity   = '0';
-    stopSpeaking();
+    convo.innerHTML = '';
+    stopAvatarSpeaking();
+    stopUserSpeaking();
     hideDashboard();
 
-    label.textContent       = s.industry;
-    badge.textContent       = s.mode;
-    badge.style.background  = s.modeColor;
-    badge.style.borderColor = s.modeBorder;
-    badge.style.color       = s.modeText;
+    label.textContent = s.industry;
 
-    setTimeout(() => {
-      startSpeaking();
-      typewrite(avatarBubble, s.avatar, 30, () => {
-        stopSpeaking();
+    function playTurn(i) {
+      if (i >= s.turns.length) {
+        showDashboard(s);
         setTimeout(() => {
-          typewrite(userBubble, s.user, 24, () => {
-            showDashboard(s);
-            setTimeout(() => {
-              hideDashboard();
-              setTimeout(() => {
-                running = false;
-                idx = (idx + 1) % scenarios.length;
-                runScenario();
-              }, 600);
-            }, 6500);
-          });
-        }, 400);
+          hideDashboard();
+          setTimeout(() => {
+            running = false;
+            idx = (idx + 1) % scenarios.length;
+            runScenario();
+          }, 500);
+        }, 4200);
+        return;
+      }
+      const turn = s.turns[i];
+      const isUser = (turn.who === 'user');
+      const bubble = addBubble(isUser);
+      if (isUser) startUserSpeaking(); else startAvatarSpeaking();
+      typewrite(bubble, turn.text, isUser ? 24 : 30, () => {
+        if (isUser) stopUserSpeaking(); else stopAvatarSpeaking();
+        setTimeout(() => playTurn(i + 1), 350);
       });
-    }, 600);
+    }
+
+    setTimeout(() => playTurn(0), 600);
   }
 
   // Build waveform

@@ -681,13 +681,33 @@ p { margin: 0; }
   transition: color 0.4s;
 }
 
-/* Conversation */
+/* Conversation (scrollable) */
 .hav-convo {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-bottom: 18px;
-  min-height: 90px;
+  height: 138px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(27,158,255,0.45) rgba(27,158,255,0.04);
+}
+.hav-convo::-webkit-scrollbar {
+  width: 5px;
+}
+.hav-convo::-webkit-scrollbar-track {
+  background: rgba(27,158,255,0.04);
+  border-radius: 3px;
+}
+.hav-convo::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(27,158,255,0.55), rgba(0,229,160,0.55));
+  border-radius: 3px;
+}
+.hav-convo::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(27,158,255,0.75), rgba(0,229,160,0.75));
 }
 
 .hav-bubble {
@@ -1157,15 +1177,20 @@ p { margin: 0; }
   z-index: 10;
 }
 .hav-pip-inner {
-  width: 76px; height: 60px;
+  width: 84px; height: 70px;
   background: linear-gradient(145deg, #0D1B2A, #071018);
-  border-radius: 8px;
+  border-radius: 9px;
   border: 1.5px solid rgba(255,255,255,0.16);
   overflow: hidden;
   position: relative;
   box-shadow: 0 4px 12px rgba(0,0,0,0.50);
+  transition: border-color 0.35s, box-shadow 0.35s;
 }
-/* Improved PiP self-view — full mini bust */
+.hav-pip-inner.is-speaking {
+  border-color: rgba(0,229,160,0.85);
+  animation: speakingGlow 1.6s ease-in-out infinite;
+}
+/* PiP self-view — Pixar-style mini bust */
 .hav-pip-bg {
   position: absolute;
   inset: 0;
@@ -1173,71 +1198,170 @@ p { margin: 0; }
     radial-gradient(ellipse 70% 50% at 75% 10%, rgba(255,240,200,0.06) 0%, transparent 55%),
     linear-gradient(165deg, #1a2a3a 0%, #0a1520 100%);
 }
-.hav-pip-torso {
+
+/* Full bust wrapper */
+.hav-pip-person {
   position: absolute;
-  bottom: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 54px; height: 32px;
-  background: linear-gradient(175deg, #2A487A 0%, #162840 100%);
-  border-radius: 50% 50% 0 0 / 30% 30% 0 0;
-}
-.hav-pip-head {
-  position: absolute;
-  bottom: 22px; left: 50%;
-  transform: translateX(-50%);
-  width: 30px; height: 34px;
-  background: radial-gradient(
-    ellipse 55% 52% at 42% 36%,
-    #F0C490 0%,
-    #D9904A 50%,
-    #B86E30 100%
-  );
-  border-radius: 50% 50% 44% 44% / 50% 50% 46% 46%;
-  box-shadow: inset -2px -2px 5px rgba(0,0,0,0.20);
-}
-/* Mini hair cap */
-.hav-pip-head::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -1px; right: -1px;
-  height: 14px;
-  background: linear-gradient(170deg, #2A1808, #0E0703);
-  border-radius: 60% 60% 30% 30% / 80% 80% 20% 20%;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.40);
-}
-/* Mouth on PiP */
-.hav-pip-head::after {
-  content: '';
-  position: absolute;
-  bottom: 7px;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 8px;
-  height: 1.6px;
-  background: #6A2A10;
-  border-radius: 0 0 4px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
 }
-/* PiP eyes */
+
+/* Head */
+.hav-pip-head {
+  position: relative;
+  width: 30px; height: 34px;
+  flex-shrink: 0;
+}
+
+/* Ears */
+.hav-pip-ear {
+  position: absolute;
+  width: 5px; height: 7px;
+  background: linear-gradient(160deg, #F0C490 0%, #C97A48 100%);
+  border-radius: 60% 60% 50% 50% / 55% 55% 45% 45%;
+  top: 16px;
+  z-index: 1;
+  box-shadow: inset 1px 0 1px rgba(0,0,0,0.22);
+}
+.hav-pip-ear-l { left: -2px; }
+.hav-pip-ear-r { right: -2px; }
+
+/* Lighter, warm hair */
+.hav-pip-hair {
+  position: absolute;
+  top: 0; left: -1px; right: -1px;
+  height: 15px;
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 100%, rgba(255,255,255,0.06) 0%, transparent 60%),
+    linear-gradient(170deg, #B57340 0%, #8C5028 60%, #B57340 100%);
+  border-radius: 60% 60% 28% 28% / 80% 80% 22% 22%;
+  z-index: 3;
+  box-shadow:
+    -1px 1px 0 rgba(0,0,0,0.30),
+     1px 1px 0 rgba(0,0,0,0.20),
+     0 2px 4px rgba(0,0,0,0.45),
+    inset 0 -1px 2px rgba(0,0,0,0.40);
+}
+.hav-pip-hair::before,
+.hav-pip-hair::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  width: 4px; height: 5px;
+  background: linear-gradient(180deg, #8C5028, #6F3D1C);
+  border-radius: 50% 50% 40% 40% / 30% 30% 70% 70%;
+}
+.hav-pip-hair::before { left: 1px; }
+.hav-pip-hair::after  { right: 1px; }
+
+/* Face */
+.hav-pip-face {
+  position: absolute;
+  bottom: 0; left: 1px; right: 1px;
+  height: 30px;
+  background: radial-gradient(
+    ellipse 60% 58% at 40% 32%,
+    #F4CC9A 0%,
+    #E2A66A 32%,
+    #C97A46 65%,
+    #A65A26 100%
+  );
+  border-radius: 44% 44% 46% 46% / 46% 46% 50% 50%;
+  z-index: 2;
+  overflow: hidden;
+  box-shadow:
+    inset -2px -2px 5px rgba(0,0,0,0.24),
+    inset 2px 2px 4px rgba(255,210,160,0.20);
+}
+
+/* Eyebrows */
+.hav-pip-brow {
+  position: absolute;
+  width: 5px; height: 1.5px;
+  background: #1C0E04;
+  border-radius: 1px;
+  top: 14px;
+}
+.hav-pip-brow-l { left: 5px;  transform: rotate(-7deg); }
+.hav-pip-brow-r { right: 5px; transform: rotate(7deg);  }
+
+/* Eyes */
 .hav-pip-eye {
   position: absolute;
   width: 4.5px; height: 5px;
   background: #FAFAFA;
   border-radius: 50%;
-  top: 14px;
-  z-index: 2;
+  top: 16.5px;
+  overflow: hidden;
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.20);
 }
 .hav-pip-eye::after {
   content: '';
   position: absolute;
-  width: 2.6px; height: 2.6px;
-  background: #1965C0;
+  width: 2.8px; height: 2.8px;
+  background: radial-gradient(circle at 35% 30%, #5BAEFF 0%, #1565C0 70%, #0A4490 100%);
   border-radius: 50%;
   top: 50%; left: 50%;
-  transform: translate(-50%, -45%);
+  transform: translate(-50%, -42%);
 }
-.hav-pip-eye-l { left: 7px; }
-.hav-pip-eye-r { right: 7px; }
+.hav-pip-eye-l { left: 5px;  }
+.hav-pip-eye-r { right: 5px; }
+
+/* Nose */
+.hav-pip-nose {
+  position: absolute;
+  bottom: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px; height: 4px;
+  background: linear-gradient(170deg, rgba(255,210,160,0.40) 0%, rgba(180,90,40,0.30) 100%);
+  border-radius: 50% 50% 60% 60%;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.18);
+}
+
+/* Mouth */
+.hav-pip-mouth {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 1.6px;
+  background: #6A2A10;
+  border-radius: 0 0 4px 4px;
+  transition: height 0.07s, width 0.07s, border-radius 0.07s, background 0.07s;
+}
+.hav-pip-mouth.open {
+  height: 4px;
+  width: 5px;
+  border-radius: 1.5px 1.5px 3px 3px;
+  background: #4A1A08;
+}
+
+/* Neck */
+.hav-pip-neck {
+  width: 9px; height: 4px;
+  background: linear-gradient(180deg, #C97A46 0%, #A65A26 100%);
+  flex-shrink: 0;
+  margin-top: -1px;
+  z-index: 2;
+  box-shadow: inset -1px 0 1px rgba(0,0,0,0.30);
+}
+
+/* Burgundy/wine torso (different from primary navy) */
+.hav-pip-torso {
+  width: 64px; height: 32px;
+  background: linear-gradient(175deg, #7A2E2E 0%, #4F1818 60%, #2D0A0A 100%);
+  border-radius: 50% 50% 0 0 / 28% 28% 0 0;
+  flex-shrink: 0;
+  z-index: 2;
+  box-shadow: inset 0 4px 10px rgba(0,0,0,0.40);
+}
 .hav-pip-lbl {
   position: absolute;
   bottom: 3px; right: 5px;
