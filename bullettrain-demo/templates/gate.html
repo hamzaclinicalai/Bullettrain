@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Demo Access | BulletTrain.ai{% endblock %}
+{% block description %}Enter your demo passcode to access the BulletTrain simulation library, or schedule a discovery call to receive one.{% endblock %}
+
+{% block body %}
+
+<section class="hero hero-sm">
+  <div class="hero-orbs">
+    <div class="orb orb-1" style="opacity:0.6;"></div>
+    <div class="orb orb-2" style="opacity:0.5;"></div>
+  </div>
+  <div class="speed-lines">
+    <div class="speed-line"></div>
+    <div class="speed-line"></div>
+    <div class="speed-line"></div>
+  </div>
+
+  <div class="container hero-inner">
+    <div class="gate-card reveal">
+      <span class="eyebrow on-dark" style="display:inline-block;">Demo Access</span>
+      <h1 class="gradient-text" style="font-size:clamp(32px,4.5vw,52px);margin-top:14px;">
+        Unlock the simulation library.
+      </h1>
+      <p class="hero-sub" style="margin:18px auto 32px;max-width:48ch;">
+        Enter your passcode below, or schedule a 30-minute discovery call to get one.
+      </p>
+
+      <form method="POST" action="{{ url_for('unlock') }}" class="gate-form" autocomplete="off">
+        <input type="hidden" name="next" value="{{ next_url }}">
+        <input
+          type="text"
+          name="passcode"
+          class="gate-input"
+          placeholder="Enter passcode"
+          autocapitalize="characters"
+          autocorrect="off"
+          spellcheck="false"
+          required
+          autofocus />
+        <button type="submit" class="btn btn-primary btn-lg gate-submit">Unlock</button>
+      </form>
+
+      {% if error %}
+        <p class="gate-error">{{ error }}</p>
+      {% endif %}
+
+      <div class="gate-divider"><span>or</span></div>
+
+      <div class="gate-discovery">
+        <p class="gate-discovery-text">
+          Don't have a passcode? Schedule a free 30-minute discovery call and we'll send you one.
+        </p>
+        <a href="{{ discovery_url }}"
+           target="_blank" rel="noopener"
+           class="btn btn-ghost on-dark btn-lg">
+          Schedule a Discovery Call
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

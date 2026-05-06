@@ -37,6 +37,11 @@ LIVEAVATAR_API_BASE = "https://api.liveavatar.com"
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_MODEL   = "gemini-2.5-flash"
 
+# Passcode that unlocks the simulation library / runs.
+# Change via the SIMULATION_PASSCODE environment variable.
+SIMULATION_PASSCODE = os.environ.get("SIMULATION_PASSCODE", "BULLETTRAIN2026")
+DISCOVERY_CALL_URL  = "https://calendar.app.google/k1hf9GhZnoPq4A1DA"
+
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "bullettrain-demo-secret")
@@ -335,8 +340,48 @@ def about():
     return render_template("about.html")
 
 
+def _simulations_unlocked():
+    return bool(flask_session.get("simulations_unlocked"))
+
+
+def _gate_redirect(next_path):
+    """Return a redirect to the unlock page if the user hasn't entered the passcode."""
+    if _simulations_unlocked():
+        return None
+    return redirect(url_for("unlock", next=next_path))
+
+
+@app.route("/unlock", methods=["GET", "POST"])
+def unlock():
+    next_url = (
+        (request.form.get("next") if request.method == "POST" else request.args.get("next"))
+        or url_for("catalog")
+    )
+    # Only allow internal redirects (must start with /).
+    if not next_url.startswith("/"):
+        next_url = url_for("catalog")
+
+    error = None
+    if request.method == "POST":
+        code = (request.form.get("passcode") or "").strip()
+        if code.upper() == SIMULATION_PASSCODE.upper():
+            flask_session["simulations_unlocked"] = True
+            return redirect(next_url)
+        error = "Incorrect passcode. Try again or schedule a discovery call to receive one."
+
+    return render_template(
+        "gate.html",
+        next_url=next_url,
+        error=error,
+        discovery_url=DISCOVERY_CALL_URL,
+    )
+
+
 @app.route("/catalog")
 def catalog():
+    gate = _gate_redirect(url_for("catalog"))
+    if gate:
+        return gate
     return render_template("catalog.html", simulations=SIMULATIONS)
 
 
@@ -352,6 +397,9 @@ def simulations():
 
 @app.route("/simulations/<sim_id>")
 def simulation_detail(sim_id):
+    gate = _gate_redirect(url_for("simulation_detail", sim_id=sim_id))
+    if gate:
+        return gate
     simulation = SIMULATION_BY_ID.get(sim_id)
     if not simulation:
         abort(404)
@@ -360,6 +408,9 @@ def simulation_detail(sim_id):
 
 @app.route("/simulations/<sim_id>/<mode>")
 def simulation_run(sim_id, mode):
+    gate = _gate_redirect(url_for("simulation_run", sim_id=sim_id, mode=mode))
+    if gate:
+        return gate
     if mode not in ("practice", "test"):
         abort(404)
     simulation = SIMULATION_BY_ID.get(sim_id)
