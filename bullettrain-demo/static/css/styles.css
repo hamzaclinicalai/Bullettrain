@@ -885,7 +885,10 @@ section.light .eyebrow { color: var(--accent-deep); }
 
 .section-head {
   max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 64px;
+  text-align: center;
 }
 
 .section-head h2 {
@@ -899,6 +902,8 @@ section.light .eyebrow { color: var(--accent-deep); }
   font-size: 18px;
   margin-top: 16px;
   max-width: 60ch;
+  margin-left: auto;
+  margin-right: auto;
   line-height: 1.65;
 }
 
