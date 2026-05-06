@@ -218,6 +218,7 @@ p { margin: 0; }
   align-items: center;
   justify-content: space-between;
   height: 72px;
+  gap: 24px;
 }
 
 /* Logo / Brand */
@@ -230,18 +231,22 @@ p { margin: 0; }
   font-size: 18px;
   letter-spacing: -0.01em;
   color: var(--text-primary);
+  flex-shrink: 0;
 }
 
 .brand img.logo-icon {
   height: 48px;
   width: auto;
+  display: block;
 }
 
 .brand img.logo-wordmark {
-  height: 56px;
+  height: 60px;
   width: auto;
-  max-width: 320px;
+  max-width: 360px;
+  display: block;
   object-fit: contain;
+  object-position: left center;
 }
 
 @media (max-width: 480px) {
