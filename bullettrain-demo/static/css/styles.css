@@ -2578,6 +2578,19 @@ p { margin: 0; }
   padding: 80px 28px 100px;
 }
 
+.onb-hero-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.onb-hero-copy { flex: 1 1 480px; min-width: 0; }
+.onb-hero-cta  { flex: 0 0 auto; }
+@media (max-width: 720px) {
+  .onb-hero-row { justify-content: center; text-align: center; }
+}
+
 /* ============================================================
    LOGO STRIP / MARQUEE
    ============================================================ */
