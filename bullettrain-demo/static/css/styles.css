@@ -4802,6 +4802,9 @@ footer .footer-brand-desc {
   .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 24px; }
 
   .split { grid-template-columns: 1fr; gap: 36px; }
+  /* On mobile, show the copy column first for split-reverse sections */
+  .split-reverse > *:first-child  { order: 2; }
+  .split-reverse > *:nth-child(2) { order: 1; }
   .runner-body { grid-template-columns: 1fr; }
   .score-card { grid-template-columns: 1fr; text-align: center; }
   .result-panels { grid-template-columns: 1fr; }
