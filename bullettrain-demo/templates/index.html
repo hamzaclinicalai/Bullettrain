@@ -568,38 +568,14 @@
      ================================================================ -->
 <section style="background:#04080F;padding:72px 0;">
   <div class="container">
-    <div class="split">
-      <div class="reveal">
-        <span class="eyebrow">Built for enterprise L&amp;D teams</span>
-        <h2>Deploy scenarios. Set the bar. Require the test.</h2>
-        <p>Assign practice scenarios to any team across your organization. When they are ready, require them to pass a graded test and meet your performance threshold before they step onto the floor.</p>
-        <ul>
-          <li>
-            <svg width="18" height="18" style="flex-shrink:0;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            <div><b>Assign practice scenarios</b> — staff warm up with guided reps at their own pace. The avatar coaches; no trainer required.</div>
-          </li>
-          <li>
-            <svg width="18" height="18" style="flex-shrink:0;color:var(--signal-purple)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            <div><b>Require the blind test</b> — managers set a minimum score threshold. Staff must pass before they are cleared for the floor.</div>
-          </li>
-          <li>
-            <svg width="18" height="18" style="flex-shrink:0;color:var(--signal-green)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <div><b>See who is ready</b> — objective-by-objective scores and AI coaching notes surface exactly where each person stands. No guesswork.</div>
-          </li>
-        </ul>
-      </div>
+    <div class="split split-reverse">
 
-      <div class="ent-dash-wrap reveal reveal-delay-2">
+      <div class="ent-dash-wrap reveal reveal-delay-1">
         <div class="ent-dash" id="ent-dash">
 
-          <!-- Browser chrome -->
+          <!-- Window dots only (no URL bar, no live indicator) -->
           <div class="ent-dash-chrome">
             <div class="ent-dash-dots"><i></i><i></i><i></i></div>
-            <div class="ent-dash-url">app.bullettrain.ai / manager</div>
-            <div class="ent-dash-pill-mini" id="ent-dash-mode">
-              <span class="ent-dash-pill-dot"></span>
-              Live
-            </div>
           </div>
 
           <!-- Stage -->
@@ -634,46 +610,81 @@
                 </div>
               </div>
 
-              <div class="ent-dash-list-label">Locations</div>
-              <div class="ent-dash-list">
-                <div class="ent-dash-row">
-                  <div class="ent-dash-row-name">
-                    <div class="ent-dash-row-icon" style="background:rgba(27,158,255,0.14);border-color:rgba(27,158,255,0.30);color:#4DCFFF;">DT</div>
-                    <span>Downtown Detroit</span>
+              <div class="ent-dash-list-head">
+                <span class="ent-dash-list-label">Locations</span>
+                <span class="ent-dash-list-count">42 total</span>
+              </div>
+              <div class="ent-dash-scroll" id="ent-dash-scroll-loc">
+                <div class="ent-dash-list">
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-icon" style="background:rgba(27,158,255,0.14);border-color:rgba(27,158,255,0.30);color:#4DCFFF;">DT</div>
+                      <span>Downtown Detroit</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-row-meta-item">24 staff</span><span class="ent-dash-pill pass">91%</span></div>
                   </div>
-                  <div class="ent-dash-row-meta">
-                    <span class="ent-dash-row-meta-item">24 staff</span>
-                    <span class="ent-dash-pill pass">91%</span>
+                  <div class="ent-dash-row" data-target="franchise">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-icon" style="background:rgba(0,229,160,0.14);border-color:rgba(0,229,160,0.30);color:#00E5A0;">NM</div>
+                      <span>Northland Mall</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-row-meta-item">18 staff</span><span class="ent-dash-pill pass">88%</span></div>
                   </div>
-                </div>
-                <div class="ent-dash-row" data-target="franchise">
-                  <div class="ent-dash-row-name">
-                    <div class="ent-dash-row-icon" style="background:rgba(0,229,160,0.14);border-color:rgba(0,229,160,0.30);color:#00E5A0;">NM</div>
-                    <span>Northland Mall</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-icon" style="background:rgba(245,158,11,0.14);border-color:rgba(245,158,11,0.30);color:#FCD34D;">LP</div>
+                      <span>Lakeside Plaza</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-row-meta-item">16 staff</span><span class="ent-dash-pill amber">78%</span></div>
                   </div>
-                  <div class="ent-dash-row-meta">
-                    <span class="ent-dash-row-meta-item">18 staff</span>
-                    <span class="ent-dash-pill pass">88%</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-icon" style="background:rgba(239,68,68,0.14);border-color:rgba(239,68,68,0.30);color:#F87171;">RO</div>
+                      <span>Riverside Outlet</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-row-meta-item">12 staff</span><span class="ent-dash-pill red">67%</span></div>
                   </div>
-                </div>
-                <div class="ent-dash-row">
-                  <div class="ent-dash-row-name">
-                    <div class="ent-dash-row-icon" style="background:rgba(245,158,11,0.14);border-color:rgba(245,158,11,0.30);color:#FCD34D;">LP</div>
-                    <span>Lakeside Plaza</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-icon" style="background:rgba(27,158,255,0.14);border-color:rgba(27,158,255,0.30);color:#4DCFFF;">SC</div>
+                      <span>Southfield Crossing</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-row-meta-item">22 staff</span><span class="ent-dash-pill pass">89%</span></div>
                   </div>
-                  <div class="ent-dash-row-meta">
-                    <span class="ent-dash-row-meta-item">16 staff</span>
-                    <span class="ent-dash-pill amber">78%</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-icon" style="background:rgba(0,229,160,0.14);border-color:rgba(0,229,160,0.30);color:#00E5A0;">AT</div>
+                      <span>Auburn Town Center</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-row-meta-item">14 staff</span><span class="ent-dash-pill pass">86%</span></div>
                   </div>
-                </div>
-                <div class="ent-dash-row">
-                  <div class="ent-dash-row-name">
-                    <div class="ent-dash-row-icon" style="background:rgba(239,68,68,0.14);border-color:rgba(239,68,68,0.30);color:#F87171;">RO</div>
-                    <span>Riverside Outlet</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-icon" style="background:rgba(245,158,11,0.14);border-color:rgba(245,158,11,0.30);color:#FCD34D;">RH</div>
+                      <span>Rochester Hills</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-row-meta-item">11 staff</span><span class="ent-dash-pill amber">74%</span></div>
                   </div>
-                  <div class="ent-dash-row-meta">
-                    <span class="ent-dash-row-meta-item">12 staff</span>
-                    <span class="ent-dash-pill red">67%</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-icon" style="background:rgba(27,158,255,0.14);border-color:rgba(27,158,255,0.30);color:#4DCFFF;">FH</div>
+                      <span>Farmington Hills</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-row-meta-item">19 staff</span><span class="ent-dash-pill pass">85%</span></div>
+                  </div>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-icon" style="background:rgba(0,229,160,0.14);border-color:rgba(0,229,160,0.30);color:#00E5A0;">WB</div>
+                      <span>West Bloomfield</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-row-meta-item">15 staff</span><span class="ent-dash-pill pass">90%</span></div>
+                  </div>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-icon" style="background:rgba(239,68,68,0.14);border-color:rgba(239,68,68,0.30);color:#F87171;">DA</div>
+                      <span>Dearborn Annex</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-row-meta-item">9 staff</span><span class="ent-dash-pill red">62%</span></div>
                   </div>
                 </div>
               </div>
@@ -709,42 +720,95 @@
                 </div>
               </div>
 
-              <div class="ent-dash-list-label">Staff</div>
-              <div class="ent-dash-list">
-                <div class="ent-dash-row">
-                  <div class="ent-dash-row-name">
-                    <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#1B9EFF,#0D6FCC);">DR</div>
-                    <span>Dana R.</span>
+              <div class="ent-dash-list-head">
+                <span class="ent-dash-list-label">Staff</span>
+                <span class="ent-dash-list-count">18 total</span>
+              </div>
+              <div class="ent-dash-scroll" id="ent-dash-scroll-staff">
+                <div class="ent-dash-list">
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#1B9EFF,#0D6FCC);">DR</div>
+                      <span>Dana R.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill pass">87%</span></div>
                   </div>
-                  <div class="ent-dash-row-meta">
-                    <span class="ent-dash-pill pass">87%</span>
+                  <div class="ent-dash-row" data-target="employee">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#00E5A0,#00A876);">MT</div>
+                      <span>Marcus T.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill pass">91%</span></div>
                   </div>
-                </div>
-                <div class="ent-dash-row" data-target="employee">
-                  <div class="ent-dash-row-name">
-                    <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#00E5A0,#00A876);">MT</div>
-                    <span>Marcus T.</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706);">JK</div>
+                      <span>Jordan K.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill amber">In progress</span></div>
                   </div>
-                  <div class="ent-dash-row-meta">
-                    <span class="ent-dash-pill pass">91%</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#EF4444,#B91C1C);">RM</div>
+                      <span>Riley M.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill red">61%</span></div>
                   </div>
-                </div>
-                <div class="ent-dash-row">
-                  <div class="ent-dash-row-name">
-                    <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706);">JK</div>
-                    <span>Jordan K.</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);">PS</div>
+                      <span>Priya S.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill pass">93%</span></div>
                   </div>
-                  <div class="ent-dash-row-meta">
-                    <span class="ent-dash-pill amber">In progress</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#EC4899,#BE185D);">TN</div>
+                      <span>Talia N.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill pass">85%</span></div>
                   </div>
-                </div>
-                <div class="ent-dash-row">
-                  <div class="ent-dash-row-name">
-                    <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#EF4444,#B91C1C);">RM</div>
-                    <span>Riley M.</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#1B9EFF,#0D6FCC);">CO</div>
+                      <span>Carlos O.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill pass">82%</span></div>
                   </div>
-                  <div class="ent-dash-row-meta">
-                    <span class="ent-dash-pill red">61%</span>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706);">AB</div>
+                      <span>Avery B.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill amber">In progress</span></div>
+                  </div>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#00E5A0,#00A876);">SH</div>
+                      <span>Sam H.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill pass">88%</span></div>
+                  </div>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#EF4444,#B91C1C);">NL</div>
+                      <span>Nia L.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill red">59%</span></div>
+                  </div>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);">DV</div>
+                      <span>Diego V.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill pass">90%</span></div>
+                  </div>
+                  <div class="ent-dash-row">
+                    <div class="ent-dash-row-name">
+                      <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#1B9EFF,#0D6FCC);">EP</div>
+                      <span>Emma P.</span>
+                    </div>
+                    <div class="ent-dash-row-meta"><span class="ent-dash-pill pass">84%</span></div>
                   </div>
                 </div>
               </div>
@@ -791,20 +855,72 @@
                 </div>
               </div>
 
-              <div class="ent-dash-list-label">Skill breakdown</div>
-              <div class="ent-dash-chart">
-                <div class="ent-dash-chart-bar" data-h="92"><span class="ent-dash-chart-lbl">Listen</span></div>
-                <div class="ent-dash-chart-bar" data-h="88"><span class="ent-dash-chart-lbl">Validate</span></div>
-                <div class="ent-dash-chart-bar" data-h="78"><span class="ent-dash-chart-lbl">Reframe</span></div>
-                <div class="ent-dash-chart-bar" data-h="95"><span class="ent-dash-chart-lbl">Resolve</span></div>
-                <div class="ent-dash-chart-bar" data-h="84"><span class="ent-dash-chart-lbl">Close</span></div>
+              <div class="ent-dash-list-head">
+                <span class="ent-dash-list-label">Test history</span>
+                <span class="ent-dash-list-count">8 sessions</span>
               </div>
-
-              <div class="ent-dash-coach">
-                <div class="ent-dash-coach-icon">★</div>
-                <div class="ent-dash-coach-body">
-                  <div class="ent-dash-coach-title">AI Coaching Note</div>
-                  <div class="ent-dash-coach-text">Strong listening and resolution. Reframe scores trail by ~10pts — surface the customer's underlying value before pivoting.</div>
+              <div class="ent-dash-scroll ent-dash-scroll-history">
+                <div class="ent-dash-history">
+                  <div class="ent-dash-hist-row">
+                    <div class="ent-dash-hist-meta">
+                      <div class="ent-dash-hist-scenario">Customer Recovery · Test</div>
+                      <div class="ent-dash-hist-date">Mar 14, 2026</div>
+                    </div>
+                    <div class="ent-dash-hist-score">
+                      <span class="ent-dash-hist-pct">91%</span>
+                      <span class="ent-dash-pill pass">A−</span>
+                    </div>
+                  </div>
+                  <div class="ent-dash-hist-row">
+                    <div class="ent-dash-hist-meta">
+                      <div class="ent-dash-hist-scenario">Membership Close · Practice</div>
+                      <div class="ent-dash-hist-date">Mar 12, 2026</div>
+                    </div>
+                    <div class="ent-dash-hist-score">
+                      <span class="ent-dash-hist-pct">89%</span>
+                      <span class="ent-dash-pill pass">B+</span>
+                    </div>
+                  </div>
+                  <div class="ent-dash-hist-row">
+                    <div class="ent-dash-hist-meta">
+                      <div class="ent-dash-hist-scenario">Account Renewal · Test</div>
+                      <div class="ent-dash-hist-date">Mar 09, 2026</div>
+                    </div>
+                    <div class="ent-dash-hist-score">
+                      <span class="ent-dash-hist-pct">84%</span>
+                      <span class="ent-dash-pill pass">B</span>
+                    </div>
+                  </div>
+                  <div class="ent-dash-hist-row">
+                    <div class="ent-dash-hist-meta">
+                      <div class="ent-dash-hist-scenario">Guest Recovery · Practice</div>
+                      <div class="ent-dash-hist-date">Mar 06, 2026</div>
+                    </div>
+                    <div class="ent-dash-hist-score">
+                      <span class="ent-dash-hist-pct">92%</span>
+                      <span class="ent-dash-pill pass">A−</span>
+                    </div>
+                  </div>
+                  <div class="ent-dash-hist-row">
+                    <div class="ent-dash-hist-meta">
+                      <div class="ent-dash-hist-scenario">Customer Recovery · Practice</div>
+                      <div class="ent-dash-hist-date">Mar 02, 2026</div>
+                    </div>
+                    <div class="ent-dash-hist-score">
+                      <span class="ent-dash-hist-pct">76%</span>
+                      <span class="ent-dash-pill amber">B−</span>
+                    </div>
+                  </div>
+                  <div class="ent-dash-hist-row">
+                    <div class="ent-dash-hist-meta">
+                      <div class="ent-dash-hist-scenario">Membership Close · Practice</div>
+                      <div class="ent-dash-hist-date">Feb 26, 2026</div>
+                    </div>
+                    <div class="ent-dash-hist-score">
+                      <span class="ent-dash-hist-pct">81%</span>
+                      <span class="ent-dash-pill pass">B−</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -820,6 +936,26 @@
           </div>
 
         </div><!-- /.ent-dash -->
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <span class="eyebrow">Built for enterprise L&amp;D teams</span>
+        <h2>Deploy scenarios. Set the bar. Require the test.</h2>
+        <p>Assign practice scenarios to any team across your organization. When they are ready, require them to pass a graded test and meet your performance threshold before they step onto the floor.</p>
+        <ul>
+          <li>
+            <svg width="18" height="18" style="flex-shrink:0;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <div><b>Assign practice scenarios</b> — staff warm up with guided reps at their own pace. The avatar coaches; no trainer required.</div>
+          </li>
+          <li>
+            <svg width="18" height="18" style="flex-shrink:0;color:var(--signal-purple)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <div><b>Require the blind test</b> — managers set a minimum score threshold. Staff must pass before they are cleared for the floor.</div>
+          </li>
+          <li>
+            <svg width="18" height="18" style="flex-shrink:0;color:var(--signal-green)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <div><b>See who is ready</b> — objective-by-objective scores and AI coaching notes surface exactly where each person stands. No guesswork.</div>
+          </li>
+        </ul>
       </div>
 
 <script>
@@ -855,30 +991,41 @@
     }, 700);
   }
 
+  // Track active intervals per element so we can cancel cleanly between cycles
+  const numIntervals = new WeakMap();
+
   function animateNum(el) {
-    if (!el) return;
-    const target = parseInt(el.dataset.num, 10) || 0;
-    el.textContent = '0';
+    if (!el || !el.dataset) return;
+    // Cancel any in-flight animation on this element
+    const old = numIntervals.get(el);
+    if (old) clearInterval(old);
+
+    const raw = el.dataset.num;
+    const parsed = parseInt(raw, 10);
+    const target = Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+
+    el.textContent = String(target === 0 ? 0 : 0);
+    if (target <= 0) return;
+
     let n = 0;
-    const step = Math.max(1, Math.ceil(target / 26));
+    const step = Math.max(1, Math.ceil(target / 24));
     const t = setInterval(() => {
       n = Math.min(n + step, target);
-      el.textContent = n;
-      if (n >= target) clearInterval(t);
-    }, 30);
+      if (Number.isFinite(n)) el.textContent = String(n);
+      if (n >= target) {
+        clearInterval(t);
+        numIntervals.delete(el);
+      }
+    }, 28);
+    numIntervals.set(el, t);
   }
 
   function animateView(name) {
     const v = dash.querySelector('[data-view="' + name + '"]');
     if (!v) return;
     v.querySelectorAll('.ent-dash-stat-num').forEach(animateNum);
-    if (name === 'employee') {
-      const bars = v.querySelectorAll('.ent-dash-chart-bar');
-      bars.forEach((b, i) => {
-        b.style.height = '0%';
-        setTimeout(() => { b.style.height = b.dataset.h + '%'; }, 200 + i * 110);
-      });
-    }
+    // Reset any open scroll containers in this view
+    v.querySelectorAll('.ent-dash-scroll').forEach(s => { s.scrollTop = 0; });
   }
 
   function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -889,31 +1036,31 @@
       showView('company');
       cursor.classList.remove('visible');
       animateView('company');
-      await wait(1000);
+      await wait(700);
       cursor.classList.add('visible');
 
       const franchise = dash.querySelector('[data-view="company"] .ent-dash-row[data-target="franchise"]');
       moveCursorTo(franchise);
-      await wait(1700);
+      await wait(1100);
       clickAt(franchise);
-      await wait(550);
+      await wait(400);
 
       // ── State 2: Franchise
       showView('franchise');
       animateView('franchise');
-      await wait(2400);
+      await wait(1500);
 
       const employee = dash.querySelector('[data-view="franchise"] .ent-dash-row[data-target="employee"]');
       moveCursorTo(employee);
-      await wait(1300);
+      await wait(900);
       clickAt(employee);
-      await wait(550);
+      await wait(400);
 
       // ── State 3: Employee
       showView('employee');
       cursor.classList.remove('visible');
       animateView('employee');
-      await wait(4200);
+      await wait(3000);
     }
   }
 
