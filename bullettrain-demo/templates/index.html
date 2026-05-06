@@ -56,7 +56,16 @@
           <div class="hav-video-env"></div>
 
           <!-- PIXAR-STYLE PERSON -->
-          <div class="hav-person-wrap" id="hav-person-wrap">
+          <!-- Pre-applied avatar matches the first scenario (Technology · Account Renewal,
+               Priya — female, long dark hair, warm brown skin, dark brown eyes, purple top)
+               so the correct avatar paints immediately rather than the default male appearing
+               for a split second before the JS swap. -->
+          <div class="hav-person-wrap is-female" id="hav-person-wrap"
+               style="--av-hair-1:#1A0805; --av-hair-2:#0A0403;
+                      --av-skin-1:#E2A874; --av-skin-2:#C68450; --av-skin-3:#9C5E2E; --av-skin-4:#6A3A14;
+                      --av-iris-1:#6A4828; --av-iris-2:#3A2010; --av-iris-3:#1A0E04;
+                      --av-shirt-1:#7B4FB8; --av-shirt-2:#4A2A82; --av-shirt-3:#26144A;
+                      --av-brow:#1A0805; --av-brow-deep:#0A0403;">
             <div class="hav-head-group">
               <!-- Ears behind face -->
               <div class="hav-ear hav-ear-l"></div>
@@ -147,7 +156,7 @@
 
         <!-- Industry label -->
         <div style="text-align:center;margin-bottom:10px;">
-          <span class="hav-industry-label" id="hav-industry-label">Fast Food · Customer Recovery</span>
+          <span class="hav-industry-label" id="hav-industry-label">Technology · Account Renewal</span>
         </div>
 
         <!-- Conversation bubbles (scrollable) -->
