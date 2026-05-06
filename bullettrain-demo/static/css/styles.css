@@ -2675,18 +2675,18 @@ p { margin: 0; }
   height: 0;
 }
 
-/* Spacers at start/end so first and last cards can also center */
+/* Spacers at start/end so the loop-clones can also center */
 .industry-carousel::before,
 .industry-carousel::after {
   content: '';
-  flex: 0 0 12.5%;
+  flex: 0 0 17.5%;
   align-self: stretch;
 }
 
-/* Each card occupies ~75% of the carousel width, leaving ~12.5% peek
+/* Each card occupies ~65% of the carousel width, leaving ~17.5% peek
    of the previous and next cards on either side. */
 .industry-card {
-  flex: 0 0 75%;
+  flex: 0 0 65%;
   max-width: none;
   min-width: 0;
   scroll-snap-align: center;

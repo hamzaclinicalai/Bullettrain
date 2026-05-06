@@ -58,7 +58,7 @@ SIMULATIONS = [
     {
         "id": "qsr-customer-recovery",
         "avatar_id": "5dd4d830-957a-419f-9334-0dc4399ada5d",
-        "industry": "Quick Service Restaurant",
+        "industry": "Fast Food Franchise",
         "title": "Customer Recovery at the Counter",
         "tagline": "De-escalate a frustrated guest and rescue the visit.",
         "duration": "8-12 min",

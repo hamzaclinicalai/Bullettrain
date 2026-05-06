@@ -7,7 +7,7 @@
 <!-- ================================================================
      HERO
      ================================================================ -->
-<section class="hero" style="min-height:90vh;">
+<section class="hero" style="min-height:auto;padding-top:36px;padding-bottom:48px;">
   <!-- Background layers -->
   <div class="hero-orbs">
     <div class="orb orb-1"></div>
@@ -147,7 +147,7 @@
 
         <!-- Industry label -->
         <div style="text-align:center;margin-bottom:10px;">
-          <span class="hav-industry-label" id="hav-industry-label">Quick Service · Customer Recovery</span>
+          <span class="hav-industry-label" id="hav-industry-label">Fast Food · Customer Recovery</span>
         </div>
 
         <!-- Conversation bubbles (scrollable) -->
@@ -252,7 +252,7 @@
       ]
     },
     {
-      industry: "Quick Service · Customer Recovery",
+      industry: "Fast Food · Customer Recovery",
       avatar: {
         female: true,
         vars: {
@@ -526,8 +526,7 @@
   <div class="container" style="position:relative;z-index:1;">
     <div class="section-head reveal" style="margin-bottom:48px;">
       <span class="eyebrow on-dark">Built as an industry agnostic platform.</span>
-      <h2 style="margin-top:12px;">Real conversations for every team, every role, every moment.</h2>
-      <p style="margin-top:14px;font-size:15px;color:var(--text-secondary);">Select an industry below to launch a live demo simulation.</p>
+      <h2 style="margin-top:12px;">Select an industry below to launch a live demo simulation.</h2>
     </div>
     <div class="industry-carousel-wrap">
       <button class="industry-carousel-arrow industry-carousel-arrow-prev" id="industry-carousel-prev" type="button" aria-label="Previous industry">
@@ -542,7 +541,7 @@
 
         <a href="{{ url_for('simulation_detail', sim_id='qsr-customer-recovery') }}" class="industry-card" style="text-decoration:none;">
           <div class="industry-card-icon">🍔</div>
-          <div class="industry-card-name">QSR Franchise</div>
+          <div class="industry-card-name">Fast Food Franchise</div>
           <div class="industry-card-desc">Counter recovery, wrong orders, lunch-rush pressure</div>
           <div class="industry-card-cta">Try demo →</div>
           <div class="industry-card-rail" style="background:var(--accent);"></div>
@@ -1029,8 +1028,8 @@
       scroll.appendChild(card);
     });
 
-    // Transcript section
-    scroll.appendChild(elt('div', 'ent-dash-asses-section-label', 'Transcript excerpt'));
+    // Full transcript section
+    scroll.appendChild(elt('div', 'ent-dash-asses-section-label', 'Full transcript'));
     const ts = elt('div', 'ent-dash-asses-transcript');
     ASSESSMENT.transcript.forEach(t => {
       const b = elt('div', 'ent-dash-asses-bubble ' + (t.who === 'user' ? 'user' : 'avatar'), t.text);
