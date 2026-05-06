@@ -340,6 +340,11 @@ def catalog():
     return render_template("catalog.html", simulations=SIMULATIONS)
 
 
+@app.route("/onboarding")
+def onboarding():
+    return render_template("onboarding.html")
+
+
 @app.route("/simulations")
 def simulations():
     return render_template("simulations.html", simulations=SIMULATIONS)
