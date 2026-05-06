@@ -38,6 +38,7 @@
 
     <!-- Nav links -->
     <nav class="nav-links" id="nav-menu">
+      <a href="{{ url_for('index') }}">Home</a>
       <a href="{{ url_for('simulations') }}">Simulations</a>
       <a href="{{ url_for('platform') }}">Platform</a>
       <a href="{{ url_for('about') }}">About</a>
@@ -57,20 +58,17 @@
 
       <!-- Brand column -->
       <div>
-        <div class="footer-brand-text">
-          <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="6" y="12" width="24" height="14" rx="3" fill="#E8F4FF" opacity="0.9"/>
-            <path d="M30 12 L34 19 L30 26 Z" fill="#C8E8FF" opacity="0.8"/>
-            <rect x="9" y="15" width="5" height="4" rx="1" fill="#1B9EFF"/>
-            <rect x="16" y="15" width="5" height="4" rx="1" fill="#1B9EFF"/>
-            <circle cx="12" cy="27" r="2.5" fill="#94A3B8"/>
-            <circle cx="24" cy="27" r="2.5" fill="#94A3B8"/>
-            <line x1="0" y1="16" x2="5" y2="16" stroke="#1B9EFF" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
-            <line x1="0" y1="19" x2="4" y2="19" stroke="#1B9EFF" stroke-width="2" stroke-linecap="round"/>
-            <line x1="0" y1="22" x2="5" y2="22" stroke="#1B9EFF" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
-          </svg>
-          BulletTrain<span style="color:var(--accent);">.ai</span>
-        </div>
+        <a href="{{ url_for('index') }}" class="footer-brand-text" style="text-decoration:none;display:inline-block;margin-bottom:14px;">
+          {% if has_logo_png %}
+            <img src="{{ url_for('static', filename='img/logo-icon.png') }}"
+                 alt="BulletTrain.ai"
+                 style="height:48px;width:auto;max-width:200px;object-fit:contain;display:block;" />
+          {% else %}
+            <img src="{{ url_for('static', filename='img/logo-wordmark.svg') }}"
+                 alt="BulletTrain.ai"
+                 style="height:48px;width:auto;max-width:200px;object-fit:contain;display:block;" />
+          {% endif %}
+        </a>
         <p class="footer-brand-desc">
           Enterprise training reimagined. Practice real conversations with AI avatars, track skill growth, and build confident teams.
         </p>
@@ -80,10 +78,10 @@
       <div>
         <h4>Platform</h4>
         <ul>
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('simulations') }}">Simulations</a></li>
           <li><a href="{{ url_for('catalog') }}">Simulation Library</a></li>
           <li><a href="{{ url_for('platform') }}">How It Works</a></li>
-          <li><a href="#">Analytics</a></li>
-          <li><a href="#">Integrations</a></li>
         </ul>
       </div>
 
@@ -92,29 +90,13 @@
         <h4>Company</h4>
         <ul>
           <li><a href="{{ url_for('about') }}">About</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Privacy</a></li>
-          <li><a href="#">Terms</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact -->
-      <div>
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="mailto:hello@bullettrain.ai">hello@bullettrain.ai</a></li>
-          <li><a href="#">Book a demo</a></li>
-          <li><a href="#">Support</a></li>
+          <li><a href="mailto:hello@bullettrain.ai">Contact Us</a></li>
         </ul>
       </div>
 
       <!-- Colophon -->
       <div class="colophon">
         <span>&copy; {{ current_year }} BulletTrain AI, Inc. All rights reserved.</span>
-        <span style="display:flex;gap:20px;">
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-        </span>
       </div>
 
     </div>
