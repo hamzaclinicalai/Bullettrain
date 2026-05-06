@@ -207,7 +207,15 @@ async function fetchAndSpeakResponse(userText) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ session_id: SESSION_ID, text: userText }),
     });
-    if (!res.ok) throw new Error(`respond ${res.status}`);
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      const msg = errData.error || `Server error (${res.status})`;
+      if (msg.includes("AI backends failed") || res.status === 500) {
+        showOverlay("⚠️", "AI not configured", "No Gemini API key found. Add GEMINI_API_KEY to your .env file and restart the server.");
+        return;
+      }
+      throw new Error(msg);
+    }
     const data = await res.json();
     if (!data.text) throw new Error("empty response");
     responseText = data.text;
