@@ -391,8 +391,8 @@ def onboarding():
     return render_template("onboarding.html")
 
 
-@app.route("/simulations")
-def simulations():
+@app.route("/userexperience")
+def userexperience():
     return render_template("simulations.html", simulations=SIMULATIONS)
 
 
