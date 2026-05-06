@@ -57,6 +57,7 @@ def inject_globals():
 SIMULATIONS = [
     {
         "id": "qsr-customer-recovery",
+        "avatar_id": "5dd4d830-957a-419f-9334-0dc4399ada5d",
         "industry": "Quick Service Restaurant",
         "title": "Customer Recovery at the Counter",
         "tagline": "De-escalate a frustrated guest and rescue the visit.",
@@ -92,6 +93,7 @@ SIMULATIONS = [
     },
     {
         "id": "fitness-membership-objections",
+        "avatar_id": "55eec60c-d665-4972-a529-bbdcaf665ab8",
         "industry": "Fitness Franchise",
         "title": "Closing the New Member Tour",
         "tagline": "Convert a tour into a paid membership without pressure.",
@@ -125,6 +127,7 @@ SIMULATIONS = [
     },
     {
         "id": "hospitality-guest-checkin",
+        "avatar_id": "7b888024-f8c9-4205-95e1-78ce01497bda",
         "industry": "Hospitality Franchise",
         "title": "VIP Guest Check-In Recovery",
         "tagline": "Handle a botched reservation for a loyalty member.",
@@ -159,6 +162,7 @@ SIMULATIONS = [
     },
     {
         "id": "auto-service-advisor",
+        "avatar_id": "8175dfc2-7858-49d6-b5fa-0c135d1c4bad",
         "industry": "Automotive Franchise",
         "title": "Service Advisor Up-Sell",
         "tagline": "Recommend additional service without breaking trust.",
@@ -193,6 +197,7 @@ SIMULATIONS = [
     },
     {
         "id": "retail-shrink-conversation",
+        "avatar_id": "dc2935cf-5863-4f08-943b-c7478aea59fb",
         "industry": "Retail Franchise",
         "title": "Coaching a Struggling Team Member",
         "tagline": "Manager-to-lead coaching conversation on performance and accountability.",
@@ -226,6 +231,7 @@ SIMULATIONS = [
     },
     {
         "id": "tech-enterprise-renewal",
+        "avatar_id": "7a517e8e-b41f-49e7-b6b3-2cdfb4bbff1e",
         "industry": "Technology",
         "title": "Enterprise Account Renewal",
         "tagline": "Save a churning enterprise SaaS account before renewal.",
@@ -385,8 +391,9 @@ def create_session_token():
     if simulation:
         persona_context = build_system_prompt(simulation, mode)
 
+    avatar_id = (simulation.get("avatar_id") if simulation else None) or LIVEAVATAR_AVATAR_ID
     payload = {
-        "avatar_id": LIVEAVATAR_AVATAR_ID,
+        "avatar_id": avatar_id,
         "mode": "FULL",
     }
     if persona_context:
@@ -426,7 +433,7 @@ def create_session_token():
     return jsonify(
         {
             "session_token": payload_data["session_token"],
-            "avatar_id": LIVEAVATAR_AVATAR_ID,
+            "avatar_id": avatar_id,
         }
     )
 
