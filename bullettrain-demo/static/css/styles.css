@@ -4810,64 +4810,90 @@ footer .footer-brand-desc {
   min-height: 320px;
 }
 
-/* ─── Pane 1: Calendar widget ────────────────────────────────── */
-.onb-cal {
+/* ─── Pane 1: Discovery call confirmation ───────────────────── */
+.onb-call {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0 4px;
+  position: relative;
+  text-align: center;
 }
-.onb-cal-head {
+.onb-call-rings {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88px;
+  height: 88px;
+  pointer-events: none;
+}
+.onb-call-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(0,229,160,0.45);
+  border-radius: 50%;
+  opacity: 0;
+  animation: onbCallSonar 2.6s cubic-bezier(.16,1,.3,1) infinite;
+}
+.onb-call-ring-1 { animation-delay: 0s;    }
+.onb-call-ring-2 { animation-delay: 0.85s; }
+.onb-call-ring-3 { animation-delay: 1.7s;  }
+@keyframes onbCallSonar {
+  0%   { transform: scale(0.6); opacity: 0.85; }
+  60%  { opacity: 0.45; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+
+.onb-call-icon {
+  position: relative;
+  width: 88px; height: 88px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #0D1421 0%, #060A14 100%);
+  border: 2px solid rgba(27,158,255,0.40);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  color: var(--accent-soft);
+  box-shadow: 0 0 22px rgba(27,158,255,0.30), 0 12px 28px rgba(0,0,0,0.45);
+  z-index: 2;
+  transition: border-color 0.5s, box-shadow 0.5s;
 }
-.onb-cal-month {
+.onb-call-icon.is-shown {
+  border-color: rgba(0,229,160,0.55);
+  box-shadow: 0 0 26px rgba(0,229,160,0.40), 0 12px 28px rgba(0,0,0,0.45);
+}
+.onb-call-icon > svg:first-child {
+  width: 44px; height: 44px;
+}
+.onb-call-check {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 30px;
+  height: 30px;
+  filter: drop-shadow(0 4px 10px rgba(0,229,160,0.45));
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.4s, transform 0.4s cubic-bezier(.34,1.56,.64,1);
+}
+.onb-call-icon.is-shown .onb-call-check {
+  opacity: 1;
+  transform: scale(1);
+}
+#onb-call-check-path {
+  transition: stroke-dashoffset 0.7s cubic-bezier(.16,1,.3,1) 0.15s;
+}
+
+.onb-call-label {
   font-family: var(--font-display);
+  font-size: 18px;
   font-weight: 700;
-  font-size: 14px;
   color: var(--text-primary);
-}
-.onb-cal-arrows {
-  display: flex;
-  gap: 6px;
-  color: var(--text-muted);
-  font-size: 16px;
-}
-.onb-cal-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-}
-.onb-cal-dow {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
-  text-align: center;
-  padding: 4px 0;
-}
-.onb-cal-day {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  text-align: center;
-  padding: 7px 0;
-  border-radius: 6px;
-  color: var(--text-secondary);
-  background: rgba(255,255,255,0.025);
-  border: 1px solid transparent;
-}
-.onb-cal-day.muted { color: rgba(255,255,255,0.16); }
-.onb-cal-pick {
-  background: rgba(27,158,255,0.18);
-  border-color: rgba(77,207,255,0.55);
-  color: var(--text-primary);
-  font-weight: 700;
-  box-shadow: 0 0 12px rgba(27,158,255,0.40);
-  animation: onbCalPulse 1.6s ease-in-out infinite;
-}
-@keyframes onbCalPulse {
-  0%, 100% { box-shadow: 0 0 8px rgba(27,158,255,0.30); }
-  50%      { box-shadow: 0 0 18px rgba(27,158,255,0.65); }
+  letter-spacing: -0.01em;
+  z-index: 2;
+  margin-top: 4px;
 }
 
 .onb-meet {
@@ -4974,6 +5000,15 @@ footer .footer-brand-desc {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Blur out pricing — figures hidden in the public-facing demo */
+.onb-blur {
+  filter: blur(6px);
+  -webkit-filter: blur(6px);
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: 0.05em;
 }
 .onb-doc-meter {
   margin-top: 8px;
