@@ -49,23 +49,72 @@
         <p>Pick the scenario that matches what your team faces on the job: a service recovery at the counter, a tour close at the gym, a difficult coaching conversation about losses.</p>
       </div>
       <div class="step-visual reveal reveal-delay-2">
-        <div class="mini-cards">
-          <div class="mini-card" style="background:rgba(27,158,255,0.07);border-color:rgba(27,158,255,0.20);">
-            <span style="color:#4DCFFF;">Fast Food</span>
-            <strong>Customer Recovery at the Counter</strong>
+        <div class="sim-frame sim-frame-blue" id="sim-frame-1">
+
+          <div class="sim-state sim-state-list is-active" data-state="list">
+            <div class="sim-frame-head">
+              <span class="sim-mini-pill" style="background:rgba(27,158,255,0.10);border-color:rgba(27,158,255,0.30);color:#4DCFFF;">
+                <span class="sim-pill-dot" style="background:#1B9EFF"></span>Scenario Library
+              </span>
+              <span class="sim-frame-status">12 scenarios</span>
+            </div>
+            <div class="sim-list">
+              <div class="sim-list-item" data-pick style="--c:#4DCFFF">
+                <span class="sim-list-tag" style="background:rgba(27,158,255,0.12);border-color:rgba(27,158,255,0.30);color:#4DCFFF;">Fast Food</span>
+                <strong>Customer Recovery at the Counter</strong>
+                <span class="sim-list-arrow">→</span>
+              </div>
+              <div class="sim-list-item" style="--c:#00E5A0">
+                <span class="sim-list-tag" style="background:rgba(0,229,160,0.12);border-color:rgba(0,229,160,0.30);color:#00E5A0;">Fitness</span>
+                <strong>Closing the New Member Tour</strong>
+                <span class="sim-list-arrow">→</span>
+              </div>
+              <div class="sim-list-item" style="--c:#c4b5fd">
+                <span class="sim-list-tag" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.30);color:#c4b5fd;">Hospitality</span>
+                <strong>VIP Guest Check-In Recovery</strong>
+                <span class="sim-list-arrow">→</span>
+              </div>
+              <div class="sim-list-item" style="--c:#FCD34D">
+                <span class="sim-list-tag" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.30);color:#FCD34D;">Automotive</span>
+                <strong>Service Advisor Up-Sell</strong>
+                <span class="sim-list-arrow">→</span>
+              </div>
+            </div>
           </div>
-          <div class="mini-card" style="background:rgba(0,229,160,0.07);border-color:rgba(0,229,160,0.20);">
-            <span style="color:#00E5A0;">Fitness</span>
-            <strong>Closing the New Member Tour</strong>
+
+          <div class="sim-state sim-state-detail" data-state="detail">
+            <div class="sim-frame-head">
+              <span class="sim-mini-pill" style="background:rgba(27,158,255,0.10);border-color:rgba(27,158,255,0.30);color:#4DCFFF;">
+                <span class="sim-back-arrow">←</span>Customer Recovery
+              </span>
+              <span class="sim-frame-status">Foundational · 8–12 min</span>
+            </div>
+            <div class="sim-detail-scroll" id="sim1-scroll">
+              <div class="sim-detail-section-label">The setup</div>
+              <p>A regular customer just received the wrong order at the counter for the third time this month. Lunch rush is at peak and two more guests are waiting in line behind her.</p>
+              <div class="sim-detail-section-label">Your role</div>
+              <p>You are the shift lead. Acknowledge the issue, take ownership, offer a remedy, and protect service times for everyone else.</p>
+              <div class="sim-detail-section-label">Objectives</div>
+              <ul class="sim-detail-list">
+                <li>Acknowledge the issue without being defensive.</li>
+                <li>Offer a specific remedy with a timeline.</li>
+                <li>Maintain brand tone — sincere, not corporate.</li>
+                <li>Recover the relationship for the next visit.</li>
+              </ul>
+              <div class="sim-detail-section-label">Difficulty</div>
+              <p>Foundational — appropriate for first-day lead training and recurring quarterly recerts.</p>
+              <div class="sim-detail-section-label">What success looks like</div>
+              <p>Customer leaves calm, with a corrected order and a small goodwill gesture. Conversation stays under 90 seconds.</p>
+            </div>
           </div>
-          <div class="mini-card" style="background:rgba(139,92,246,0.07);border-color:rgba(139,92,246,0.20);">
-            <span style="color:#c4b5fd;">Hospitality</span>
-            <strong>VIP Guest Check-In Recovery</strong>
+
+          <div class="sim-cursor" id="sim1-cursor">
+            <svg viewBox="0 0 18 22" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 2 L2 16 L6.5 12.5 L9 19 L11.5 18 L9 11.5 L14.5 11.5 Z"
+                    fill="#fff" stroke="#0a0a0a" stroke-width="1" stroke-linejoin="round"/>
+            </svg>
           </div>
-          <div class="mini-card" style="background:rgba(245,158,11,0.07);border-color:rgba(245,158,11,0.20);">
-            <span style="color:#FCD34D;">Automotive</span>
-            <strong>Service Advisor Up-Sell</strong>
-          </div>
+
         </div>
       </div>
     </div>
@@ -87,17 +136,24 @@
         <p>No grade. No pressure. Unlimited reps until the trainee feels ready to go for the real run.</p>
       </div>
       <div class="step-visual reveal reveal-delay-2" style="animation-delay:0.5s;">
-        <div class="fake-screen" style="height:auto;">
-          <div class="cluster" style="margin-bottom:12px;">
-            <span class="fake-pill" style="background:rgba(0,229,160,0.12);border-color:rgba(0,229,160,0.25);color:#00E5A0;">
-              <span style="width:7px;height:7px;border-radius:50%;background:#00E5A0;box-shadow:0 0 6px #00E5A0;display:inline-block;animation:pulse 1.5s ease-in-out infinite;"></span>
-              Practice Mode
+        <div class="sim-frame sim-frame-green" id="sim-frame-2">
+          <div class="sim-frame-head">
+            <span class="sim-mini-pill" style="background:rgba(0,229,160,0.12);border-color:rgba(0,229,160,0.30);color:#00E5A0;">
+              <span class="sim-pill-dot" style="background:#00E5A0;box-shadow:0 0 6px #00E5A0;"></span>Practice Mode
             </span>
+            <span class="sim-frame-status">Hints on · No grade</span>
           </div>
-          <div class="fake-bubble">I ordered the grilled chicken wrap but got a burger. Again. This is the third time.</div>
-          <div class="fake-bubble user">I am so sorry about that. Let me fix this right away. Can I get your name?</div>
-          <div style="margin-top:14px;background:rgba(0,229,160,0.07);border:1px solid rgba(0,229,160,0.22);border-radius:10px;padding:10px 14px;font-size:12px;color:#00E5A0;font-family:var(--font-mono);">
-            Hint: Try offering a specific remedy with a timeline.
+          <div class="sim-prompt-card sim-prompt-green">
+            <div class="sim-prompt-label">Scenario</div>
+            <div class="sim-prompt-text">Customer received the wrong wrap (third time). Acknowledge, fix, recover.</div>
+          </div>
+          <div class="sim-convo" id="sim2-convo"></div>
+          <div class="sim-feedback" id="sim2-feedback">
+            <div class="sim-feedback-icon">★</div>
+            <div class="sim-feedback-body">
+              <div class="sim-feedback-title">Inline coaching</div>
+              <div class="sim-feedback-text" id="sim2-feedback-text"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -115,24 +171,26 @@
       <div class="reveal" style="position:relative;">
         <div class="step-ghost">03</div>
         <div class="step-number" style="color:#8B5CF6;">Step 03</div>
-        <h2>Take the blind test.</h2>
+        <h2>Take the test.</h2>
         <p>Test mode is the real thing. The avatar stays fully in character throughout the conversation with zero hints, no soft prompts, and no transcript visible during the run. Everything is recorded.</p>
         <p>This is where preparation meets pressure. Managers can assign test mode as the official assessment, confident that the result is unassisted.</p>
       </div>
       <div class="step-visual reveal reveal-delay-2" style="animation-delay:1s;">
-        <div class="fake-screen" style="height:auto;">
-          <div class="cluster" style="margin-bottom:12px;">
-            <span class="fake-pill" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.30);color:#c4b5fd;">
-              <span style="width:7px;height:7px;border-radius:50%;background:#8B5CF6;display:inline-block;"></span>
-              Test Mode
+        <div class="sim-frame sim-frame-purple" id="sim-frame-3">
+          <div class="sim-frame-head">
+            <span class="sim-mini-pill" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.30);color:#c4b5fd;">
+              <span class="sim-pill-dot" style="background:#8B5CF6;"></span>Test Mode
             </span>
+            <span class="sim-frame-status">Unassisted · Locked</span>
           </div>
-          <div class="fake-bubble">I ordered the grilled chicken wrap but got a burger. Again. This is the third time.</div>
-          <div style="filter:blur(5px);pointer-events:none;user-select:none;">
-            <div class="fake-bubble user">...</div>
+          <div class="sim-prompt-card sim-prompt-purple">
+            <div class="sim-prompt-label">Scenario</div>
+            <div class="sim-prompt-text">Customer received the wrong wrap (third time). Acknowledge, fix, recover.</div>
           </div>
-          <div style="margin-top:14px;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.22);border-radius:10px;padding:10px 14px;font-size:12px;color:rgba(196,181,253,0.85);font-family:var(--font-mono);">
-            Transcript hidden during test mode
+          <div class="sim-convo" id="sim3-convo"></div>
+          <div class="sim-test-foot">
+            <span class="sim-test-rec"><span class="sim-rec-dot"></span>RECORDING</span>
+            <span class="sim-test-info">No hints. No feedback until session ends.</span>
           </div>
         </div>
       </div>
@@ -150,29 +208,69 @@
       <div class="reveal" style="position:relative;">
         <div class="step-ghost" style="right:auto;left:-20px;">04</div>
         <div class="step-number" style="color:#0EA5A4;">Step 04</div>
-        <h2>Get your AI debrief.</h2>
+        <h2>Get your results.</h2>
         <p>The moment the session ends, the platform scores each objective against the full transcript. You see exactly which skills landed, which fell short, and the specific moment in the conversation that explains why.</p>
         <p>Coaching tips are specific to the run, not boilerplate. Managers see the same breakdown and can share it as part of a formal review cycle.</p>
       </div>
       <div class="step-visual reveal reveal-delay-2" style="animation-delay:1.5s;">
-        <div class="fake-score">
-          <div class="fake-score-header">
-            <div class="fake-dial" style="border-color:rgba(14,165,164,0.5);box-shadow:0 0 20px rgba(14,165,164,0.25);">
-              <span>82</span>
+        <div class="sim-frame sim-frame-teal" id="sim-frame-4">
+
+          <div class="sim-frame-head">
+            <span class="sim-mini-pill" style="background:rgba(14,165,164,0.12);border-color:rgba(14,165,164,0.32);color:#5EEAD4;">
+              <span class="sim-pill-dot" style="background:#0EA5A4"></span>Session Debrief
+            </span>
+            <span class="sim-frame-status">Mar 14 · 4:18</span>
+          </div>
+
+          <div class="sim-results-score">
+            <div class="sim-results-dial">
+              <svg viewBox="0 0 100 100" class="sim-dial-svg">
+                <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+                <circle cx="50" cy="50" r="42" fill="none" stroke="url(#sim4grad)" stroke-width="6" stroke-linecap="round"
+                        pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"
+                        id="sim4-arc" transform="rotate(-90 50 50)"/>
+                <defs>
+                  <linearGradient id="sim4grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#0EA5A4"/>
+                    <stop offset="100%" stop-color="#4DCFFF"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="sim-dial-center">
+                <span class="sim-dial-num" id="sim4-num">0</span>
+                <span class="sim-dial-pct">%</span>
+              </div>
             </div>
-            <div>
-              <div style="font-weight:700;color:var(--text-primary);font-size:15px;">Customer Recovery</div>
-              <div style="font-family:var(--font-mono);font-size:11px;color:#0EA5A4;margin-top:3px;text-transform:uppercase;letter-spacing:0.1em;">On Track</div>
+            <div class="sim-results-grade-block">
+              <div class="sim-grade-letter" id="sim4-grade">—</div>
+              <div class="sim-grade-label" id="sim4-status">Calculating</div>
+              <div class="sim-grade-meta">Customer Recovery</div>
             </div>
           </div>
-          <div class="fake-rubric-row">
-            <div style="font-size:13px;color:var(--text-secondary);">Acknowledge the issue without being defensive</div>
-            <div class="fake-rubric-bar"><div style="width:90%;background:linear-gradient(90deg,#0EA5A4,#4DCFFF);height:100%;border-radius:4px;position:absolute;left:0;top:0;"></div></div>
+
+          <div class="sim-results-rubric" id="sim4-rubric">
+            <div class="sim-result-row" data-w="94" data-grade="A">
+              <span class="sim-result-row-label">Acknowledge the issue</span>
+              <div class="sim-result-bar"><div class="sim-result-fill"></div></div>
+              <span class="sim-result-val">—</span>
+            </div>
+            <div class="sim-result-row" data-w="88" data-grade="B+">
+              <span class="sim-result-row-label">Offer a specific remedy</span>
+              <div class="sim-result-bar"><div class="sim-result-fill"></div></div>
+              <span class="sim-result-val">—</span>
+            </div>
+            <div class="sim-result-row" data-w="76" data-grade="B−">
+              <span class="sim-result-row-label">Maintain brand tone</span>
+              <div class="sim-result-bar"><div class="sim-result-fill"></div></div>
+              <span class="sim-result-val">—</span>
+            </div>
           </div>
-          <div class="fake-rubric-row">
-            <div style="font-size:13px;color:var(--text-secondary);">Offer a remedy aligned to brand standards</div>
-            <div class="fake-rubric-bar"><div style="width:72%;background:linear-gradient(90deg,#0EA5A4,#4DCFFF);height:100%;border-radius:4px;position:absolute;left:0;top:0;"></div></div>
+
+          <div class="sim-results-coach" id="sim4-coach">
+            <span class="sim-coach-icon">✓</span>
+            <span class="sim-coach-text" id="sim4-coach-text"></span>
           </div>
+
         </div>
       </div>
     </div>
@@ -198,5 +296,292 @@
     </div>
   </div>
 </section>
+
+<script>
+(function () {
+  function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  function typewrite(el, text, speed) {
+    return new Promise(resolve => {
+      el.textContent = '';
+      el.classList.add('is-typing');
+      let i = 0;
+      const t = setInterval(() => {
+        el.textContent += text[i++];
+        if (i >= text.length) { clearInterval(t); el.classList.remove('is-typing'); setTimeout(resolve, 350); }
+      }, speed);
+    });
+  }
+
+  function smoothScroll(el, toY, duration) {
+    return new Promise(resolve => {
+      if (!el) return resolve();
+      const startY = el.scrollTop;
+      const delta = toY - startY;
+      const start = performance.now();
+      function tick(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const ease = 1 - Math.pow(1 - t, 3);
+        el.scrollTop = startY + delta * ease;
+        if (t < 1) requestAnimationFrame(tick);
+        else resolve();
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function whenInView(el, callback) {
+    let started = false;
+    function check() {
+      if (started) return;
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        started = true;
+        callback();
+      }
+    }
+    window.addEventListener('scroll', check, { passive: true });
+    check();
+  }
+
+  // ── Step 1: scenario list -> click -> auto-scroll prompt ─────
+  function initStep1() {
+    const frame = document.getElementById('sim-frame-1');
+    if (!frame) return;
+    const states = frame.querySelectorAll('.sim-state');
+    const cursor = document.getElementById('sim1-cursor');
+    const scroll = document.getElementById('sim1-scroll');
+    const target = frame.querySelector('[data-pick]');
+
+    function show(name) {
+      states.forEach(s => s.classList.toggle('is-active', s.dataset.state === name));
+    }
+    function moveCursorTo(el) {
+      if (!cursor || !el) return;
+      const fr = frame.getBoundingClientRect();
+      const r = el.getBoundingClientRect();
+      cursor.style.left = (r.left - fr.left + r.width * 0.7) + 'px';
+      cursor.style.top  = (r.top - fr.top + r.height * 0.5) + 'px';
+    }
+
+    async function cycle() {
+      while (true) {
+        show('list');
+        if (cursor) cursor.classList.remove('visible', 'is-clicking');
+        if (scroll) scroll.scrollTop = 0;
+        await wait(900);
+        if (cursor) cursor.classList.add('visible');
+        moveCursorTo(target);
+        await wait(1100);
+        target.classList.add('is-hover');
+        if (cursor) cursor.classList.add('is-clicking');
+        await wait(450);
+        if (cursor) cursor.classList.remove('is-clicking');
+        target.classList.remove('is-hover');
+        await wait(120);
+
+        show('detail');
+        if (cursor) cursor.classList.remove('visible');
+        await wait(700);
+        if (scroll) {
+          const dist = Math.max(0, scroll.scrollHeight - scroll.clientHeight);
+          if (dist > 0) {
+            await smoothScroll(scroll, dist, 4200);
+            await wait(900);
+            await smoothScroll(scroll, 0, 1100);
+          } else {
+            await wait(2500);
+          }
+        }
+        await wait(600);
+      }
+    }
+    whenInView(frame, () => setTimeout(cycle, 400));
+  }
+
+  // ── Step 2: practice mode — turns + hints + final feedback ───
+  function initStep2() {
+    const frame = document.getElementById('sim-frame-2');
+    if (!frame) return;
+    const convo = document.getElementById('sim2-convo');
+    const fbBox = document.getElementById('sim2-feedback');
+    const fbTxt = document.getElementById('sim2-feedback-text');
+
+    const turns = [
+      { who: 'avatar', text: "I ordered the chicken wrap but got a burger. Again. Third time this month." },
+      { who: 'hint',   text: "Lead with ownership before asking a question." },
+      { who: 'user',   text: "I'm so sorry — let me make this right. Can I get your name?" },
+      { who: 'avatar', text: "It's Sarah. Honestly, I'm running out of patience here." },
+      { who: 'hint',   text: "Name a specific timeline alongside the remedy." },
+      { who: 'user',   text: "Sarah, completely fair. Hot wrap in two minutes, on the house." }
+    ];
+    const finalFeedback = "Strong recovery — clean acknowledge, named timeline, goodwill gesture. Try mirroring the customer's frustration in turn 1.";
+
+    function addBubble(who, text) {
+      const b = document.createElement('div');
+      b.className = 'sim-bubble sim-bubble-' + who;
+      convo.appendChild(b);
+      return typewrite(b, text, who === 'user' ? 18 : 22);
+    }
+    function addHint(text) {
+      const h = document.createElement('div');
+      h.className = 'sim-hint';
+      h.innerHTML = '<span class="sim-hint-icon">💡</span><span class="sim-hint-text"></span>';
+      convo.appendChild(h);
+      const tx = h.querySelector('.sim-hint-text');
+      return typewrite(tx, text, 16);
+    }
+
+    async function cycle() {
+      while (true) {
+        convo.innerHTML = '';
+        if (fbBox) fbBox.classList.remove('is-shown');
+        if (fbTxt) fbTxt.textContent = '';
+        await wait(700);
+        for (const t of turns) {
+          if (t.who === 'hint') {
+            await addHint(t.text);
+            await wait(450);
+          } else {
+            await addBubble(t.who, t.text);
+            await wait(280);
+          }
+          convo.scrollTop = convo.scrollHeight;
+        }
+        await wait(500);
+        if (fbBox) fbBox.classList.add('is-shown');
+        if (fbTxt) await typewrite(fbTxt, finalFeedback, 14);
+        await wait(2400);
+      }
+    }
+    whenInView(frame, () => setTimeout(cycle, 400));
+  }
+
+  // ── Step 3: test mode — turns only, no hints, no feedback ────
+  function initStep3() {
+    const frame = document.getElementById('sim-frame-3');
+    if (!frame) return;
+    const convo = document.getElementById('sim3-convo');
+
+    const turns = [
+      { who: 'avatar', text: "I ordered the chicken wrap but got a burger. Again. Third time this month." },
+      { who: 'user',   text: "I'm so sorry — let me make this right. Can I get your name?" },
+      { who: 'avatar', text: "It's Sarah. Honestly, I'm running out of patience here." },
+      { who: 'user',   text: "Sarah, completely fair. Hot wrap in two minutes, on the house." }
+    ];
+
+    function addBubble(who, text) {
+      const b = document.createElement('div');
+      b.className = 'sim-bubble sim-bubble-' + who;
+      convo.appendChild(b);
+      return typewrite(b, text, who === 'user' ? 18 : 22);
+    }
+
+    async function cycle() {
+      while (true) {
+        convo.innerHTML = '';
+        await wait(700);
+        for (const t of turns) {
+          await addBubble(t.who, t.text);
+          await wait(320);
+          convo.scrollTop = convo.scrollHeight;
+        }
+        await wait(2400);
+      }
+    }
+    whenInView(frame, () => setTimeout(cycle, 600));
+  }
+
+  // ── Step 4: results — dial, rubric bars, AI coach line ───────
+  function initStep4() {
+    const frame = document.getElementById('sim-frame-4');
+    if (!frame) return;
+    const arc   = document.getElementById('sim4-arc');
+    const num   = document.getElementById('sim4-num');
+    const grade = document.getElementById('sim4-grade');
+    const status= document.getElementById('sim4-status');
+    const rows  = frame.querySelectorAll('.sim-result-row');
+    const coach = document.getElementById('sim4-coach');
+    const coachText = document.getElementById('sim4-coach-text');
+
+    const finalScore = 86;
+    const finalGrade = 'A−';
+    const finalStatus = 'On track';
+    const coachLine = "Strong open and recovery. Slight tone slip at turn 4 — keep it warm even when the customer escalates.";
+
+    function animateDial(target, duration) {
+      return new Promise(resolve => {
+        const start = performance.now();
+        function tick(now) {
+          const t = Math.min(1, (now - start) / duration);
+          const ease = 1 - Math.pow(1 - t, 3);
+          const v = Math.round(ease * target);
+          if (num)  num.textContent = v;
+          if (arc)  arc.setAttribute('stroke-dashoffset', String(100 - ease * target));
+          if (t < 1) requestAnimationFrame(tick);
+          else resolve();
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+
+    function reset() {
+      if (num)  num.textContent = '0';
+      if (arc)  arc.setAttribute('stroke-dashoffset', '100');
+      if (grade)  grade.textContent = '—';
+      if (status) status.textContent = 'Calculating';
+      rows.forEach(r => {
+        const fill = r.querySelector('.sim-result-fill');
+        const val  = r.querySelector('.sim-result-val');
+        if (fill) fill.style.width = '0%';
+        if (val)  val.textContent  = '—';
+        r.classList.remove('is-shown');
+      });
+      if (coach) coach.classList.remove('is-shown');
+      if (coachText) coachText.textContent = '';
+    }
+
+    async function cycle() {
+      while (true) {
+        reset();
+        await wait(700);
+        await animateDial(finalScore, 1400);
+        if (grade)  grade.textContent  = finalGrade;
+        if (status) status.textContent = finalStatus;
+        await wait(300);
+        for (let i = 0; i < rows.length; i++) {
+          const r = rows[i];
+          const w = parseInt(r.dataset.w, 10) || 0;
+          const fill = r.querySelector('.sim-result-fill');
+          const val  = r.querySelector('.sim-result-val');
+          r.classList.add('is-shown');
+          if (fill) fill.style.width = w + '%';
+          if (val) {
+            const start = performance.now();
+            const dur = 700;
+            (function step(now) {
+              const t = Math.min(1, (now - start) / dur);
+              val.textContent = Math.round(t * w);
+              if (t < 1) requestAnimationFrame(step);
+              else val.textContent = w;
+            })(start);
+          }
+          await wait(380);
+        }
+        await wait(300);
+        if (coach) coach.classList.add('is-shown');
+        if (coachText) await typewrite(coachText, coachLine, 14);
+        await wait(2800);
+      }
+    }
+    whenInView(frame, () => setTimeout(cycle, 800));
+  }
+
+  initStep1();
+  initStep2();
+  initStep3();
+  initStep4();
+})();
+</script>
 
 {% endblock %}

@@ -597,85 +597,153 @@
 (function () {
   const grid = document.getElementById('industry-carousel');
   if (!grid) return;
-  const cards = Array.from(grid.querySelectorAll('.industry-card'));
-  if (!cards.length) return;
+  const realCards = Array.from(grid.querySelectorAll('.industry-card'));
+  if (!realCards.length) return;
+  const N = realCards.length;
   const dotsWrap = document.getElementById('industry-carousel-dots');
 
-  let idx = 0;
+  // Inject clones for an infinite peek loop:
+  //   [clone-of-last]  card0  card1  ...  cardN-1  [clone-of-first]
+  const lastClone  = realCards[N - 1].cloneNode(true);
+  const firstClone = realCards[0].cloneNode(true);
+  lastClone.classList.add('industry-card-clone');
+  firstClone.classList.add('industry-card-clone');
+  grid.insertBefore(lastClone, realCards[0]);
+  grid.appendChild(firstClone);
+
+  // DOM order after cloning. allDom[0] is clone-last, allDom[N+1] is clone-first.
+  const allDom = Array.from(grid.querySelectorAll('.industry-card'));
+
+  let idx = 0;                  // real index in 0..N-1
   let pauseUntil = 0;
   let isProgScroll = false;
+  let isWrapping = false;
 
   // Build pagination dots
-  cards.forEach((_, i) => {
+  realCards.forEach((_, i) => {
     const d = document.createElement('button');
     d.className = 'industry-carousel-dot';
     d.type = 'button';
     d.setAttribute('aria-label', 'Show industry ' + (i + 1));
-    d.addEventListener('click', () => { idx = i; highlight(idx); pauseUntil = Date.now() + 6000; });
+    d.addEventListener('click', () => {
+      idx = i;
+      applyActive(idx + 1);
+      scrollToDom(idx + 1);
+      pauseUntil = Date.now() + 6000;
+    });
     dotsWrap.appendChild(d);
   });
   const dots = Array.from(dotsWrap.querySelectorAll('.industry-carousel-dot'));
 
-  function highlight(i) {
-    cards.forEach((c, n) => c.classList.toggle('is-active', n === i));
-    dots.forEach((d, n) => d.classList.toggle('is-active', n === i));
-    const card = cards[i];
+  function applyActive(domIdx) {
+    allDom.forEach((c, n) => c.classList.toggle('is-active', n === domIdx));
+    let realIdx;
+    if (domIdx === 0) realIdx = N - 1;            // clone-last -> real last
+    else if (domIdx === N + 1) realIdx = 0;        // clone-first -> real first
+    else realIdx = domIdx - 1;
+    dots.forEach((d, n) => d.classList.toggle('is-active', n === realIdx));
+  }
+
+  function scrollToDom(domIdx, snap) {
+    const card = allDom[domIdx];
     if (!card) return;
     isProgScroll = true;
-    // Center the card within the carousel viewport
     const target = card.offsetLeft + card.offsetWidth / 2 - grid.clientWidth / 2;
-    grid.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
-    setTimeout(() => { isProgScroll = false; }, 700);
+    grid.scrollTo({ left: Math.max(0, target), behavior: snap ? 'auto' : 'smooth' });
+    setTimeout(() => { isProgScroll = false; }, snap ? 30 : 700);
+  }
+
+  function goNext() {
+    if (isWrapping) return;
+    if (idx === N - 1) {
+      // Smooth scroll to clone-first to reveal the wrap, then snap to real card 0
+      isWrapping = true;
+      applyActive(N + 1);
+      scrollToDom(N + 1);
+      setTimeout(() => {
+        idx = 0;
+        applyActive(1);
+        scrollToDom(1, true);
+        isWrapping = false;
+      }, 720);
+    } else {
+      idx++;
+      applyActive(idx + 1);
+      scrollToDom(idx + 1);
+    }
+  }
+
+  function goPrev() {
+    if (isWrapping) return;
+    if (idx === 0) {
+      isWrapping = true;
+      applyActive(0);
+      scrollToDom(0);
+      setTimeout(() => {
+        idx = N - 1;
+        applyActive(idx + 1);
+        scrollToDom(idx + 1, true);
+        isWrapping = false;
+      }, 720);
+    } else {
+      idx--;
+      applyActive(idx + 1);
+      scrollToDom(idx + 1);
+    }
   }
 
   // Arrow navigation
   const prevBtn = document.getElementById('industry-carousel-prev');
   const nextBtn = document.getElementById('industry-carousel-next');
-  if (prevBtn) prevBtn.addEventListener('click', () => {
-    idx = (idx - 1 + cards.length) % cards.length;
-    highlight(idx);
-    pauseUntil = Date.now() + 6000;
-  });
-  if (nextBtn) nextBtn.addEventListener('click', () => {
-    idx = (idx + 1) % cards.length;
-    highlight(idx);
-    pauseUntil = Date.now() + 6000;
-  });
+  if (prevBtn) prevBtn.addEventListener('click', () => { goPrev(); pauseUntil = Date.now() + 6000; });
+  if (nextBtn) nextBtn.addEventListener('click', () => { goNext(); pauseUntil = Date.now() + 6000; });
 
   // Pause auto-cycle when user manually scrolls / touches / swipes
   grid.addEventListener('scroll', () => {
-    if (!isProgScroll) pauseUntil = Date.now() + 6000;
+    if (!isProgScroll && !isWrapping) pauseUntil = Date.now() + 6000;
   }, { passive: true });
   grid.addEventListener('touchstart', () => { pauseUntil = Date.now() + 6000; }, { passive: true });
   grid.addEventListener('mouseenter', () => { pauseUntil = Date.now() + 1500; });
 
-  // After user swipe / drag ends, snap-align by finding the closest card to scroll position
+  // After a manual swipe ends, snap to the closest card and update state
   let scrollEndTimer;
   grid.addEventListener('scroll', () => {
-    if (isProgScroll) return;
+    if (isProgScroll || isWrapping) return;
     clearTimeout(scrollEndTimer);
     scrollEndTimer = setTimeout(() => {
-      // Find the closest card to current scroll position
       let closestI = 0;
       let closestDelta = Infinity;
-      cards.forEach((c, i) => {
-        const d = Math.abs(c.offsetLeft - grid.scrollLeft);
+      allDom.forEach((c, i) => {
+        const center = c.offsetLeft + c.offsetWidth / 2;
+        const view = grid.scrollLeft + grid.clientWidth / 2;
+        const d = Math.abs(center - view);
         if (d < closestDelta) { closestDelta = d; closestI = i; }
       });
-      idx = closestI;
-      cards.forEach((c, n) => c.classList.toggle('is-active', n === idx));
-      dots.forEach((d, n) => d.classList.toggle('is-active', n === idx));
+      // If the user landed on a clone, snap to its real equivalent
+      if (closestI === 0) {
+        idx = N - 1;
+        applyActive(idx + 1);
+        scrollToDom(idx + 1, true);
+      } else if (closestI === N + 1) {
+        idx = 0;
+        applyActive(idx + 1);
+        scrollToDom(idx + 1, true);
+      } else {
+        idx = closestI - 1;
+        applyActive(idx + 1);
+      }
     }, 220);
   }, { passive: true });
 
-  // Initial highlight (first card)
-  highlight(0);
+  // Initial: real card 0 centered. Wait for layout, then jump.
+  applyActive(1);
+  requestAnimationFrame(() => scrollToDom(1, true));
 
   // Auto-cycle
   setInterval(() => {
     if (Date.now() < pauseUntil) return;
-    idx = (idx + 1) % cards.length;
-    highlight(idx);
+    if (isWrapping) return;
+    goNext();
   }, 3200);
 })();
 </script>
