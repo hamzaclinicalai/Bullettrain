@@ -308,7 +308,7 @@
       let i = 0;
       const t = setInterval(() => {
         el.textContent += text[i++];
-        if (i >= text.length) { clearInterval(t); el.classList.remove('is-typing'); setTimeout(resolve, 350); }
+        if (i >= text.length) { clearInterval(t); el.classList.remove('is-typing'); setTimeout(resolve, 180); }
       }, speed);
     });
   }
@@ -369,34 +369,34 @@
         show('list');
         if (cursor) cursor.classList.remove('visible', 'is-clicking');
         if (scroll) scroll.scrollTop = 0;
-        await wait(900);
+        await wait(450);
         if (cursor) cursor.classList.add('visible');
         moveCursorTo(target);
-        await wait(1100);
+        await wait(550);
         target.classList.add('is-hover');
         if (cursor) cursor.classList.add('is-clicking');
-        await wait(450);
+        await wait(240);
         if (cursor) cursor.classList.remove('is-clicking');
         target.classList.remove('is-hover');
-        await wait(120);
+        await wait(80);
 
         show('detail');
         if (cursor) cursor.classList.remove('visible');
-        await wait(700);
+        await wait(380);
         if (scroll) {
           const dist = Math.max(0, scroll.scrollHeight - scroll.clientHeight);
           if (dist > 0) {
-            await smoothScroll(scroll, dist, 4200);
-            await wait(900);
-            await smoothScroll(scroll, 0, 1100);
+            await smoothScroll(scroll, dist, 2200);
+            await wait(450);
+            await smoothScroll(scroll, 0, 600);
           } else {
-            await wait(2500);
+            await wait(1300);
           }
         }
-        await wait(600);
+        await wait(320);
       }
     }
-    whenInView(frame, () => setTimeout(cycle, 400));
+    whenInView(frame, () => setTimeout(cycle, 200));
   }
 
   // ── Step 2: practice mode — turns + hints + final feedback ───
@@ -421,7 +421,7 @@
       const b = document.createElement('div');
       b.className = 'sim-bubble sim-bubble-' + who;
       convo.appendChild(b);
-      return typewrite(b, text, who === 'user' ? 18 : 22);
+      return typewrite(b, text, who === 'user' ? 10 : 12);
     }
     function addHint(text) {
       const h = document.createElement('div');
@@ -429,7 +429,7 @@
       h.innerHTML = '<span class="sim-hint-icon">💡</span><span class="sim-hint-label">Hint:</span><span class="sim-hint-text"></span>';
       convo.appendChild(h);
       const tx = h.querySelector('.sim-hint-text');
-      return typewrite(tx, text, 16);
+      return typewrite(tx, text, 9);
     }
 
     async function cycle() {
@@ -437,24 +437,24 @@
         convo.innerHTML = '';
         if (fbBox) fbBox.classList.remove('is-shown');
         if (fbTxt) fbTxt.textContent = '';
-        await wait(700);
+        await wait(350);
         for (const t of turns) {
           if (t.who === 'hint') {
             await addHint(t.text);
-            await wait(450);
+            await wait(220);
           } else {
             await addBubble(t.who, t.text);
-            await wait(280);
+            await wait(140);
           }
           convo.scrollTop = convo.scrollHeight;
         }
-        await wait(500);
+        await wait(260);
         if (fbBox) fbBox.classList.add('is-shown');
-        if (fbTxt) await typewrite(fbTxt, finalFeedback, 14);
-        await wait(2400);
+        if (fbTxt) await typewrite(fbTxt, finalFeedback, 8);
+        await wait(1200);
       }
     }
-    whenInView(frame, () => setTimeout(cycle, 400));
+    whenInView(frame, () => setTimeout(cycle, 200));
   }
 
   // ── Step 3: test mode — turns only, no hints, no feedback ────
@@ -474,22 +474,22 @@
       const b = document.createElement('div');
       b.className = 'sim-bubble sim-bubble-' + who;
       convo.appendChild(b);
-      return typewrite(b, text, who === 'user' ? 18 : 22);
+      return typewrite(b, text, who === 'user' ? 10 : 12);
     }
 
     async function cycle() {
       while (true) {
         convo.innerHTML = '';
-        await wait(700);
+        await wait(350);
         for (const t of turns) {
           await addBubble(t.who, t.text);
-          await wait(320);
+          await wait(160);
           convo.scrollTop = convo.scrollHeight;
         }
-        await wait(2400);
+        await wait(1200);
       }
     }
-    whenInView(frame, () => setTimeout(cycle, 600));
+    whenInView(frame, () => setTimeout(cycle, 300));
   }
 
   // ── Step 4: results — dial, rubric bars, AI coach line ───────
@@ -544,11 +544,11 @@
     async function cycle() {
       while (true) {
         reset();
-        await wait(700);
-        await animateDial(finalScore, 1400);
+        await wait(350);
+        await animateDial(finalScore, 700);
         if (grade)  grade.textContent  = finalGrade;
         if (status) status.textContent = finalStatus;
-        await wait(300);
+        await wait(160);
         for (let i = 0; i < rows.length; i++) {
           const r = rows[i];
           const w = parseInt(r.dataset.w, 10) || 0;
@@ -558,7 +558,7 @@
           if (fill) fill.style.width = w + '%';
           if (val) {
             const start = performance.now();
-            const dur = 700;
+            const dur = 380;
             (function step(now) {
               const t = Math.min(1, (now - start) / dur);
               val.textContent = Math.round(t * w);
@@ -566,15 +566,15 @@
               else val.textContent = w;
             })(start);
           }
-          await wait(380);
+          await wait(200);
         }
-        await wait(300);
+        await wait(160);
         if (coach) coach.classList.add('is-shown');
-        if (coachText) await typewrite(coachText, coachLine, 14);
-        await wait(2800);
+        if (coachText) await typewrite(coachText, coachLine, 8);
+        await wait(1400);
       }
     }
-    whenInView(frame, () => setTimeout(cycle, 800));
+    whenInView(frame, () => setTimeout(cycle, 350));
   }
 
   initStep1();

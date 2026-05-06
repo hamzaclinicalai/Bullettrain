@@ -6236,7 +6236,7 @@ footer .footer-brand-desc {
   border-radius: 2px;
   background: linear-gradient(90deg, #0EA5A4 0%, #4DCFFF 100%);
   width: 0%;
-  transition: width 0.8s cubic-bezier(.16,1,.3,1);
+  transition: width 0.45s cubic-bezier(.16,1,.3,1);
 }
 
 .sim-results-coach {
