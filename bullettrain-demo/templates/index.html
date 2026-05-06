@@ -182,74 +182,6 @@
 (function () {
   const scenarios = [
     {
-      industry: "Quick Service · Customer Recovery",
-      avatar: {
-        female: true,
-        vars: {
-          '--av-hair-1': '#D4A857',
-          '--av-hair-2': '#8B6018',
-          '--av-skin-1': '#FBE2C2',
-          '--av-skin-2': '#F0C896',
-          '--av-skin-3': '#D89C68',
-          '--av-skin-4': '#A87850',
-          '--av-iris-1': '#A4DDB6',
-          '--av-iris-2': '#3E8060',
-          '--av-iris-3': '#1A4A35',
-          '--av-shirt-1': '#D85A5A',
-          '--av-shirt-2': '#9C2E2E',
-          '--av-shirt-3': '#5A1818',
-          '--av-brow':      '#7A4818',
-          '--av-brow-deep': '#5A3010'
-        }
-      },
-      turns: [
-        { who: 'avatar', text: "I ordered the grilled chicken wrap but got a burger. Again. This is the third time this month." },
-        { who: 'user',   text: "I'm so sorry about that — let me fix this right away. Can I get your name?" },
-        { who: 'avatar', text: "It's Sarah. Honestly, I'm running out of patience here. I just want my lunch." },
-        { who: 'user',   text: "Sarah, completely fair. Your wrap will be hot off the line in two minutes, on the house." }
-      ],
-      score: 81,
-      rubric: [
-        { label: "Acknowledged the issue without blame", pct: 92, feedback: "Strong open. Took ownership without deflecting onto the kitchen or the system. Mirroring her frustration verbally would deepen rapport even further." },
-        { label: "Offered a specific remedy", pct: 64, feedback: "This stalled. You apologized in turn 1 but didn't name a fix until you were forced to in turn 4 — after Sarah escalated. Lead with the timeline and the remedy in turn 2; don't let an upset customer ask twice." },
-        { label: "Maintained brand tone", pct: 88, feedback: "Sincere, not scripted, and the \"on the house\" gesture was the right level of generosity. Avoid the word \"again\" if she uses it; reframing instead of echoing keeps the temperature down." }
-      ]
-    },
-    {
-      industry: "Fitness · Membership Close",
-      avatar: {
-        female: false,
-        vars: {
-          '--av-hair-1': '#1A0E05',
-          '--av-hair-2': '#0E0703',
-          '--av-skin-1': '#E8B888',
-          '--av-skin-2': '#D09060',
-          '--av-skin-3': '#A06838',
-          '--av-skin-4': '#724A28',
-          '--av-iris-1': '#A87850',
-          '--av-iris-2': '#5A3018',
-          '--av-iris-3': '#2A1408',
-          '--av-shirt-1': '#2D7A5A',
-          '--av-shirt-2': '#155A38',
-          '--av-shirt-3': '#0A3020',
-          '--av-brow':      '#1A0E05',
-          '--av-brow-deep': '#0E0703'
-        }
-      },
-      turns: [
-        { who: 'avatar', text: "Honestly, $49 a month sounds like a lot for something I might not even use consistently." },
-        { who: 'user',   text: "That's fair — most members see measurable results in the first 30 days. Let me show you our guarantee." },
-        { who: 'avatar', text: "What guarantee? Because I've heard the \"results\" pitch from every gym in town." },
-        { who: 'user',   text: "If you don't hit your first goal in 30 days, we extend it free. Want me to walk you through how we'd build that out for you?" }
-      ],
-      score: 83,
-      rubric: [
-        { label: "Validated the objection", pct: 95, feedback: "You acknowledged the cost concern without minimizing it — strong trust move. Keep leading with validation when price comes up." },
-        { label: "Reframed value proposition", pct: 72, feedback: "The reframe was generic. \"Most members see results\" is a slogan, not a personal value. You needed to ask what his specific goal was first, then anchor the guarantee to that goal. Right now you're selling features, not transformation." },
-        { label: "Moved toward a close", pct: 82, feedback: "The trial close at the end was clean. Earlier in the conversation you could've earned the right to ask sooner — by turn 3 you should be testing intent, not still pitching." }
-      ]
-    },
-    {
       industry: "Technology · Account Renewal",
       avatar: {
         female: true,
@@ -315,6 +247,74 @@
         { label: "Immediate sincere apology", pct: 98, feedback: "Apology was unqualified and direct — exactly what an upset guest needs in the first five seconds. Textbook." },
         { label: "Took ownership of resolution", pct: 92, feedback: "\"Let me\" rather than \"I'll see what we can do\" — that word choice signals real commitment, not deflection." },
         { label: "Set a clear next-action expectation", pct: 70, feedback: "Sixty seconds is a strong promise, but the bag delivery was a throw-in, not a managed promise. Who is delivering it? When? You created a second deliverable without ownership — that's how guests end up waiting twice and trusting you less." }
+      ]
+    },
+    {
+      industry: "Quick Service · Customer Recovery",
+      avatar: {
+        female: true,
+        vars: {
+          '--av-hair-1': '#D4A857',
+          '--av-hair-2': '#8B6018',
+          '--av-skin-1': '#FBE2C2',
+          '--av-skin-2': '#F0C896',
+          '--av-skin-3': '#D89C68',
+          '--av-skin-4': '#A87850',
+          '--av-iris-1': '#A4DDB6',
+          '--av-iris-2': '#3E8060',
+          '--av-iris-3': '#1A4A35',
+          '--av-shirt-1': '#D85A5A',
+          '--av-shirt-2': '#9C2E2E',
+          '--av-shirt-3': '#5A1818',
+          '--av-brow':      '#7A4818',
+          '--av-brow-deep': '#5A3010'
+        }
+      },
+      turns: [
+        { who: 'avatar', text: "I ordered the grilled chicken wrap but got a burger. Again. This is the third time this month." },
+        { who: 'user',   text: "I'm so sorry about that — let me fix this right away. Can I get your name?" },
+        { who: 'avatar', text: "It's Sarah. Honestly, I'm running out of patience here. I just want my lunch." },
+        { who: 'user',   text: "Sarah, completely fair. Your wrap will be hot off the line in two minutes, on the house." }
+      ],
+      score: 81,
+      rubric: [
+        { label: "Acknowledged the issue without blame", pct: 92, feedback: "Strong open. Took ownership without deflecting onto the kitchen or the system. Mirroring her frustration verbally would deepen rapport even further." },
+        { label: "Offered a specific remedy", pct: 64, feedback: "This stalled. You apologized in turn 1 but didn't name a fix until you were forced to in turn 4 — after Sarah escalated. Lead with the timeline and the remedy in turn 2; don't let an upset customer ask twice." },
+        { label: "Maintained brand tone", pct: 88, feedback: "Sincere, not scripted, and the \"on the house\" gesture was the right level of generosity. Avoid the word \"again\" if she uses it; reframing instead of echoing keeps the temperature down." }
+      ]
+    },
+    {
+      industry: "Fitness · Membership Close",
+      avatar: {
+        female: false,
+        vars: {
+          '--av-hair-1': '#1A0E05',
+          '--av-hair-2': '#0E0703',
+          '--av-skin-1': '#E8B888',
+          '--av-skin-2': '#D09060',
+          '--av-skin-3': '#A06838',
+          '--av-skin-4': '#724A28',
+          '--av-iris-1': '#A87850',
+          '--av-iris-2': '#5A3018',
+          '--av-iris-3': '#2A1408',
+          '--av-shirt-1': '#2D7A5A',
+          '--av-shirt-2': '#155A38',
+          '--av-shirt-3': '#0A3020',
+          '--av-brow':      '#1A0E05',
+          '--av-brow-deep': '#0E0703'
+        }
+      },
+      turns: [
+        { who: 'avatar', text: "Honestly, $49 a month sounds like a lot for something I might not even use consistently." },
+        { who: 'user',   text: "That's fair — most members see measurable results in the first 30 days. Let me show you our guarantee." },
+        { who: 'avatar', text: "What guarantee? Because I've heard the \"results\" pitch from every gym in town." },
+        { who: 'user',   text: "If you don't hit your first goal in 30 days, we extend it free. Want me to walk you through how we'd build that out for you?" }
+      ],
+      score: 83,
+      rubric: [
+        { label: "Validated the objection", pct: 95, feedback: "You acknowledged the cost concern without minimizing it — strong trust move. Keep leading with validation when price comes up." },
+        { label: "Reframed value proposition", pct: 72, feedback: "The reframe was generic. \"Most members see results\" is a slogan, not a personal value. You needed to ask what his specific goal was first, then anchor the guarantee to that goal. Right now you're selling features, not transformation." },
+        { label: "Moved toward a close", pct: 82, feedback: "The trial close at the end was clean. Earlier in the conversation you could've earned the right to ask sooner — by turn 3 you should be testing intent, not still pitching." }
       ]
     }
   ];
@@ -637,34 +637,98 @@
   if (!dash || !stage) return;
   const cursor = document.getElementById('ent-dash-cursor');
 
-  // ── Data ────────────────────────────────────────────────────────────────
-  const LOCATIONS = [
-    { code: 'DT', name: 'Downtown Detroit',   staff: 24, pct: 91, status: 'pass',  color: [27,158,255], colorHex: '#4DCFFF' },
-    { code: 'NM', name: 'Northland Mall',     staff: 18, pct: 88, status: 'pass',  color: [0,229,160],  colorHex: '#00E5A0', target: 'franchise' },
-    { code: 'LP', name: 'Lakeside Plaza',     staff: 16, pct: 78, status: 'amber', color: [245,158,11], colorHex: '#FCD34D' },
-    { code: 'RO', name: 'Riverside Outlet',   staff: 12, pct: 67, status: 'red',   color: [239,68,68],  colorHex: '#F87171' },
-    { code: 'SC', name: 'Southfield Crossing',staff: 22, pct: 89, status: 'pass',  color: [27,158,255], colorHex: '#4DCFFF' },
-    { code: 'AT', name: 'Auburn Town Center', staff: 14, pct: 86, status: 'pass',  color: [0,229,160],  colorHex: '#00E5A0' },
-    { code: 'RH', name: 'Rochester Hills',    staff: 11, pct: 74, status: 'amber', color: [245,158,11], colorHex: '#FCD34D' },
-    { code: 'FH', name: 'Farmington Hills',   staff: 19, pct: 85, status: 'pass',  color: [27,158,255], colorHex: '#4DCFFF' },
-    { code: 'WB', name: 'West Bloomfield',    staff: 15, pct: 90, status: 'pass',  color: [0,229,160],  colorHex: '#00E5A0' },
-    { code: 'DA', name: 'Dearborn Annex',     staff:  9, pct: 62, status: 'red',   color: [239,68,68],  colorHex: '#F87171' }
+  // ── Color palettes (cycled across the long lists) ───────────────────────
+  const PALETTE = [
+    { color: [27,158,255], colorHex: '#4DCFFF' },
+    { color: [0,229,160],  colorHex: '#00E5A0' },
+    { color: [245,158,11], colorHex: '#FCD34D' },
+    { color: [139,92,246], colorHex: '#c4b5fd' },
+    { color: [236,72,153], colorHex: '#F472B6' }
+  ];
+  const GRADS = [
+    ['#1B9EFF','#0D6FCC'],
+    ['#00E5A0','#00A876'],
+    ['#F59E0B','#D97706'],
+    ['#EF4444','#B91C1C'],
+    ['#8B5CF6','#6D28D9'],
+    ['#EC4899','#BE185D']
   ];
 
-  const STAFF = [
-    { code: 'DR', name: 'Dana R.',   pct: 87, status: 'pass',  grad: ['#1B9EFF','#0D6FCC'] },
-    { code: 'MT', name: 'Marcus T.', pct: 91, status: 'pass',  grad: ['#00E5A0','#00A876'], target: 'employee' },
-    { code: 'JK', name: 'Jordan K.', label: 'In progress', status: 'amber', grad: ['#F59E0B','#D97706'] },
-    { code: 'RM', name: 'Riley M.',  pct: 61, status: 'red',   grad: ['#EF4444','#B91C1C'] },
-    { code: 'PS', name: 'Priya S.',  pct: 93, status: 'pass',  grad: ['#8B5CF6','#6D28D9'] },
-    { code: 'TN', name: 'Talia N.',  pct: 85, status: 'pass',  grad: ['#EC4899','#BE185D'] },
-    { code: 'CO', name: 'Carlos O.', pct: 82, status: 'pass',  grad: ['#1B9EFF','#0D6FCC'] },
-    { code: 'AB', name: 'Avery B.',  label: 'In progress', status: 'amber', grad: ['#F59E0B','#D97706'] },
-    { code: 'SH', name: 'Sam H.',    pct: 88, status: 'pass',  grad: ['#00E5A0','#00A876'] },
-    { code: 'NL', name: 'Nia L.',    pct: 59, status: 'red',   grad: ['#EF4444','#B91C1C'] },
-    { code: 'DV', name: 'Diego V.',  pct: 90, status: 'pass',  grad: ['#8B5CF6','#6D28D9'] },
-    { code: 'EP', name: 'Emma P.',   pct: 84, status: 'pass',  grad: ['#1B9EFF','#0D6FCC'] }
+  // ── Data ────────────────────────────────────────────────────────────────
+  const LOC_NAMES = [
+    ['DT','Downtown Detroit'],     ['NM','Northland Mall'],
+    ['LP','Lakeside Plaza'],       ['RO','Riverside Outlet'],
+    ['SC','Southfield Crossing'],  ['AT','Auburn Town Center'],
+    ['RH','Rochester Hills'],      ['FH','Farmington Hills'],
+    ['WB','West Bloomfield'],      ['DA','Dearborn Annex'],
+    ['EC','Eastland Center'],      ['WG','Westgate Crossing'],
+    ['BM','Briarwood Mall'],       ['TO','Twelve Oaks'],
+    ['OM','Oakland Mall'],         ['RP','Royal Oak Plaza'],
+    ['BS','Birmingham Square'],    ['SL','Southland Center'],
+    ['MM','Macomb Mall'],          ['TT','Tel-Twelve'],
+    ['FT','Fairlane Town'],        ['TR','Trenton Square'],
+    ['AP','Allen Park'],           ['GC','Garden City'],
+    ['LM','Livonia Mall'],         ['NP','Northville Place'],
+    ['PL','Plymouth Meeting'],     ['CC','Canton Center'],
+    ['SX','Sterling Heights'],     ['WP','Warren Plaza'],
+    ['MX','Madison Heights'],      ['OP','Oak Park'],
+    ['HQ','Hamtramck Square'],     ['FJ','Ferndale Junction'],
+    ['RX','Royal Crossings'],      ['HZ','Hazel Park'],
+    ['EX','Eastpointe'],           ['RV','Roseville Center'],
+    ['SC2','St Clair Shores'],     ['HW','Harper Woods'],
+    ['GP','Grosse Pointe'],        ['PR','Pleasant Ridge']
   ];
+  // Build 42 locations programmatically
+  const LOCATIONS = LOC_NAMES.map((pair, i) => {
+    const palette = PALETTE[i % PALETTE.length];
+    // Pseudo-random but deterministic numbers
+    const staff = 8 + ((i * 7) % 22);
+    const pctSeed = ((i * 13 + 7) % 38);
+    const pct = 60 + pctSeed;
+    const status = pct >= 80 ? 'pass' : (pct >= 70 ? 'amber' : 'red');
+    return {
+      code: pair[0],
+      name: pair[1],
+      staff: staff,
+      pct: pct,
+      status: status,
+      color: palette.color,
+      colorHex: palette.colorHex,
+      target: (pair[0] === 'NM') ? 'franchise' : null
+    };
+  });
+  // Pin known anchors so the demo remains coherent
+  LOCATIONS[0] = Object.assign({}, LOCATIONS[0], { staff: 24, pct: 91, status: 'pass', color: [27,158,255], colorHex: '#4DCFFF' });
+  LOCATIONS[1] = Object.assign({}, LOCATIONS[1], { staff: 18, pct: 88, status: 'pass', color: [0,229,160], colorHex: '#00E5A0', target: 'franchise' });
+  LOCATIONS[2] = Object.assign({}, LOCATIONS[2], { staff: 16, pct: 78, status: 'amber', color: [245,158,11], colorHex: '#FCD34D' });
+  LOCATIONS[3] = Object.assign({}, LOCATIONS[3], { staff: 12, pct: 67, status: 'red', color: [239,68,68], colorHex: '#F87171' });
+
+  const STAFF_NAMES = [
+    ['DR','Dana R.'],   ['MT','Marcus T.'], ['JK','Jordan K.'], ['RM','Riley M.'],
+    ['PS','Priya S.'],  ['TN','Talia N.'],  ['CO','Carlos O.'], ['AB','Avery B.'],
+    ['SH','Sam H.'],    ['NL','Nia L.'],    ['DV','Diego V.'],  ['EP','Emma P.'],
+    ['AK','Anya K.'],   ['BP','Ben P.'],    ['MR','Maya R.'],   ['TS','Theo S.'],
+    ['LC','Lila C.'],   ['OH','Owen H.']
+  ];
+  const STAFF = STAFF_NAMES.map((pair, i) => {
+    const grad = GRADS[i % GRADS.length];
+    const pct = 60 + ((i * 11 + 5) % 35);
+    const inProgress = (i === 2 || i === 7 || i === 13);
+    const status = inProgress ? 'amber' : (pct >= 80 ? 'pass' : (pct >= 70 ? 'amber' : 'red'));
+    return {
+      code: pair[0],
+      name: pair[1],
+      pct: pct,
+      label: inProgress ? 'In progress' : null,
+      status: status,
+      grad: grad,
+      target: (pair[0] === 'MT') ? 'employee' : null
+    };
+  });
+  STAFF[0] = Object.assign({}, STAFF[0], { pct: 87, status: 'pass', grad: ['#1B9EFF','#0D6FCC'] });
+  STAFF[1] = Object.assign({}, STAFF[1], { pct: 91, status: 'pass', grad: ['#00E5A0','#00A876'], target: 'employee' });
+  STAFF[2] = Object.assign({}, STAFF[2], { label: 'In progress', status: 'amber', grad: ['#F59E0B','#D97706'] });
+  STAFF[3] = Object.assign({}, STAFF[3], { pct: 61, status: 'red', grad: ['#EF4444','#B91C1C'] });
 
   const HISTORY = [
     { scenario: 'Customer Recovery',  mode: 'Test',     date: 'Mar 14, 2026', pct: 91, grade: 'A−', status: 'pass',  target: 'assessment' },
@@ -820,8 +884,7 @@
     crumb.appendChild(elt('span', 'ent-dash-crumb-current', ASSESSMENT.scenario + ' · ' + ASSESSMENT.date));
     top.appendChild(crumb);
 
-    const home = elt('button', 'ent-dash-home-btn');
-    home.dataset.target = 'home';
+    const home = elt('button', 'ent-dash-home-btn is-target-home');
     home.appendChild(makeIcon('home'));
     home.appendChild(elt('span', null, 'Home'));
     top.appendChild(home);
@@ -906,7 +969,7 @@
 
   function makeLocationRow(loc) {
     const row = elt('div', 'ent-dash-row');
-    if (loc.target) row.dataset.target = loc.target;
+    if (loc.target) row.classList.add('is-target-' + loc.target);
 
     const name = elt('div', 'ent-dash-row-name');
     const icon = elt('div', 'ent-dash-row-icon', loc.code);
@@ -926,7 +989,7 @@
 
   function makeStaffRow(s) {
     const row = elt('div', 'ent-dash-row');
-    if (s.target) row.dataset.target = s.target;
+    if (s.target) row.classList.add('is-target-' + s.target);
 
     const name = elt('div', 'ent-dash-row-name');
     const av = elt('div', 'ent-dash-row-avatar', s.code);
@@ -943,7 +1006,7 @@
 
   function makeHistoryRow(h) {
     const row = elt('div', 'ent-dash-hist-row');
-    if (h.target) row.dataset.target = h.target;
+    if (h.target) row.classList.add('is-target-' + h.target);
 
     const meta = elt('div', 'ent-dash-hist-meta');
     meta.appendChild(elt('div', 'ent-dash-hist-scenario', h.scenario + ' · ' + h.mode));
@@ -1040,7 +1103,7 @@
       await wait(700);
       cursor.classList.add('visible');
 
-      const franchise = stage.querySelector('[data-view="company"] .ent-dash-row[data-target="franchise"]');
+      const franchise = stage.querySelector('[data-view="company"] .ent-dash-row.is-target-franchise');
       moveCursorTo(franchise);
       await wait(950);
       clickAt(franchise);
@@ -1051,7 +1114,7 @@
       resetScrolls('franchise');
       await wait(1300);
 
-      const employee = stage.querySelector('[data-view="franchise"] .ent-dash-row[data-target="employee"]');
+      const employee = stage.querySelector('[data-view="franchise"] .ent-dash-row.is-target-employee');
       moveCursorTo(employee);
       await wait(800);
       clickAt(employee);
@@ -1062,7 +1125,7 @@
       resetScrolls('employee');
       await wait(1200);
 
-      const assessment = stage.querySelector('[data-view="employee"] .ent-dash-hist-row[data-target="assessment"]');
+      const assessment = stage.querySelector('[data-view="employee"] .ent-dash-hist-row.is-target-assessment');
       moveCursorTo(assessment);
       await wait(800);
       clickAt(assessment);

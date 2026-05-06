@@ -688,37 +688,22 @@ p { margin: 0; }
   transition: color 0.4s;
 }
 
-/* Conversation (scrollable, framed) */
+/* Conversation (auto-scroll only, user scrolling locked) */
 .hav-convo {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-bottom: 18px;
   height: 138px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 12px 8px 12px 12px;
+  overflow: hidden;                 /* lock user scroll */
+  padding: 12px 12px 12px 12px;
   background: rgba(8,12,24,0.55);
   border: 1px solid rgba(27,158,255,0.16);
   border-radius: 12px;
   scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(27,158,255,0.45) rgba(27,158,255,0.04);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
-}
-.hav-convo::-webkit-scrollbar {
-  width: 5px;
-}
-.hav-convo::-webkit-scrollbar-track {
-  background: rgba(27,158,255,0.04);
-  border-radius: 3px;
-}
-.hav-convo::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(27,158,255,0.55), rgba(0,229,160,0.55));
-  border-radius: 3px;
-}
-.hav-convo::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(27,158,255,0.75), rgba(0,229,160,0.75));
+  touch-action: none;               /* block touch scroll on mobile */
+  overscroll-behavior: contain;
 }
 
 .hav-bubble {
@@ -891,66 +876,39 @@ p { margin: 0; }
   border-radius: 50%;
 }
 
-/* Hair cap — taller, more voluminous, with proper hairline */
+/* Hair — single continuous shape, sits behind the face-ball */
 .hav-hair-cap {
   position: absolute;
-  top: 0; left: -2px; right: -2px;
-  height: 58px;
+  top: -2px; left: -4px; right: -4px;
+  height: 76px;
   background:
-    radial-gradient(ellipse 60% 80% at 50% 100%, rgba(255,255,255,0.04) 0%, transparent 60%),
-    linear-gradient(170deg, var(--av-hair-1, #2A1808) 0%, var(--av-hair-2, #0E0703) 50%, var(--av-hair-1, #2A1808) 100%);
-  border-radius: 60% 60% 28% 28% / 78% 78% 22% 22%;
-  z-index: 3;
-  box-shadow:
-    -3px 5px 0 rgba(0,0,0,0.40),
-     3px 5px 0 rgba(0,0,0,0.30),
-     0 8px 16px rgba(0,0,0,0.55),
-    inset 0 -3px 6px rgba(0,0,0,0.50);
+    radial-gradient(ellipse 65% 70% at 50% 18%, rgba(255,255,255,0.05) 0%, transparent 60%),
+    linear-gradient(170deg, var(--av-hair-1, #2A1808) 0%, var(--av-hair-2, #0E0703) 60%, var(--av-hair-1, #2A1808) 100%);
+  border-radius: 58% 58% 38% 38% / 60% 60% 40% 40%;
+  z-index: 2;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.55);
 }
-/* Hair side flaps that come down past the temples (no transition — swap is instant) */
+/* No separate side flaps for male — single shape only */
 .hav-hair-cap::before,
 .hav-hair-cap::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  width: 12px; height: 18px;
-  background: linear-gradient(180deg, var(--av-hair-2, #1A0E05), var(--av-hair-1, #0E0703));
-  border-radius: 50% 50% 40% 40% / 30% 30% 70% 70%;
+  content: none;
 }
-.hav-hair-cap::before { left: 2px; }
-.hav-hair-cap::after  { right: 2px; }
 
-/* Female: longer, more natural flowing hair past the temples */
+/* Female: same continuous shape, just taller and wider so it flows past the
+   shoulders. The face-ball (higher z-index) cuts through it cleanly. */
 .hav-person-wrap.is-female .hav-hair-cap {
-  height: 66px;
-  border-radius: 58% 58% 36% 36% / 80% 80% 20% 20%;
-}
-.hav-person-wrap.is-female .hav-hair-cap::before,
-.hav-person-wrap.is-female .hav-hair-cap::after {
-  bottom: -76px;
-  width: 24px;
-  height: 90px;
+  top: -4px;
+  left: -10px;
+  right: -10px;
+  height: 144px;
+  border-radius: 52% 52% 36% 36% / 28% 28% 72% 72%;
   background:
-    radial-gradient(ellipse 80% 30% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 60%),
-    linear-gradient(180deg, var(--av-hair-1, #1A0E05) 0%, var(--av-hair-2, #0E0703) 80%, var(--av-hair-2, #0E0703) 100%);
+    radial-gradient(ellipse 70% 40% at 50% 12%, rgba(255,255,255,0.06) 0%, transparent 60%),
+    linear-gradient(170deg, var(--av-hair-1, #1A0E05) 0%, var(--av-hair-2, #0E0703) 80%, var(--av-hair-2, #0E0703) 100%);
   box-shadow:
-    inset 0 -10px 14px rgba(0,0,0,0.40),
-    inset 4px 0 8px rgba(0,0,0,0.20);
-}
-.hav-person-wrap.is-female .hav-hair-cap::before {
-  left: -8px;
-  border-radius: 60% 38% 50% 50% / 14% 14% 86% 86%;
-  transform: rotate(-3deg);
-  transform-origin: 50% 0;
-}
-.hav-person-wrap.is-female .hav-hair-cap::after {
-  right: -8px;
-  border-radius: 38% 60% 50% 50% / 14% 14% 86% 86%;
-  transform: rotate(3deg);
-  transform-origin: 50% 0;
-  box-shadow:
-    inset 0 -10px 14px rgba(0,0,0,0.40),
-    inset -4px 0 8px rgba(0,0,0,0.20);
+    0 10px 20px rgba(0,0,0,0.55),
+    inset -4px -8px 16px rgba(0,0,0,0.30),
+    inset  4px -8px 16px rgba(0,0,0,0.30);
 }
 
 /* Face sphere — Pixar-style warm skin, more vertical / less smushed */
@@ -966,7 +924,7 @@ p { margin: 0; }
     var(--av-skin-4, #A65A26) 100%
   );
   border-radius: 44% 44% 46% 46% / 46% 46% 50% 50%;
-  z-index: 2;
+  z-index: 3;                         /* sits in front of the continuous hair shape */
   overflow: hidden;
   box-shadow:
     inset -8px -6px 18px rgba(0,0,0,0.26),

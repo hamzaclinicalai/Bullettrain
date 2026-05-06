@@ -13,6 +13,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 // ── Animated counters ──────────────────────────────────────────────────────
 function animateCounter(el) {
   const target = parseFloat(el.dataset.target);
+  if (!Number.isFinite(target)) return;          // guard non-numeric data-target values
   const suffix = el.dataset.suffix || '';
   const duration = 2200;
   const start = performance.now();
@@ -37,7 +38,13 @@ const counterObserver = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.5 });
 
-document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
+// Only observe elements whose data-target is a valid number (so we don't fire
+// the counter on elements that use data-target for click-routing).
+document.querySelectorAll('[data-target]').forEach(el => {
+  if (Number.isFinite(parseFloat(el.dataset.target))) {
+    counterObserver.observe(el);
+  }
+});
 
 // ── 3D card tilt ───────────────────────────────────────────────────────────
 document.querySelectorAll('.tilt-card').forEach(card => {
