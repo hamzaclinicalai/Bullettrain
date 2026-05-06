@@ -133,6 +133,14 @@
         <div class="hav-statusbar">
           <div class="hav-live"><span class="hav-live-dot"></span>Live</div>
           <div class="hav-waveform" id="hav-waveform"></div>
+          <div class="hav-mic" id="hav-mic" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="2" width="6" height="12" rx="3"/>
+              <path d="M19 11a7 7 0 0 1-14 0"/>
+              <path d="M12 18v3"/>
+              <path d="M8 21h8"/>
+            </svg>
+          </div>
         </div>
 
         <!-- Industry label -->
@@ -358,13 +366,17 @@
   function startUserSpeaking() {
     const pip   = document.getElementById('hav-pip-inner');
     const mouth = document.getElementById('hav-pip-mouth');
+    const mic   = document.getElementById('hav-mic');
     if (pip)   pip.classList.add('is-speaking');
+    if (mic)   mic.classList.add('is-active');
     if (mouth) userMouthTimer = setInterval(() => mouth.classList.toggle('open'), 150);
   }
   function stopUserSpeaking() {
     const pip   = document.getElementById('hav-pip-inner');
     const mouth = document.getElementById('hav-pip-mouth');
+    const mic   = document.getElementById('hav-mic');
     if (pip)   pip.classList.remove('is-speaking');
+    if (mic)   mic.classList.remove('is-active');
     if (mouth) { mouth.classList.remove('open'); clearInterval(userMouthTimer); userMouthTimer = null; }
   }
 
@@ -458,27 +470,33 @@
     function playTurn(i) {
       if (i >= s.turns.length) {
         showDashboard(s);
+        // Pre-apply the NEXT scenario's avatar while the popup fully covers the
+        // card, so the swap is invisible to the viewer.
+        setTimeout(() => {
+          const nextS = scenarios[(idx + 1) % scenarios.length];
+          applyAvatar(nextS.avatar);
+        }, 1400);
         setTimeout(() => {
           hideDashboard();
           setTimeout(() => {
             running = false;
             idx = (idx + 1) % scenarios.length;
             runScenario();
-          }, 500);
-        }, 4200);
+          }, 400);
+        }, 3400);
         return;
       }
       const turn = s.turns[i];
       const isUser = (turn.who === 'user');
       const bubble = addBubble(isUser);
       if (isUser) startUserSpeaking(); else startAvatarSpeaking();
-      typewrite(bubble, turn.text, isUser ? 24 : 30, () => {
+      typewrite(bubble, turn.text, isUser ? 16 : 20, () => {
         if (isUser) stopUserSpeaking(); else stopAvatarSpeaking();
-        setTimeout(() => playTurn(i + 1), 350);
+        setTimeout(() => playTurn(i + 1), 250);
       });
     }
 
-    setTimeout(() => playTurn(0), 600);
+    setTimeout(() => playTurn(0), 180);
   }
 
   // Build waveform

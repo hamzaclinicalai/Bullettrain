@@ -688,7 +688,7 @@ p { margin: 0; }
   transition: color 0.4s;
 }
 
-/* Conversation (scrollable) */
+/* Conversation (scrollable, framed) */
 .hav-convo {
   display: flex;
   flex-direction: column;
@@ -697,10 +697,14 @@ p { margin: 0; }
   height: 138px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 6px;
+  padding: 12px 8px 12px 12px;
+  background: rgba(8,12,24,0.55);
+  border: 1px solid rgba(27,158,255,0.16);
+  border-radius: 12px;
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: rgba(27,158,255,0.45) rgba(27,158,255,0.04);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
 }
 .hav-convo::-webkit-scrollbar {
   width: 5px;
@@ -903,7 +907,7 @@ p { margin: 0; }
      0 8px 16px rgba(0,0,0,0.55),
     inset 0 -3px 6px rgba(0,0,0,0.50);
 }
-/* Hair side flaps that come down past the temples */
+/* Hair side flaps that come down past the temples (no transition — swap is instant) */
 .hav-hair-cap::before,
 .hav-hair-cap::after {
   content: '';
@@ -912,25 +916,42 @@ p { margin: 0; }
   width: 12px; height: 18px;
   background: linear-gradient(180deg, var(--av-hair-2, #1A0E05), var(--av-hair-1, #0E0703));
   border-radius: 50% 50% 40% 40% / 30% 30% 70% 70%;
-  transition: height 0.4s, width 0.4s, bottom 0.4s;
 }
 .hav-hair-cap::before { left: 2px; }
 .hav-hair-cap::after  { right: 2px; }
 
-/* Female: longer hair flowing past the temples */
+/* Female: longer, more natural flowing hair past the temples */
 .hav-person-wrap.is-female .hav-hair-cap {
-  height: 64px;
-  border-radius: 60% 60% 32% 32% / 76% 76% 24% 24%;
+  height: 66px;
+  border-radius: 58% 58% 36% 36% / 80% 80% 20% 20%;
 }
 .hav-person-wrap.is-female .hav-hair-cap::before,
 .hav-person-wrap.is-female .hav-hair-cap::after {
-  bottom: -56px;
-  width: 16px;
-  height: 64px;
-  border-radius: 50% 50% 60% 60% / 18% 18% 82% 82%;
+  bottom: -76px;
+  width: 24px;
+  height: 90px;
+  background:
+    radial-gradient(ellipse 80% 30% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 60%),
+    linear-gradient(180deg, var(--av-hair-1, #1A0E05) 0%, var(--av-hair-2, #0E0703) 80%, var(--av-hair-2, #0E0703) 100%);
+  box-shadow:
+    inset 0 -10px 14px rgba(0,0,0,0.40),
+    inset 4px 0 8px rgba(0,0,0,0.20);
 }
-.hav-person-wrap.is-female .hav-hair-cap::before { left: -1px; }
-.hav-person-wrap.is-female .hav-hair-cap::after  { right: -1px; }
+.hav-person-wrap.is-female .hav-hair-cap::before {
+  left: -8px;
+  border-radius: 60% 38% 50% 50% / 14% 14% 86% 86%;
+  transform: rotate(-3deg);
+  transform-origin: 50% 0;
+}
+.hav-person-wrap.is-female .hav-hair-cap::after {
+  right: -8px;
+  border-radius: 38% 60% 50% 50% / 14% 14% 86% 86%;
+  transform: rotate(3deg);
+  transform-origin: 50% 0;
+  box-shadow:
+    inset 0 -10px 14px rgba(0,0,0,0.40),
+    inset -4px 0 8px rgba(0,0,0,0.20);
+}
 
 /* Face sphere — Pixar-style warm skin, more vertical / less smushed */
 .hav-face-ball {
@@ -1254,21 +1275,21 @@ p { margin: 0; }
 .hav-pip-ear-l { left: -2px; }
 .hav-pip-ear-r { right: -2px; }
 
-/* Lighter, warm hair */
+/* Black hair */
 .hav-pip-hair {
   position: absolute;
   top: 0; left: -1px; right: -1px;
   height: 15px;
   background:
-    radial-gradient(ellipse 60% 80% at 50% 100%, rgba(255,255,255,0.06) 0%, transparent 60%),
-    linear-gradient(170deg, #B57340 0%, #8C5028 60%, #B57340 100%);
+    radial-gradient(ellipse 60% 80% at 50% 100%, rgba(255,255,255,0.04) 0%, transparent 60%),
+    linear-gradient(170deg, #1A0E05 0%, #0A0403 60%, #1A0E05 100%);
   border-radius: 60% 60% 28% 28% / 80% 80% 22% 22%;
   z-index: 3;
   box-shadow:
     -1px 1px 0 rgba(0,0,0,0.30),
      1px 1px 0 rgba(0,0,0,0.20),
-     0 2px 4px rgba(0,0,0,0.45),
-    inset 0 -1px 2px rgba(0,0,0,0.40);
+     0 2px 4px rgba(0,0,0,0.55),
+    inset 0 -1px 2px rgba(0,0,0,0.50);
 }
 .hav-pip-hair::before,
 .hav-pip-hair::after {
@@ -1276,7 +1297,7 @@ p { margin: 0; }
   position: absolute;
   bottom: -3px;
   width: 4px; height: 5px;
-  background: linear-gradient(180deg, #8C5028, #6F3D1C);
+  background: linear-gradient(180deg, #0A0403, #050201);
   border-radius: 50% 50% 40% 40% / 30% 30% 70% 70%;
 }
 .hav-pip-hair::before { left: 1px; }
@@ -1302,37 +1323,37 @@ p { margin: 0; }
     inset 2px 2px 4px rgba(255,210,160,0.20);
 }
 
-/* Eyebrows — softer, less prominent */
+/* Eyebrows — symmetric whole-pixel positioning */
 .hav-pip-brow {
   position: absolute;
-  width: 3.5px; height: 0.9px;
-  background: rgba(28, 14, 4, 0.55);
+  width: 4px; height: 1px;
+  background: rgba(28, 14, 4, 0.60);
   border-radius: 1px;
-  top: 14.5px;
+  top: 15px;
 }
-.hav-pip-brow-l { left: 6px;  transform: rotate(-4deg); }
-.hav-pip-brow-r { right: 6px; transform: rotate(4deg);  }
+.hav-pip-brow-l { left: 6px;  }
+.hav-pip-brow-r { right: 6px; }
 
-/* Eyes — small dark friendly dots with a tiny sparkle */
+/* Eyes — small friendly dark dots, whole-pixel for even rendering */
 .hav-pip-eye {
   position: absolute;
-  width: 3.2px; height: 3.6px;
+  width: 4px; height: 4px;
   background: #1A0E05;
   border-radius: 50%;
-  top: 17px;
+  top: 18px;
   z-index: 3;
 }
 .hav-pip-eye::after {
   content: '';
   position: absolute;
-  width: 1.1px; height: 1.1px;
-  background: rgba(255,255,255,0.85);
+  width: 1px; height: 1px;
+  background: rgba(255,255,255,0.90);
   border-radius: 50%;
-  top: 0.4px;
-  right: 0.4px;
+  top: 1px;
+  right: 1px;
 }
-.hav-pip-eye-l { left: 6.5px; }
-.hav-pip-eye-r { right: 6.5px; }
+.hav-pip-eye-l { left: 6px; }
+.hav-pip-eye-r { right: 6px; }
 
 /* Nose — barely-there hint */
 .hav-pip-nose {
@@ -1579,6 +1600,36 @@ p { margin: 0; }
   gap: 14px;
   margin-bottom: 14px;
   padding: 6px 0;
+}
+
+/* Microphone icon — animates when the user is speaking */
+.hav-mic {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  flex-shrink: 0;
+  transition: color 0.3s, background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.hav-mic svg {
+  width: 14px;
+  height: 14px;
+}
+.hav-mic.is-active {
+  color: var(--signal-green);
+  background: rgba(0,229,160,0.12);
+  border-color: rgba(0,229,160,0.55);
+  box-shadow: 0 0 14px rgba(0,229,160,0.45);
+  animation: micPulse 0.85s ease-in-out infinite;
+}
+@keyframes micPulse {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 12px rgba(0,229,160,0.40); }
+  50%      { transform: scale(1.10); box-shadow: 0 0 22px rgba(0,229,160,0.70); }
 }
 
 /* Responsive */
