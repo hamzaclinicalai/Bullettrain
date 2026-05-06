@@ -527,7 +527,7 @@
     <div class="section-head reveal" style="margin-bottom:48px;">
       <span class="eyebrow on-dark">Built as an industry agnostic platform.</span>
       <h2 style="margin-top:12px;">Real conversations for every team, every role, every moment.</h2>
-      <p style="margin-top:14px;font-size:15px;color:var(--text-secondary);">Select an industry below to launch a live demo simulation — no account required.</p>
+      <p style="margin-top:14px;font-size:15px;color:var(--text-secondary);">Select an industry below to launch a live demo simulation.</p>
     </div>
     <div class="industry-carousel-wrap">
       <button class="industry-carousel-arrow industry-carousel-arrow-prev" id="industry-carousel-prev" type="button" aria-label="Previous industry">
@@ -536,6 +536,8 @@
       <button class="industry-carousel-arrow industry-carousel-arrow-next" id="industry-carousel-next" type="button" aria-label="Next industry">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
+      <div class="industry-carousel-fade industry-carousel-fade-l"></div>
+      <div class="industry-carousel-fade industry-carousel-fade-r"></div>
       <div class="industry-carousel" id="industry-carousel">
 
         <a href="{{ url_for('simulation_detail', sim_id='qsr-customer-recovery') }}" class="industry-card" style="text-decoration:none;">
@@ -621,7 +623,9 @@
     const card = cards[i];
     if (!card) return;
     isProgScroll = true;
-    grid.scrollTo({ left: card.offsetLeft, behavior: 'smooth' });
+    // Center the card within the carousel viewport
+    const target = card.offsetLeft + card.offsetWidth / 2 - grid.clientWidth / 2;
+    grid.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
     setTimeout(() => { isProgScroll = false; }, 700);
   }
 

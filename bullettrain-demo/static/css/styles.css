@@ -1065,6 +1065,34 @@ p { margin: 0; }
 .hav-blush-l { left: 4px;  }
 .hav-blush-r { right: 4px; }
 
+/* Front bangs / forehead hair — sits in front of face-ball, covers the
+   forehead so the avatar doesn't read as bald in front. */
+.hav-bangs {
+  position: absolute;
+  top: 8px;
+  left: 4px;
+  right: 4px;
+  height: 56px;
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 18%, rgba(255,255,255,0.05) 0%, transparent 60%),
+    linear-gradient(170deg, var(--av-hair-1, #2A1808) 0%, var(--av-hair-2, #0E0703) 70%, var(--av-hair-1, #2A1808) 100%);
+  border-radius: 56% 56% 38% 38% / 70% 70% 30% 30%;
+  z-index: 4;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.45),
+    inset 0 -3px 6px rgba(0,0,0,0.30);
+  pointer-events: none;
+}
+
+/* Female: longer, fuller bangs that slightly side-sweep */
+.hav-person-wrap.is-female .hav-bangs {
+  top: 4px;
+  left: 0;
+  right: 0;
+  height: 62px;
+  border-radius: 52% 52% 32% 32% / 60% 60% 40% 40%;
+}
+
 /* Neck */
 .hav-neck {
   width: 32px; height: 16px;
@@ -1812,29 +1840,22 @@ p { margin: 0; }
   letter-spacing: 0.06em;
 }
 
-/* Scroll viewport for long lists */
+/* Scroll viewport for long lists — scrollbars hidden so users cannot
+   drag them and interrupt the auto-cycle. Programmatic scrollTop still
+   works for any auto-scroll JS uses. */
 .ent-dash-scroll {
   max-height: 232px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 6px;
+  padding-right: 0;
   scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(27,158,255,0.45) rgba(27,158,255,0.04);
+  scrollbar-width: none;            /* Firefox */
+  -ms-overflow-style: none;         /* IE / old Edge */
 }
 .ent-dash-scroll::-webkit-scrollbar {
-  width: 5px;
-}
-.ent-dash-scroll::-webkit-scrollbar-track {
-  background: rgba(27,158,255,0.04);
-  border-radius: 3px;
-}
-.ent-dash-scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(27,158,255,0.55), rgba(0,229,160,0.55));
-  border-radius: 3px;
-}
-.ent-dash-scroll::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(27,158,255,0.75), rgba(0,229,160,0.75));
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .ent-dash-list {
@@ -2036,22 +2057,18 @@ p { margin: 0; }
   max-height: 408px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 6px;
+  padding-right: 0;
   scroll-behavior: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(27,158,255,0.45) rgba(27,158,255,0.04);
+  scrollbar-width: none;            /* Firefox */
+  -ms-overflow-style: none;         /* IE / old Edge */
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.ent-dash-asses-scroll::-webkit-scrollbar { width: 5px; }
-.ent-dash-asses-scroll::-webkit-scrollbar-track {
-  background: rgba(27,158,255,0.04);
-  border-radius: 3px;
-}
-.ent-dash-asses-scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(27,158,255,0.55), rgba(0,229,160,0.55));
-  border-radius: 3px;
+.ent-dash-asses-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 /* Header card */
@@ -2636,43 +2653,56 @@ p { margin: 0; }
 }
 .industry-carousel {
   display: flex;
-  gap: 0;
+  gap: 18px;
   overflow-x: auto;
   overflow-y: hidden;
   padding: 16px 0 8px;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  /* Hide scrollbar — Firefox */
   scrollbar-width: none;
-  /* Hide scrollbar — IE / old Edge */
   -ms-overflow-style: none;
 }
-/* Hide scrollbar — Chrome / Safari */
 .industry-carousel::-webkit-scrollbar {
   display: none;
   width: 0;
   height: 0;
 }
 
-/* One card at a time, full carousel width */
+/* Spacers at start/end so first and last cards can also center */
+.industry-carousel::before,
+.industry-carousel::after {
+  content: '';
+  flex: 0 0 12.5%;
+  align-self: stretch;
+}
+
+/* Each card occupies ~75% of the carousel width, leaving ~12.5% peek
+   of the previous and next cards on either side. */
 .industry-card {
-  flex: 0 0 100%;
+  flex: 0 0 75%;
   max-width: none;
   min-width: 0;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
   background: rgba(8,12,24,0.70);
   border: 1px solid rgba(27,158,255,0.12);
   border-radius: 18px;
   padding: 44px 32px 36px;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.35s, background 0.35s, box-shadow 0.35s, transform 0.35s cubic-bezier(.16,1,.3,1);
   cursor: pointer;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  opacity: 0.40;
+  transform: scale(0.94);
+  transition:
+    border-color 0.35s,
+    background 0.35s,
+    box-shadow 0.35s,
+    opacity 0.5s cubic-bezier(.16,1,.3,1),
+    transform 0.5s cubic-bezier(.16,1,.3,1);
 }
 .industry-card:hover {
   border-color: rgba(27,158,255,0.40);
@@ -2680,11 +2710,31 @@ p { margin: 0; }
 }
 
 .industry-card.is-active {
+  opacity: 1;
+  transform: scale(1);
   border-color: rgba(27,158,255,0.55);
   background: rgba(27,158,255,0.08);
   box-shadow:
     0 14px 40px rgba(27,158,255,0.22),
     0 0 0 1px rgba(27,158,255,0.10);
+}
+
+/* Soft fade overlay over the peeking cards on each side */
+.industry-carousel-fade {
+  position: absolute;
+  top: 16px;
+  bottom: 8px;
+  width: 90px;
+  pointer-events: none;
+  z-index: 5;
+}
+.industry-carousel-fade-l {
+  left: 56px;
+  background: linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.55) 50%, transparent 100%);
+}
+.industry-carousel-fade-r {
+  right: 56px;
+  background: linear-gradient(to left, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.55) 50%, transparent 100%);
 }
 .industry-card.is-active .industry-card-rail {
   height: 4px;
