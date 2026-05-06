@@ -294,9 +294,23 @@ def build_system_prompt(simulation, mode):
         f"Speak the way a real person would in this situation: casual, direct, emotionally authentic. "
         f"Keep every reply to 1-2 sentences maximum. "
         f"Do NOT use bullet points, lists, headers, or any structured formatting. "
+        f"Output ONLY the words you are speaking. Do NOT include any stage directions, "
+        f"physical descriptions, or action notes such as '*nods*', '(sighs)', '[crosses arms]', "
+        f"'avatar nodding in approval', or any similar descriptions of movement or expression. "
         f"Never break character. Never give training advice or coaching feedback."
         f"{silence_note}"
     )
+
+
+def _strip_action_text(text):
+    """Remove stage directions and physical action descriptions from avatar responses."""
+    # Strip *action*, (action), [action] patterns
+    text = re.sub(r'\*[^*]+\*', '', text)
+    text = re.sub(r'\([^)]*(?:nod|sigh|shrug|cross|lean|look|glare|smile|frown|pause|wave|roll|raise|lower|turn|walk|step|gesture|expression|breath)[^)]*\)', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'\[[^\]]+\]', '', text)
+    # Strip lines that are purely an action description
+    lines = [l for l in text.splitlines() if not re.match(r'^\s*(?:avatar|she|he|they)\s+\w+ing\b', l, re.IGNORECASE)]
+    return ' '.join(' '.join(lines).split()).strip()
 
 
 # ---------------------------------------------------------------------------
@@ -534,7 +548,8 @@ def _gemini_response(simulation, transcript, user_text, mode, api_key):
         app.logger.error("gemini http %s: %s", resp.status_code, resp.text[:300])
         resp.raise_for_status()
     data = resp.json()
-    return data["candidates"][0]["content"]["parts"][0]["text"].strip()
+    raw = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+    return _strip_action_text(raw)
 
 
 def _claude_response(simulation, transcript, user_text, mode, api_key):

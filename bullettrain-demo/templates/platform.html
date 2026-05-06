@@ -48,63 +48,6 @@
 </section>
 
 <!-- ================================================================
-     TECHNOLOGY SPLIT
-     ================================================================ -->
-<section style="background:var(--bg-deep);padding:100px 0;">
-  <div class="container">
-    <div class="split">
-      <div class="reveal">
-        <span class="eyebrow">Technology</span>
-        <h2>Realtime avatar streaming. No video calls. No actors.</h2>
-        <p>The avatar is a fully autonomous AI persona powered by LiveAvatar.com realtime WebRTC streaming. It listens via microphone, reasons over the scenario context, and speaks with natural lip-sync and expression, all under 500ms of latency.</p>
-        <ul>
-          <li>
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3" style="flex-shrink:0;color:var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>WebRTC video stream</b> - no download, no plugin</div>
-          </li>
-          <li>
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3" style="flex-shrink:0;color:var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>Persona-scoped context</b> - each simulation sets a unique system prompt</div>
-          </li>
-          <li>
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3" style="flex-shrink:0;color:var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>Live transcript</b> - every spoken word is captured for analysis</div>
-          </li>
-          <li>
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3" style="flex-shrink:0;color:var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>Session isolation</b> - each run is its own token; nothing leaks between trainees</div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="split-art reveal reveal-delay-2">
-        <!-- Platform mockup: image with fallback UI -->
-        <div class="platform-mockup">
-          <img src="{{ url_for('static', filename='img/platform-screenshot.png') }}"
-               alt="BulletTrain platform interface"
-               style="width:100%;border-radius:16px;border:1px solid rgba(27,158,255,0.2);"
-               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-          <div class="mockup-fallback" style="display:none;">
-            <div style="position:relative;z-index:1;width:100%;">
-              <div class="fake-pill" style="margin-bottom:16px;">
-                <span class="fake-dot"></span>WebRTC · Under 180ms
-              </div>
-              <div style="display:grid;gap:8px;font-size:12px;font-family:var(--font-mono);color:var(--text-secondary);">
-                <div style="background:rgba(27,158,255,0.05);border:1px solid rgba(27,158,255,0.10);border-radius:8px;padding:10px 14px;">POST /api/session-token &rarr; { session_token }</div>
-                <div style="background:rgba(27,158,255,0.05);border:1px solid rgba(27,158,255,0.10);border-radius:8px;padding:10px 14px;">LiveAvatarSession(token).start()</div>
-                <div style="background:rgba(27,158,255,0.05);border:1px solid rgba(27,158,255,0.10);border-radius:8px;padding:10px 14px;">session.attach(videoElement)</div>
-                <div style="background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.15);border-radius:8px;padding:10px 14px;color:var(--signal-green);">Avatar streaming: voice + video live</div>
-              </div>
-              <div style="margin-top:14px;font-size:11px;color:var(--text-muted);font-family:var(--font-mono);">Powered by @heygen/liveavatar-web-sdk</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================================================================
      AI ANALYSIS
      ================================================================ -->
 <section style="background:var(--bg-base);padding:100px 0;">
