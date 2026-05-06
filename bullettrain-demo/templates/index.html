@@ -527,59 +527,115 @@
       <h2 style="margin-top:12px;">Real conversations for every team, every role, every moment.</h2>
       <p style="margin-top:14px;font-size:15px;color:var(--text-secondary);">Select an industry below to launch a live demo simulation — no account required.</p>
     </div>
-    <div class="industry-grid">
+    <div class="industry-carousel-wrap">
+      <div class="industry-carousel" id="industry-carousel">
 
-      <a href="{{ url_for('simulation_detail', sim_id='qsr-customer-recovery') }}" class="industry-card reveal reveal-delay-1" style="text-decoration:none;">
-        <div class="industry-card-icon">🍔</div>
-        <div class="industry-card-name">QSR Franchise</div>
-        <div class="industry-card-desc">Counter recovery, wrong orders, lunch-rush pressure</div>
-        <div class="industry-card-cta">Try demo →</div>
-        <div class="industry-card-rail" style="background:var(--accent);"></div>
-      </a>
+        <a href="{{ url_for('simulation_detail', sim_id='qsr-customer-recovery') }}" class="industry-card" style="text-decoration:none;">
+          <div class="industry-card-icon">🍔</div>
+          <div class="industry-card-name">QSR Franchise</div>
+          <div class="industry-card-desc">Counter recovery, wrong orders, lunch-rush pressure</div>
+          <div class="industry-card-cta">Try demo →</div>
+          <div class="industry-card-rail" style="background:var(--accent);"></div>
+        </a>
 
-      <a href="{{ url_for('simulation_detail', sim_id='fitness-membership-objections') }}" class="industry-card reveal reveal-delay-2" style="text-decoration:none;">
-        <div class="industry-card-icon">💪</div>
-        <div class="industry-card-name">Fitness Franchise</div>
-        <div class="industry-card-desc">Membership tours, pricing objections, closing conversations</div>
-        <div class="industry-card-cta">Try demo →</div>
-        <div class="industry-card-rail" style="background:var(--signal-green);"></div>
-      </a>
+        <a href="{{ url_for('simulation_detail', sim_id='fitness-membership-objections') }}" class="industry-card" style="text-decoration:none;">
+          <div class="industry-card-icon">💪</div>
+          <div class="industry-card-name">Fitness Franchise</div>
+          <div class="industry-card-desc">Membership tours, pricing objections, closing conversations</div>
+          <div class="industry-card-cta">Try demo →</div>
+          <div class="industry-card-rail" style="background:var(--signal-green);"></div>
+        </a>
 
-      <a href="{{ url_for('simulation_detail', sim_id='hospitality-guest-checkin') }}" class="industry-card reveal reveal-delay-3" style="text-decoration:none;">
-        <div class="industry-card-icon">🏨</div>
-        <div class="industry-card-name">Hospitality</div>
-        <div class="industry-card-desc">Guest recovery, loyalty escalations, front-desk moments</div>
-        <div class="industry-card-cta">Try demo →</div>
-        <div class="industry-card-rail" style="background:var(--signal-purple);"></div>
-      </a>
+        <a href="{{ url_for('simulation_detail', sim_id='hospitality-guest-checkin') }}" class="industry-card" style="text-decoration:none;">
+          <div class="industry-card-icon">🏨</div>
+          <div class="industry-card-name">Hospitality</div>
+          <div class="industry-card-desc">Guest recovery, loyalty escalations, front-desk moments</div>
+          <div class="industry-card-cta">Try demo →</div>
+          <div class="industry-card-rail" style="background:var(--signal-purple);"></div>
+        </a>
 
-      <a href="{{ url_for('simulation_detail', sim_id='auto-service-advisor') }}" class="industry-card reveal reveal-delay-1" style="text-decoration:none;">
-        <div class="industry-card-icon">🚗</div>
-        <div class="industry-card-name">Automotive</div>
-        <div class="industry-card-desc">Service advisor upsells, trust-building, work order closes</div>
-        <div class="industry-card-cta">Try demo →</div>
-        <div class="industry-card-rail" style="background:#F59E0B;"></div>
-      </a>
+        <a href="{{ url_for('simulation_detail', sim_id='auto-service-advisor') }}" class="industry-card" style="text-decoration:none;">
+          <div class="industry-card-icon">🚗</div>
+          <div class="industry-card-name">Automotive</div>
+          <div class="industry-card-desc">Service advisor upsells, trust-building, work order closes</div>
+          <div class="industry-card-cta">Try demo →</div>
+          <div class="industry-card-rail" style="background:#F59E0B;"></div>
+        </a>
 
-      <a href="{{ url_for('simulation_detail', sim_id='retail-shrink-conversation') }}" class="industry-card reveal reveal-delay-2" style="text-decoration:none;">
-        <div class="industry-card-icon">🛍️</div>
-        <div class="industry-card-name">Retail Chains</div>
-        <div class="industry-card-desc">Performance coaching, difficult conversations, accountability</div>
-        <div class="industry-card-cta">Try demo →</div>
-        <div class="industry-card-rail" style="background:#EC4899;"></div>
-      </a>
+        <a href="{{ url_for('simulation_detail', sim_id='retail-shrink-conversation') }}" class="industry-card" style="text-decoration:none;">
+          <div class="industry-card-icon">🛍️</div>
+          <div class="industry-card-name">Retail Chains</div>
+          <div class="industry-card-desc">Performance coaching, difficult conversations, accountability</div>
+          <div class="industry-card-cta">Try demo →</div>
+          <div class="industry-card-rail" style="background:#EC4899;"></div>
+        </a>
 
-      <a href="{{ url_for('simulation_detail', sim_id='tech-enterprise-renewal') }}" class="industry-card reveal reveal-delay-3" style="text-decoration:none;">
-        <div class="industry-card-icon">💻</div>
-        <div class="industry-card-name">Technology</div>
-        <div class="industry-card-desc">Enterprise renewals, churn recovery, executive conversations</div>
-        <div class="industry-card-cta">Try demo →</div>
-        <div class="industry-card-rail" style="background:#0EA5A4;"></div>
-      </a>
+        <a href="{{ url_for('simulation_detail', sim_id='tech-enterprise-renewal') }}" class="industry-card" style="text-decoration:none;">
+          <div class="industry-card-icon">💻</div>
+          <div class="industry-card-name">Technology</div>
+          <div class="industry-card-desc">Enterprise renewals, churn recovery, executive conversations</div>
+          <div class="industry-card-cta">Try demo →</div>
+          <div class="industry-card-rail" style="background:#0EA5A4;"></div>
+        </a>
 
+      </div>
+      <div class="industry-carousel-dots" id="industry-carousel-dots"></div>
     </div>
   </div>
 </section>
+
+<script>
+(function () {
+  const grid = document.getElementById('industry-carousel');
+  if (!grid) return;
+  const cards = Array.from(grid.querySelectorAll('.industry-card'));
+  if (!cards.length) return;
+  const dotsWrap = document.getElementById('industry-carousel-dots');
+
+  let idx = 0;
+  let pauseUntil = 0;
+  let isProgScroll = false;
+
+  // Build pagination dots
+  cards.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'industry-carousel-dot';
+    d.type = 'button';
+    d.setAttribute('aria-label', 'Show industry ' + (i + 1));
+    d.addEventListener('click', () => { idx = i; highlight(idx); pauseUntil = Date.now() + 6000; });
+    dotsWrap.appendChild(d);
+  });
+  const dots = Array.from(dotsWrap.querySelectorAll('.industry-carousel-dot'));
+
+  function highlight(i) {
+    cards.forEach((c, n) => c.classList.toggle('is-active', n === i));
+    dots.forEach((d, n) => d.classList.toggle('is-active', n === i));
+    const card = cards[i];
+    if (!card) return;
+    isProgScroll = true;
+    const target = card.offsetLeft - (grid.clientWidth - card.offsetWidth) / 2;
+    grid.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+    setTimeout(() => { isProgScroll = false; }, 700);
+  }
+
+  // Pause auto-cycle when user manually scrolls / touches
+  grid.addEventListener('scroll', () => {
+    if (!isProgScroll) pauseUntil = Date.now() + 6000;
+  }, { passive: true });
+  grid.addEventListener('touchstart', () => { pauseUntil = Date.now() + 6000; }, { passive: true });
+  grid.addEventListener('mouseenter', () => { pauseUntil = Date.now() + 1500; });
+
+  // Initial highlight (first card)
+  highlight(0);
+
+  // Auto-cycle
+  setInterval(() => {
+    if (Date.now() < pauseUntil) return;
+    idx = (idx + 1) % cards.length;
+    highlight(idx);
+  }, 2800);
+})();
+</script>
 
 <!-- ================================================================
      SPLIT: PRACTICE / TEST
