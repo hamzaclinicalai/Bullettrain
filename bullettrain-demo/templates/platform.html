@@ -5,7 +5,23 @@
 {% block body %}
 
 <!-- ================================================================
-     ENTERPRISE LMS  (page header)
+     HERO
+     ================================================================ -->
+<section class="detail-hero">
+  <div class="container" style="text-align:left;">
+    <span class="eyebrow on-dark">Platform Overview</span>
+    <h1 style="margin-top:18px;margin-left:0;margin-right:0;">
+      <span class="gradient-text">Built for the realities</span><br>
+      of enterprise training.
+    </h1>
+    <p style="color:var(--text-secondary);margin-top:18px;max-width:62ch;font-size:18px;line-height:1.7;margin-left:0;margin-right:0;">
+      BulletTrain sits between your LMS and the floor. It is where rote knowledge becomes practiced judgment, and where managers finally see who is ready.
+    </p>
+  </div>
+</section>
+
+<!-- ================================================================
+     ENTERPRISE LMS
      ================================================================ -->
 <section style="background:var(--bg-deep);padding:80px 0 100px;">
   <div class="container">
@@ -362,324 +378,6 @@
 </style>
 
 
-<!-- ================================================================
-     ONBOARDING — animated 4-step wizard
-     ================================================================ -->
-<section style="background:var(--bg-base);padding:100px 0;">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">Onboarding</span>
-      <h2>Four steps from first call to live training.</h2>
-      <p>From a 30-minute discovery call to fully-deployed simulations across every location — usually in under three weeks.</p>
-    </div>
-
-    <div class="onb" id="onb">
-      <!-- Step indicators -->
-      <div class="onb-steps">
-        <div class="onb-step is-active" data-step="0">
-          <div class="onb-step-circle"><span class="onb-step-num">1</span></div>
-          <div class="onb-step-title">Discovery call</div>
-        </div>
-        <div class="onb-line"><div class="onb-line-fill" id="onb-line-1"></div></div>
-        <div class="onb-step" data-step="1">
-          <div class="onb-step-circle"><span class="onb-step-num">2</span></div>
-          <div class="onb-step-title">Custom proposal</div>
-        </div>
-        <div class="onb-line"><div class="onb-line-fill" id="onb-line-2"></div></div>
-        <div class="onb-step" data-step="2">
-          <div class="onb-step-circle"><span class="onb-step-num">3</span></div>
-          <div class="onb-step-title">Sign &amp; onboard</div>
-        </div>
-        <div class="onb-line"><div class="onb-line-fill" id="onb-line-3"></div></div>
-        <div class="onb-step" data-step="3">
-          <div class="onb-step-circle"><span class="onb-step-num">4</span></div>
-          <div class="onb-step-title">Build &amp; deploy</div>
-        </div>
-      </div>
-
-      <!-- Stage with the active step's content -->
-      <div class="onb-stage">
-
-        <!-- Pane 1: Discovery call -->
-        <div class="onb-pane is-active" data-pane="0">
-          <div class="onb-pane-copy">
-            <div class="onb-pane-eyebrow">Step 01 · Discovery call</div>
-            <h3>Book a 30-minute discovery call.</h3>
-            <p>Tell us about your team, the moments you train on, and what 'ready' looks like for your operators. We map your real scenarios to existing templates and identify the gaps.</p>
-            <ul class="onb-pane-list">
-              <li>Live walkthrough on your industry</li>
-              <li>Scoping for locations &amp; roles</li>
-              <li>No commitment, no slide deck</li>
-            </ul>
-          </div>
-          <div class="onb-pane-visual">
-            <div class="onb-call">
-              <div class="onb-call-rings">
-                <span class="onb-call-ring onb-call-ring-1"></span>
-                <span class="onb-call-ring onb-call-ring-2"></span>
-                <span class="onb-call-ring onb-call-ring-3"></span>
-              </div>
-              <div class="onb-call-icon" id="onb-call-icon">
-                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                  <!-- Phone / video receiver shape -->
-                  <rect x="12" y="20" width="32" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="2.6"/>
-                  <path d="M44 28 L56 22 L56 42 L44 36 Z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
-                </svg>
-                <svg class="onb-call-check" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="16" cy="16" r="14" fill="rgba(0,229,160,0.95)" stroke="rgba(0,229,160,0.45)" stroke-width="2"/>
-                  <path id="onb-call-check-path" d="M9 16 L14 21 L23 11"
-                        fill="none" stroke="#04080F" stroke-width="3"
-                        stroke-linecap="round" stroke-linejoin="round"
-                        pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
-                </svg>
-              </div>
-              <div class="onb-call-label">Discovery call scheduled</div>
-              <div class="onb-meet">
-                <div class="onb-meet-time">Wed Mar 11 · 2:00pm EST</div>
-                <div class="onb-meet-title">BulletTrain · Discovery call</div>
-                <div class="onb-meet-foot"><span class="onb-meet-pill">Confirmed</span><span class="onb-meet-link">meet.google.com/abc-de-fgh</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pane 2: Custom proposal -->
-        <div class="onb-pane" data-pane="1">
-          <div class="onb-pane-copy">
-            <div class="onb-pane-eyebrow">Step 02 · Custom proposal</div>
-            <h3>Receive a tailored proposal.</h3>
-            <p>Within a week we send you a packaged proposal: scenarios mapped to your roles, license tier, rollout calendar, and the operator team that will own implementation.</p>
-            <ul class="onb-pane-list">
-              <li>Itemized scenario library</li>
-              <li>Per-seat &amp; per-location pricing</li>
-              <li>3-week rollout timeline</li>
-            </ul>
-          </div>
-          <div class="onb-pane-visual">
-            <div class="onb-doc">
-              <div class="onb-doc-head">
-                <div>
-                  <div class="onb-doc-title">Proposal · Apex Hospitality</div>
-                  <div class="onb-doc-meta">v1.2 · Mar 18, 2026</div>
-                </div>
-                <div class="onb-doc-status">DRAFT</div>
-              </div>
-              <div class="onb-doc-row">
-                <span>Per-scenario annual license × 12</span><span class="onb-blur">$X,XXX / scenario</span>
-              </div>
-              <div class="onb-doc-row">
-                <span>Custom-authored scenarios × 4</span><span class="onb-blur">$X,XXX / scenario</span>
-              </div>
-              <div class="onb-doc-row">
-                <span>Active staff seats × 386 (annual)</span><span class="onb-blur">$XX / seat</span>
-              </div>
-              <div class="onb-doc-row onb-doc-row-total">
-                <span>Year 1 total</span><span class="onb-blur">$XXX,XXX</span>
-              </div>
-              <div class="onb-doc-meter">
-                <div class="onb-doc-meter-label">Custom build progress</div>
-                <div class="onb-doc-meter-bar"><div class="onb-doc-meter-fill"></div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pane 3: Sign & onboard -->
-        <div class="onb-pane" data-pane="2">
-          <div class="onb-pane-copy">
-            <div class="onb-pane-eyebrow">Step 03 · Sign &amp; onboard</div>
-            <h3>One signature, instant access.</h3>
-            <p>E-sign the agreement and you'll have admin access to the BulletTrain console the same day. We seat your locations, import your roster, and stand up your default org structure.</p>
-            <ul class="onb-pane-list">
-              <li>E-signature, no procurement loop</li>
-              <li>SSO / SCIM provisioning ready</li>
-              <li>Roster &amp; locations imported in one upload</li>
-            </ul>
-          </div>
-          <div class="onb-pane-visual">
-            <div class="onb-sign">
-              <div class="onb-sign-head">
-                <div>
-                  <div class="onb-sign-title">Master Services Agreement</div>
-                  <div class="onb-sign-meta">Apex Hospitality Group · 12-month term</div>
-                </div>
-                <div class="onb-sign-badge" id="onb-sign-badge">PENDING</div>
-              </div>
-              <div class="onb-sign-line">
-                <div class="onb-sign-line-label">Authorized signer</div>
-                <div class="onb-sign-line-write" id="onb-sign-write"></div>
-              </div>
-              <div class="onb-sign-stamp" id="onb-sign-stamp">
-                <div class="onb-sign-stamp-text">SIGNED</div>
-                <div class="onb-sign-stamp-date">Mar 25, 2026</div>
-              </div>
-              <div class="onb-sign-checks">
-                <div class="onb-sign-check"><span class="onb-sign-check-icon">✓</span>SSO connected</div>
-                <div class="onb-sign-check"><span class="onb-sign-check-icon">✓</span>42 locations imported</div>
-                <div class="onb-sign-check"><span class="onb-sign-check-icon">✓</span>386 seats provisioned</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pane 4: Build & deploy -->
-        <div class="onb-pane" data-pane="3">
-          <div class="onb-pane-copy">
-            <div class="onb-pane-eyebrow">Step 04 · Build &amp; deploy</div>
-            <h3>Build scenarios, ship credentialing.</h3>
-            <p>Author scenarios, bundle them into curricula, set the threshold for credentialing, and roll out to every location. Pass rates flow up by location, role, and individual.</p>
-            <ul class="onb-pane-list">
-              <li>Custom scenarios live in days</li>
-              <li>Curriculum builder with required passes</li>
-              <li>Credentialing badges per role</li>
-            </ul>
-          </div>
-          <div class="onb-pane-visual">
-            <div class="onb-deploy">
-              <div class="onb-deploy-head">
-                <div class="onb-deploy-title">Deployment status</div>
-                <div class="onb-deploy-meta">Wave 1 · 42 locations</div>
-              </div>
-              <div class="onb-deploy-list">
-                <div class="onb-deploy-row" data-pct="100">
-                  <span class="onb-deploy-name">Customer Recovery</span>
-                  <div class="onb-deploy-bar"><div class="onb-deploy-fill"></div></div>
-                  <span class="onb-deploy-status">Live</span>
-                </div>
-                <div class="onb-deploy-row" data-pct="100">
-                  <span class="onb-deploy-name">Membership Close</span>
-                  <div class="onb-deploy-bar"><div class="onb-deploy-fill"></div></div>
-                  <span class="onb-deploy-status">Live</span>
-                </div>
-                <div class="onb-deploy-row" data-pct="80">
-                  <span class="onb-deploy-name">Service Advisor Up-Sell</span>
-                  <div class="onb-deploy-bar"><div class="onb-deploy-fill"></div></div>
-                  <span class="onb-deploy-status">Rolling out</span>
-                </div>
-                <div class="onb-deploy-row" data-pct="55">
-                  <span class="onb-deploy-name">Coaching: Difficult Conv.</span>
-                  <div class="onb-deploy-bar"><div class="onb-deploy-fill"></div></div>
-                  <span class="onb-deploy-status">Rolling out</span>
-                </div>
-              </div>
-              <div class="onb-deploy-foot">
-                <span class="onb-deploy-cred"><span class="onb-deploy-cred-dot"></span>Credentialing active · 3 of 4 cleared</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<script>
-(function () {
-  const root = document.getElementById('onb');
-  if (!root) return;
-  const stepEls = Array.from(root.querySelectorAll('.onb-step'));
-  const paneEls = Array.from(root.querySelectorAll('.onb-pane'));
-  const lineFills = [
-    document.getElementById('onb-line-1'),
-    document.getElementById('onb-line-2'),
-    document.getElementById('onb-line-3')
-  ];
-
-  let idx = 0;
-  let started = false;
-
-  function show(i) {
-    stepEls.forEach((s, n) => {
-      s.classList.toggle('is-active', n === i);
-      s.classList.toggle('is-past',  n < i);
-    });
-    paneEls.forEach((p, n) => p.classList.toggle('is-active', n === i));
-    // Fill connecting lines for past steps
-    lineFills.forEach((f, n) => { if (f) f.style.width = n < i ? '100%' : '0%'; });
-
-    // Replay per-pane micro-animations on entry
-    if (i === 0) replayCall();
-    if (i === 1) replayProposal();
-    if (i === 2) replaySign();
-    if (i === 3) replayDeploy();
-  }
-
-  function replayCall() {
-    const icon = document.getElementById('onb-call-icon');
-    const path = document.getElementById('onb-call-check-path');
-    if (icon) icon.classList.remove('is-shown');
-    if (path) path.style.strokeDashoffset = '100';
-    setTimeout(() => { if (icon) icon.classList.add('is-shown'); }, 300);
-    setTimeout(() => { if (path) path.style.strokeDashoffset = '0'; }, 700);
-  }
-
-  function replayProposal() {
-    const fill = root.querySelector('.onb-doc-meter-fill');
-    if (!fill) return;
-    fill.style.width = '0%';
-    setTimeout(() => { fill.style.width = '78%'; }, 200);
-  }
-  function replaySign() {
-    const write = document.getElementById('onb-sign-write');
-    const stamp = document.getElementById('onb-sign-stamp');
-    const badge = document.getElementById('onb-sign-badge');
-    if (write) {
-      write.classList.remove('is-shown');
-      void write.offsetWidth;
-      setTimeout(() => write.classList.add('is-shown'), 250);
-    }
-    if (stamp) {
-      stamp.classList.remove('is-shown');
-      setTimeout(() => stamp.classList.add('is-shown'), 1500);
-    }
-    if (badge) {
-      badge.textContent = 'PENDING';
-      badge.className = 'onb-sign-badge';
-      setTimeout(() => {
-        badge.textContent = 'SIGNED';
-        badge.classList.add('is-signed');
-      }, 1700);
-    }
-    // Reset and re-fade-in checklist
-    const checks = root.querySelectorAll('.onb-sign-check');
-    checks.forEach(c => c.classList.remove('is-shown'));
-    checks.forEach((c, k) => setTimeout(() => c.classList.add('is-shown'), 1900 + k * 200));
-  }
-  function replayDeploy() {
-    const rows = root.querySelectorAll('.onb-deploy-row');
-    rows.forEach(r => {
-      const fill = r.querySelector('.onb-deploy-fill');
-      if (fill) fill.style.width = '0%';
-      r.classList.remove('is-shown');
-    });
-    rows.forEach((r, k) => {
-      setTimeout(() => {
-        r.classList.add('is-shown');
-        const fill = r.querySelector('.onb-deploy-fill');
-        if (fill) fill.style.width = (parseInt(r.dataset.pct, 10) || 0) + '%';
-      }, 200 + k * 220);
-    });
-  }
-
-  function tick() {
-    idx = (idx + 1) % stepEls.length;
-    show(idx);
-  }
-
-  function maybeStart() {
-    if (started) return;
-    const r = root.getBoundingClientRect();
-    if (r.top < window.innerHeight && r.bottom > 0) {
-      started = true;
-      show(0);
-      setInterval(tick, 4200);
-    }
-  }
-  window.addEventListener('scroll', maybeStart, { passive: true });
-  maybeStart();
-})();
-</script>
 <!-- ================================================================
      SPLIT: PRACTICE / TEST
      ================================================================ -->
@@ -1281,6 +979,324 @@
     </div>
   </div>
 </section>
+<!-- ================================================================
+     ONBOARDING — animated 4-step wizard
+     ================================================================ -->
+<section style="background:var(--bg-base);padding:100px 0;">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Onboarding</span>
+      <h2>Four steps from first call to live training.</h2>
+      <p>From a 30-minute discovery call to fully-deployed simulations across every location — usually in under three weeks.</p>
+    </div>
+
+    <div class="onb" id="onb">
+      <!-- Step indicators -->
+      <div class="onb-steps">
+        <div class="onb-step is-active" data-step="0">
+          <div class="onb-step-circle"><span class="onb-step-num">1</span></div>
+          <div class="onb-step-title">Discovery call</div>
+        </div>
+        <div class="onb-line"><div class="onb-line-fill" id="onb-line-1"></div></div>
+        <div class="onb-step" data-step="1">
+          <div class="onb-step-circle"><span class="onb-step-num">2</span></div>
+          <div class="onb-step-title">Custom proposal</div>
+        </div>
+        <div class="onb-line"><div class="onb-line-fill" id="onb-line-2"></div></div>
+        <div class="onb-step" data-step="2">
+          <div class="onb-step-circle"><span class="onb-step-num">3</span></div>
+          <div class="onb-step-title">Sign &amp; onboard</div>
+        </div>
+        <div class="onb-line"><div class="onb-line-fill" id="onb-line-3"></div></div>
+        <div class="onb-step" data-step="3">
+          <div class="onb-step-circle"><span class="onb-step-num">4</span></div>
+          <div class="onb-step-title">Build &amp; deploy</div>
+        </div>
+      </div>
+
+      <!-- Stage with the active step's content -->
+      <div class="onb-stage">
+
+        <!-- Pane 1: Discovery call -->
+        <div class="onb-pane is-active" data-pane="0">
+          <div class="onb-pane-copy">
+            <div class="onb-pane-eyebrow">Step 01 · Discovery call</div>
+            <h3>Book a 30-minute discovery call.</h3>
+            <p>Tell us about your team, the moments you train on, and what 'ready' looks like for your operators. We map your real scenarios to existing templates and identify the gaps.</p>
+            <ul class="onb-pane-list">
+              <li>Live walkthrough on your industry</li>
+              <li>Scoping for locations &amp; roles</li>
+              <li>No commitment, no slide deck</li>
+            </ul>
+          </div>
+          <div class="onb-pane-visual">
+            <div class="onb-call">
+              <div class="onb-call-rings">
+                <span class="onb-call-ring onb-call-ring-1"></span>
+                <span class="onb-call-ring onb-call-ring-2"></span>
+                <span class="onb-call-ring onb-call-ring-3"></span>
+              </div>
+              <div class="onb-call-icon" id="onb-call-icon">
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Phone / video receiver shape -->
+                  <rect x="12" y="20" width="32" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="2.6"/>
+                  <path d="M44 28 L56 22 L56 42 L44 36 Z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+                </svg>
+                <svg class="onb-call-check" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="16" cy="16" r="14" fill="rgba(0,229,160,0.95)" stroke="rgba(0,229,160,0.45)" stroke-width="2"/>
+                  <path id="onb-call-check-path" d="M9 16 L14 21 L23 11"
+                        fill="none" stroke="#04080F" stroke-width="3"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
+                </svg>
+              </div>
+              <div class="onb-call-label">Discovery call scheduled</div>
+              <div class="onb-meet">
+                <div class="onb-meet-time">Wed Mar 11 · 2:00pm EST</div>
+                <div class="onb-meet-title">BulletTrain · Discovery call</div>
+                <div class="onb-meet-foot"><span class="onb-meet-pill">Confirmed</span><span class="onb-meet-link">meet.google.com/abc-de-fgh</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 2: Custom proposal -->
+        <div class="onb-pane" data-pane="1">
+          <div class="onb-pane-copy">
+            <div class="onb-pane-eyebrow">Step 02 · Custom proposal</div>
+            <h3>Receive a tailored proposal.</h3>
+            <p>Within a week we send you a packaged proposal: scenarios mapped to your roles, license tier, rollout calendar, and the operator team that will own implementation.</p>
+            <ul class="onb-pane-list">
+              <li>Itemized scenario library</li>
+              <li>Per-seat &amp; per-location pricing</li>
+              <li>3-week rollout timeline</li>
+            </ul>
+          </div>
+          <div class="onb-pane-visual">
+            <div class="onb-doc">
+              <div class="onb-doc-head">
+                <div>
+                  <div class="onb-doc-title">Proposal · Apex Hospitality</div>
+                  <div class="onb-doc-meta">v1.2 · Mar 18, 2026</div>
+                </div>
+                <div class="onb-doc-status">DRAFT</div>
+              </div>
+              <div class="onb-doc-row">
+                <span>Per-scenario annual license × 12</span><span class="onb-blur">$X,XXX / scenario</span>
+              </div>
+              <div class="onb-doc-row">
+                <span>Custom-authored scenarios × 4</span><span class="onb-blur">$X,XXX / scenario</span>
+              </div>
+              <div class="onb-doc-row">
+                <span>Active staff seats × 386 (annual)</span><span class="onb-blur">$XX / seat</span>
+              </div>
+              <div class="onb-doc-row onb-doc-row-total">
+                <span>Year 1 total</span><span class="onb-blur">$XXX,XXX</span>
+              </div>
+              <div class="onb-doc-meter">
+                <div class="onb-doc-meter-label">Custom build progress</div>
+                <div class="onb-doc-meter-bar"><div class="onb-doc-meter-fill"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 3: Sign & onboard -->
+        <div class="onb-pane" data-pane="2">
+          <div class="onb-pane-copy">
+            <div class="onb-pane-eyebrow">Step 03 · Sign &amp; onboard</div>
+            <h3>One signature, instant access.</h3>
+            <p>E-sign the agreement and you'll have admin access to the BulletTrain console the same day. We seat your locations, import your roster, and stand up your default org structure.</p>
+            <ul class="onb-pane-list">
+              <li>E-signature, no procurement loop</li>
+              <li>SSO / SCIM provisioning ready</li>
+              <li>Roster &amp; locations imported in one upload</li>
+            </ul>
+          </div>
+          <div class="onb-pane-visual">
+            <div class="onb-sign">
+              <div class="onb-sign-head">
+                <div>
+                  <div class="onb-sign-title">Master Services Agreement</div>
+                  <div class="onb-sign-meta">Apex Hospitality Group · 12-month term</div>
+                </div>
+                <div class="onb-sign-badge" id="onb-sign-badge">PENDING</div>
+              </div>
+              <div class="onb-sign-line">
+                <div class="onb-sign-line-label">Authorized signer</div>
+                <div class="onb-sign-line-write" id="onb-sign-write"></div>
+              </div>
+              <div class="onb-sign-stamp" id="onb-sign-stamp">
+                <div class="onb-sign-stamp-text">SIGNED</div>
+                <div class="onb-sign-stamp-date">Mar 25, 2026</div>
+              </div>
+              <div class="onb-sign-checks">
+                <div class="onb-sign-check"><span class="onb-sign-check-icon">✓</span>SSO connected</div>
+                <div class="onb-sign-check"><span class="onb-sign-check-icon">✓</span>42 locations imported</div>
+                <div class="onb-sign-check"><span class="onb-sign-check-icon">✓</span>386 seats provisioned</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 4: Build & deploy -->
+        <div class="onb-pane" data-pane="3">
+          <div class="onb-pane-copy">
+            <div class="onb-pane-eyebrow">Step 04 · Build &amp; deploy</div>
+            <h3>Build scenarios, ship credentialing.</h3>
+            <p>Author scenarios, bundle them into curricula, set the threshold for credentialing, and roll out to every location. Pass rates flow up by location, role, and individual.</p>
+            <ul class="onb-pane-list">
+              <li>Custom scenarios live in days</li>
+              <li>Curriculum builder with required passes</li>
+              <li>Credentialing badges per role</li>
+            </ul>
+          </div>
+          <div class="onb-pane-visual">
+            <div class="onb-deploy">
+              <div class="onb-deploy-head">
+                <div class="onb-deploy-title">Deployment status</div>
+                <div class="onb-deploy-meta">Wave 1 · 42 locations</div>
+              </div>
+              <div class="onb-deploy-list">
+                <div class="onb-deploy-row" data-pct="100">
+                  <span class="onb-deploy-name">Customer Recovery</span>
+                  <div class="onb-deploy-bar"><div class="onb-deploy-fill"></div></div>
+                  <span class="onb-deploy-status">Live</span>
+                </div>
+                <div class="onb-deploy-row" data-pct="100">
+                  <span class="onb-deploy-name">Membership Close</span>
+                  <div class="onb-deploy-bar"><div class="onb-deploy-fill"></div></div>
+                  <span class="onb-deploy-status">Live</span>
+                </div>
+                <div class="onb-deploy-row" data-pct="80">
+                  <span class="onb-deploy-name">Service Advisor Up-Sell</span>
+                  <div class="onb-deploy-bar"><div class="onb-deploy-fill"></div></div>
+                  <span class="onb-deploy-status">Rolling out</span>
+                </div>
+                <div class="onb-deploy-row" data-pct="55">
+                  <span class="onb-deploy-name">Coaching: Difficult Conv.</span>
+                  <div class="onb-deploy-bar"><div class="onb-deploy-fill"></div></div>
+                  <span class="onb-deploy-status">Rolling out</span>
+                </div>
+              </div>
+              <div class="onb-deploy-foot">
+                <span class="onb-deploy-cred"><span class="onb-deploy-cred-dot"></span>Credentialing active · 3 of 4 cleared</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  const root = document.getElementById('onb');
+  if (!root) return;
+  const stepEls = Array.from(root.querySelectorAll('.onb-step'));
+  const paneEls = Array.from(root.querySelectorAll('.onb-pane'));
+  const lineFills = [
+    document.getElementById('onb-line-1'),
+    document.getElementById('onb-line-2'),
+    document.getElementById('onb-line-3')
+  ];
+
+  let idx = 0;
+  let started = false;
+
+  function show(i) {
+    stepEls.forEach((s, n) => {
+      s.classList.toggle('is-active', n === i);
+      s.classList.toggle('is-past',  n < i);
+    });
+    paneEls.forEach((p, n) => p.classList.toggle('is-active', n === i));
+    // Fill connecting lines for past steps
+    lineFills.forEach((f, n) => { if (f) f.style.width = n < i ? '100%' : '0%'; });
+
+    // Replay per-pane micro-animations on entry
+    if (i === 0) replayCall();
+    if (i === 1) replayProposal();
+    if (i === 2) replaySign();
+    if (i === 3) replayDeploy();
+  }
+
+  function replayCall() {
+    const icon = document.getElementById('onb-call-icon');
+    const path = document.getElementById('onb-call-check-path');
+    if (icon) icon.classList.remove('is-shown');
+    if (path) path.style.strokeDashoffset = '100';
+    setTimeout(() => { if (icon) icon.classList.add('is-shown'); }, 300);
+    setTimeout(() => { if (path) path.style.strokeDashoffset = '0'; }, 700);
+  }
+
+  function replayProposal() {
+    const fill = root.querySelector('.onb-doc-meter-fill');
+    if (!fill) return;
+    fill.style.width = '0%';
+    setTimeout(() => { fill.style.width = '78%'; }, 200);
+  }
+  function replaySign() {
+    const write = document.getElementById('onb-sign-write');
+    const stamp = document.getElementById('onb-sign-stamp');
+    const badge = document.getElementById('onb-sign-badge');
+    if (write) {
+      write.classList.remove('is-shown');
+      void write.offsetWidth;
+      setTimeout(() => write.classList.add('is-shown'), 250);
+    }
+    if (stamp) {
+      stamp.classList.remove('is-shown');
+      setTimeout(() => stamp.classList.add('is-shown'), 1500);
+    }
+    if (badge) {
+      badge.textContent = 'PENDING';
+      badge.className = 'onb-sign-badge';
+      setTimeout(() => {
+        badge.textContent = 'SIGNED';
+        badge.classList.add('is-signed');
+      }, 1700);
+    }
+    // Reset and re-fade-in checklist
+    const checks = root.querySelectorAll('.onb-sign-check');
+    checks.forEach(c => c.classList.remove('is-shown'));
+    checks.forEach((c, k) => setTimeout(() => c.classList.add('is-shown'), 1900 + k * 200));
+  }
+  function replayDeploy() {
+    const rows = root.querySelectorAll('.onb-deploy-row');
+    rows.forEach(r => {
+      const fill = r.querySelector('.onb-deploy-fill');
+      if (fill) fill.style.width = '0%';
+      r.classList.remove('is-shown');
+    });
+    rows.forEach((r, k) => {
+      setTimeout(() => {
+        r.classList.add('is-shown');
+        const fill = r.querySelector('.onb-deploy-fill');
+        if (fill) fill.style.width = (parseInt(r.dataset.pct, 10) || 0) + '%';
+      }, 200 + k * 220);
+    });
+  }
+
+  function tick() {
+    idx = (idx + 1) % stepEls.length;
+    show(idx);
+  }
+
+  function maybeStart() {
+    if (started) return;
+    const r = root.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      started = true;
+      show(0);
+      setInterval(tick, 4200);
+    }
+  }
+  window.addEventListener('scroll', maybeStart, { passive: true });
+  maybeStart();
+})();
+</script>
 <!-- ================================================================
      AI ANALYSIS
      ================================================================ -->
