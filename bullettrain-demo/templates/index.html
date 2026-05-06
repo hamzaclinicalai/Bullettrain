@@ -39,7 +39,7 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         Explore Simulations
       </a>
-      <a href="{{ url_for('platform') }}" class="btn btn-ghost on-dark btn-lg">See the Platform</a>
+      <a href="{{ url_for('platform') }}" class="btn btn-ghost on-dark btn-lg">Platform Overview</a>
     </div>
   </div>
 </section>
@@ -56,47 +56,47 @@
     </div>
     <div class="industry-grid">
 
-      <div class="industry-card reveal reveal-delay-1">
+      <a href="{{ url_for('simulation_detail', sim_id='qsr-customer-recovery') }}" class="industry-card reveal reveal-delay-1" style="text-decoration:none;">
         <div class="industry-card-icon">🍔</div>
         <div class="industry-card-name">QSR Franchise</div>
         <div class="industry-card-desc">Counter recovery, wrong orders, lunch-rush pressure</div>
         <div class="industry-card-rail" style="background:var(--accent);"></div>
-      </div>
+      </a>
 
-      <div class="industry-card reveal reveal-delay-2">
+      <a href="{{ url_for('simulation_detail', sim_id='fitness-membership-objections') }}" class="industry-card reveal reveal-delay-2" style="text-decoration:none;">
         <div class="industry-card-icon">💪</div>
         <div class="industry-card-name">Fitness Franchise</div>
         <div class="industry-card-desc">Membership tours, pricing objections, closing conversations</div>
         <div class="industry-card-rail" style="background:var(--signal-green);"></div>
-      </div>
+      </a>
 
-      <div class="industry-card reveal reveal-delay-3">
+      <a href="{{ url_for('simulation_detail', sim_id='hospitality-guest-checkin') }}" class="industry-card reveal reveal-delay-3" style="text-decoration:none;">
         <div class="industry-card-icon">🏨</div>
         <div class="industry-card-name">Hospitality</div>
         <div class="industry-card-desc">Guest recovery, loyalty escalations, front-desk moments</div>
         <div class="industry-card-rail" style="background:var(--signal-purple);"></div>
-      </div>
+      </a>
 
-      <div class="industry-card reveal reveal-delay-1">
+      <a href="{{ url_for('simulation_detail', sim_id='auto-service-advisor') }}" class="industry-card reveal reveal-delay-1" style="text-decoration:none;">
         <div class="industry-card-icon">🚗</div>
         <div class="industry-card-name">Automotive</div>
         <div class="industry-card-desc">Service advisor upsells, trust-building, work order closes</div>
         <div class="industry-card-rail" style="background:#F59E0B;"></div>
-      </div>
+      </a>
 
-      <div class="industry-card reveal reveal-delay-2">
+      <a href="{{ url_for('simulation_detail', sim_id='retail-shrink-conversation') }}" class="industry-card reveal reveal-delay-2" style="text-decoration:none;">
         <div class="industry-card-icon">🛍️</div>
         <div class="industry-card-name">Retail Chains</div>
         <div class="industry-card-desc">Performance coaching, difficult conversations, accountability</div>
         <div class="industry-card-rail" style="background:#EC4899;"></div>
-      </div>
+      </a>
 
-      <div class="industry-card reveal reveal-delay-3">
+      <a href="{{ url_for('simulation_detail', sim_id='tech-enterprise-renewal') }}" class="industry-card reveal reveal-delay-3" style="text-decoration:none;">
         <div class="industry-card-icon">💻</div>
         <div class="industry-card-name">Technology</div>
         <div class="industry-card-desc">Enterprise renewals, churn recovery, executive conversations</div>
         <div class="industry-card-rail" style="background:#0EA5A4;"></div>
-      </div>
+      </a>
 
     </div>
   </div>
@@ -156,9 +156,6 @@
             <div><b>AI debrief</b> - Rubric-scored results tied directly to each learning objective. Managers see aggregate trends; trainees see personal gaps.</div>
           </li>
         </ul>
-        <div style="margin-top:36px;">
-          <a href="{{ url_for('catalog') }}" class="btn btn-primary btn-lg">Browse demo simulations</a>
-        </div>
       </div>
 
       <div class="split-art reveal reveal-delay-2">
@@ -176,50 +173,6 @@
           <div style="margin-top:14px;font-size:11px;color:rgba(27,158,255,0.5);font-family:var(--font-mono);">Practice hint available</div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================================================================
-     FEATURED SIMULATIONS
-     ================================================================ -->
-<section class="dark">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow">Simulation library</span>
-      <h2>Drop your team into the hard moments.</h2>
-      <p>Each scenario is designed with a franchise operator or L&D team and validated against real performance data.</p>
-    </div>
-    <div class="sim-grid">
-      {% for sim in simulations %}
-      <a href="{{ url_for('simulation_detail', sim_id=sim.id) }}"
-         class="sim-card glass-card tilt-card reveal reveal-delay-{{ loop.index }}"
-         style="text-decoration:none;">
-        <div>
-          <span class="industry">{{ sim.industry }}</span>
-          <h3 style="margin-top:12px;">{{ sim.title }}</h3>
-          <p style="margin-top:8px;">{{ sim.tagline }}</p>
-        </div>
-        <div>
-          <div style="margin-bottom:12px;display:flex;gap:4px;flex-wrap:wrap;">
-            {% for skill in sim.skills %}
-            <span class="tag">{{ skill }}</span>
-            {% endfor %}
-          </div>
-          <div class="sim-meta">
-            <strong>{{ sim.duration }}</strong>
-            <span>·</span>
-            <span>{{ sim.difficulty }}</span>
-          </div>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-    <div style="margin-top:40px;" class="reveal">
-      <a href="{{ url_for('catalog') }}" class="btn btn-ghost">
-        See all {{ total_simulations }} demo simulations
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
     </div>
   </div>
 </section>
