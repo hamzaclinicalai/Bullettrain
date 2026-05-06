@@ -1258,6 +1258,7 @@ section.light .eyebrow { color: var(--accent-deep); }
 .detail-hero .container {
   position: relative;
   z-index: 1;
+  text-align: center;
 }
 
 .detail-hero h1 {
@@ -1266,12 +1267,16 @@ section.light .eyebrow { color: var(--accent-deep); }
   font-weight: 700;
   max-width: 22ch;
   margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .detail-hero p {
   color: var(--text-secondary);
   margin-top: 18px;
   max-width: 62ch;
+  margin-left: auto;
+  margin-right: auto;
   font-size: 17px;
   line-height: 1.65;
 }
