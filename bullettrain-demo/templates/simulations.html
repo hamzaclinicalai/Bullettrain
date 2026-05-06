@@ -35,12 +35,14 @@
 </section>
 
 <!-- ================================================================
-     STEP 1: Choose your scenario
+     STEP 1: Choose your scenario  (accent: blue)
      ================================================================ -->
-<section class="step-section dark" style="padding:100px 0;">
-  <div class="container">
+<section class="step-section" style="padding:100px 0;background:var(--bg-deep);position:relative;overflow:hidden;--step-color:#1B9EFF;--step-border:rgba(27,158,255,0.22);--step-glow:rgba(27,158,255,0.10);">
+  <div style="position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(27,158,255,0.10),transparent 65%);pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:1;">
     <div class="step-split">
-      <div class="reveal">
+      <div class="reveal" style="position:relative;">
+        <div class="step-ghost">01</div>
         <div class="step-number">Step 01</div>
         <h2>Choose your scenario.</h2>
         <p>Scenarios are built around real enterprise situations, not hypothetical scripts. Every situation in the library comes from actual operator feedback and L&D team research.</p>
@@ -51,20 +53,20 @@
       </div>
       <div class="step-visual reveal reveal-delay-2">
         <div class="mini-cards">
-          <div class="mini-card">
-            <span>Quick Service</span>
+          <div class="mini-card" style="background:rgba(27,158,255,0.07);border-color:rgba(27,158,255,0.20);">
+            <span style="color:#4DCFFF;">Quick Service</span>
             <strong>Customer Recovery at the Counter</strong>
           </div>
-          <div class="mini-card">
-            <span>Fitness</span>
+          <div class="mini-card" style="background:rgba(0,229,160,0.07);border-color:rgba(0,229,160,0.20);">
+            <span style="color:#00E5A0;">Fitness</span>
             <strong>Closing the New Member Tour</strong>
           </div>
-          <div class="mini-card">
-            <span>Hospitality</span>
+          <div class="mini-card" style="background:rgba(139,92,246,0.07);border-color:rgba(139,92,246,0.20);">
+            <span style="color:#c4b5fd;">Hospitality</span>
             <strong>VIP Guest Check-In Recovery</strong>
           </div>
-          <div class="mini-card" style="background:rgba(27,158,255,0.10);border-color:rgba(27,158,255,0.3);">
-            <span style="color:var(--accent-soft);">Automotive</span>
+          <div class="mini-card" style="background:rgba(245,158,11,0.07);border-color:rgba(245,158,11,0.20);">
+            <span style="color:#FCD34D;">Automotive</span>
             <strong>Service Advisor Up-Sell</strong>
           </div>
         </div>
@@ -74,25 +76,30 @@
 </section>
 
 <!-- ================================================================
-     STEP 2: Practice before the test
+     STEP 2: Practice before the test  (accent: green)
      ================================================================ -->
-<section class="step-section" style="padding:100px 0;background:#000;">
-  <div class="container">
+<section class="step-section" style="padding:100px 0;background:#000;position:relative;overflow:hidden;--step-color:#00E5A0;--step-border:rgba(0,229,160,0.22);--step-glow:rgba(0,229,160,0.08);">
+  <div style="position:absolute;bottom:-200px;left:-150px;width:550px;height:550px;background:radial-gradient(circle,rgba(0,229,160,0.09),transparent 65%);pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:1;">
     <div class="step-split reverse">
-      <div class="reveal">
-        <div class="step-number">Step 02</div>
+      <div class="reveal" style="position:relative;">
+        <div class="step-ghost" style="right:auto;left:-20px;">02</div>
+        <div class="step-number" style="color:#00E5A0;">Step 02</div>
         <h2>Practice before the test.</h2>
         <p>Practice mode puts the trainee in the scenario with the avatar staying fully in character. The difference: if the trainee goes silent for too long, the avatar offers a gentle nudge to keep things moving.</p>
         <p>No grade. No pressure. Unlimited reps until the trainee feels ready to go for the real run.</p>
       </div>
-      <div class="step-visual reveal reveal-delay-2">
+      <div class="step-visual reveal reveal-delay-2" style="animation-delay:0.5s;">
         <div class="fake-screen" style="height:auto;">
           <div class="cluster" style="margin-bottom:12px;">
-            <span class="fake-pill"><span class="fake-dot"></span>Practice Mode</span>
+            <span class="fake-pill" style="background:rgba(0,229,160,0.12);border-color:rgba(0,229,160,0.25);color:#00E5A0;">
+              <span style="width:7px;height:7px;border-radius:50%;background:#00E5A0;box-shadow:0 0 6px #00E5A0;display:inline-block;animation:pulse 1.5s ease-in-out infinite;"></span>
+              Practice Mode
+            </span>
           </div>
           <div class="fake-bubble">I ordered the grilled chicken wrap but got a burger. Again. This is the third time.</div>
           <div class="fake-bubble user">I am so sorry about that. Let me fix this right away. Can I get your name?</div>
-          <div style="margin-top:14px;background:rgba(27,158,255,0.08);border:1px solid rgba(27,158,255,0.20);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--accent-soft);font-family:var(--font-mono);">
+          <div style="margin-top:14px;background:rgba(0,229,160,0.07);border:1px solid rgba(0,229,160,0.22);border-radius:10px;padding:10px 14px;font-size:12px;color:#00E5A0;font-family:var(--font-mono);">
             Hint: Try offering a specific remedy with a timeline.
           </div>
         </div>
@@ -102,21 +109,23 @@
 </section>
 
 <!-- ================================================================
-     STEP 3: Take the blind test
+     STEP 3: Take the blind test  (accent: purple)
      ================================================================ -->
-<section class="step-section dark" style="padding:100px 0;">
-  <div class="container">
+<section class="step-section" style="padding:100px 0;background:var(--bg-deep);position:relative;overflow:hidden;--step-color:#8B5CF6;--step-border:rgba(139,92,246,0.22);--step-glow:rgba(139,92,246,0.09);">
+  <div style="position:absolute;top:-150px;right:-150px;width:580px;height:580px;background:radial-gradient(circle,rgba(139,92,246,0.10),transparent 65%);pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:1;">
     <div class="step-split">
-      <div class="reveal">
-        <div class="step-number">Step 03</div>
+      <div class="reveal" style="position:relative;">
+        <div class="step-ghost">03</div>
+        <div class="step-number" style="color:#8B5CF6;">Step 03</div>
         <h2>Take the blind test.</h2>
         <p>Test mode is the real thing. The avatar stays fully in character throughout the conversation with zero hints, no soft prompts, and no transcript visible during the run. Everything is recorded.</p>
         <p>This is where preparation meets pressure. Managers can assign test mode as the official assessment, confident that the result is unassisted.</p>
       </div>
-      <div class="step-visual reveal reveal-delay-2">
+      <div class="step-visual reveal reveal-delay-2" style="animation-delay:1s;">
         <div class="fake-screen" style="height:auto;">
           <div class="cluster" style="margin-bottom:12px;">
-            <span class="fake-pill" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.25);color:#c4b5fd;">
+            <span class="fake-pill" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.30);color:#c4b5fd;">
               <span style="width:7px;height:7px;border-radius:50%;background:#8B5CF6;display:inline-block;"></span>
               Test Mode
             </span>
@@ -125,7 +134,7 @@
           <div style="filter:blur(5px);pointer-events:none;user-select:none;">
             <div class="fake-bubble user">...</div>
           </div>
-          <div style="margin-top:14px;background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.15);border-radius:10px;padding:10px 14px;font-size:12px;color:rgba(196,181,253,0.7);font-family:var(--font-mono);">
+          <div style="margin-top:14px;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.22);border-radius:10px;padding:10px 14px;font-size:12px;color:rgba(196,181,253,0.85);font-family:var(--font-mono);">
             Transcript hidden during test mode
           </div>
         </div>
@@ -135,13 +144,15 @@
 </section>
 
 <!-- ================================================================
-     STEP 4: Get your AI debrief
+     STEP 4: Get your AI debrief  (accent: teal)
      ================================================================ -->
-<section class="step-section" style="padding:100px 0;background:#000;">
-  <div class="container">
+<section class="step-section" style="padding:100px 0;background:#000;position:relative;overflow:hidden;--step-color:#0EA5A4;--step-border:rgba(14,165,164,0.22);--step-glow:rgba(14,165,164,0.08);">
+  <div style="position:absolute;bottom:-200px;right:-100px;width:580px;height:580px;background:radial-gradient(circle,rgba(14,165,164,0.09),transparent 65%);pointer-events:none;"></div>
+  <div class="container" style="position:relative;z-index:1;">
     <div class="step-split reverse">
-      <div class="reveal">
-        <div class="step-number">Step 04</div>
+      <div class="reveal" style="position:relative;">
+        <div class="step-ghost" style="right:auto;left:-20px;">04</div>
+        <div class="step-number" style="color:#0EA5A4;">Step 04</div>
         <h2>Get your AI debrief.</h2>
         <p>The moment the session ends, the platform scores each objective against the full transcript. You see exactly which skills landed, which fell short, and the specific moment in the conversation that explains why.</p>
         <p>Coaching tips are specific to the run, not boilerplate. Managers see the same breakdown and can share it as part of a formal review cycle.</p>
@@ -149,24 +160,24 @@
           <a href="{{ url_for('catalog') }}" class="btn btn-primary">Start a simulation</a>
         </div>
       </div>
-      <div class="step-visual reveal reveal-delay-2">
+      <div class="step-visual reveal reveal-delay-2" style="animation-delay:1.5s;">
         <div class="fake-score">
           <div class="fake-score-header">
-            <div class="fake-dial">
+            <div class="fake-dial" style="border-color:rgba(14,165,164,0.5);box-shadow:0 0 20px rgba(14,165,164,0.25);">
               <span>82</span>
             </div>
             <div>
               <div style="font-weight:700;color:var(--text-primary);font-size:15px;">Customer Recovery</div>
-              <div style="font-family:var(--font-mono);font-size:11px;color:var(--signal-green);margin-top:3px;text-transform:uppercase;letter-spacing:0.1em;">On Track</div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:#0EA5A4;margin-top:3px;text-transform:uppercase;letter-spacing:0.1em;">On Track</div>
             </div>
           </div>
           <div class="fake-rubric-row">
             <div style="font-size:13px;color:var(--text-secondary);">Acknowledge the issue without being defensive</div>
-            <div class="fake-rubric-bar" style="--pct:90%;"><div style="width:90%;background:linear-gradient(90deg,var(--accent),var(--accent-soft));height:100%;border-radius:4px;position:absolute;left:0;top:0;"></div></div>
+            <div class="fake-rubric-bar"><div style="width:90%;background:linear-gradient(90deg,#0EA5A4,#4DCFFF);height:100%;border-radius:4px;position:absolute;left:0;top:0;"></div></div>
           </div>
           <div class="fake-rubric-row">
             <div style="font-size:13px;color:var(--text-secondary);">Offer a remedy aligned to brand standards</div>
-            <div class="fake-rubric-bar" style="--pct:72%;"><div style="width:72%;background:linear-gradient(90deg,var(--accent),var(--accent-soft));height:100%;border-radius:4px;position:absolute;left:0;top:0;"></div></div>
+            <div class="fake-rubric-bar"><div style="width:72%;background:linear-gradient(90deg,#0EA5A4,#4DCFFF);height:100%;border-radius:4px;position:absolute;left:0;top:0;"></div></div>
           </div>
         </div>
       </div>

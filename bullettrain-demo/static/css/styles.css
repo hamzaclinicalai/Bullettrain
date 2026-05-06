@@ -1933,8 +1933,24 @@ footer .footer-brand-desc {
   font-size: 11px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--step-color, var(--accent));
   margin-bottom: 12px;
+}
+
+.step-ghost {
+  position: absolute;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(140px, 18vw, 220px);
+  line-height: 1;
+  color: var(--step-color, var(--accent));
+  opacity: 0.04;
+  top: 50%;
+  right: -20px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.05em;
 }
 
 .step-split h2 {
@@ -1952,7 +1968,7 @@ footer .footer-brand-desc {
 
 .step-visual {
   background: var(--bg-card);
-  border: 1px solid rgba(27,158,255,0.12);
+  border: 1px solid var(--step-border, rgba(27,158,255,0.15));
   border-radius: 20px;
   padding: 32px;
   position: relative;
@@ -1961,14 +1977,20 @@ footer .footer-brand-desc {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  animation: floatPanel 7s ease-in-out infinite;
 }
 
 .step-visual::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(400px 300px at 80% 20%, rgba(27,158,255,0.08), transparent 60%);
+  background: radial-gradient(400px 300px at 80% 20%, var(--step-glow, rgba(27,158,255,0.08)), transparent 60%);
   pointer-events: none;
+}
+
+@keyframes floatPanel {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
 }
 
 /* Mini scenario cards for Step 1 visual */
