@@ -12,13 +12,371 @@
     <span class="eyebrow on-dark">Platform Overview</span>
     <h1 style="margin-top:18px;margin-left:0;margin-right:0;">
       <span class="gradient-text">Built for the realities</span><br>
-      of franchise training.
+      of enterprise training.
     </h1>
     <p style="color:var(--text-secondary);margin-top:18px;max-width:62ch;font-size:18px;line-height:1.7;margin-left:0;margin-right:0;">
       BulletTrain sits between your LMS and the floor. It is where rote knowledge becomes practiced judgment, and where managers finally see who is ready.
     </p>
   </div>
 </section>
+
+<!-- ================================================================
+     ENTERPRISE LMS
+     ================================================================ -->
+<section style="background:var(--bg-deep);padding:100px 0;">
+  <div class="container">
+    <div class="step-split">
+
+      <!-- Left: copy -->
+      <div class="reveal">
+        <span class="eyebrow on-dark">Enterprise LMS</span>
+        <h2 style="margin-top:16px;">Build, assign, and track from one console.</h2>
+        <p style="margin-top:20px;">An L&amp;D admin layer sits on top of every BulletTrain simulation. Spin up new scenarios and tests, stand up new franchise locations, assign staff, and roll out custom curricula — all in minutes, all from one console.</p>
+        <ul style="list-style:none;padding:0;margin:28px 0 0;display:flex;flex-direction:column;gap:16px;">
+          <li style="display:flex;align-items:flex-start;gap:12px;padding-bottom:16px;border-bottom:1px solid rgba(27,158,255,0.10);">
+            <svg width="18" height="18" style="flex-shrink:0;margin-top:2px;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="20 6 9 17 4 12"/></svg>
+            <div><b>Author scenarios + tests</b> — guided editor turns a real situation into a graded simulation in minutes</div>
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:12px;padding-bottom:16px;border-bottom:1px solid rgba(27,158,255,0.10);">
+            <svg width="18" height="18" style="flex-shrink:0;margin-top:2px;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="20 6 9 17 4 12"/></svg>
+            <div><b>Stand up new locations</b> — onboard a franchise unit and inherit the parent org's defaults</div>
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:12px;padding-bottom:16px;border-bottom:1px solid rgba(27,158,255,0.10);">
+            <svg width="18" height="18" style="flex-shrink:0;margin-top:2px;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="20 6 9 17 4 12"/></svg>
+            <div><b>Assign staff to locations</b> — drag-drop staff onto rooftops and inherit the local manager's view</div>
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:12px;">
+            <svg width="18" height="18" style="flex-shrink:0;margin-top:2px;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="20 6 9 17 4 12"/></svg>
+            <div><b>Curricula and required passes</b> — bundle scenarios into a curriculum, set a threshold, assign to roles</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right: animated LMS console -->
+      <div class="step-visual reveal reveal-delay-2">
+        <div class="lms-frame" id="lms-frame">
+
+          <div class="lms-chrome">
+            <div class="lms-dots"><i></i><i></i><i></i></div>
+            <div class="lms-tabs">
+              <button class="lms-tab" type="button" data-tab="scenarios">Scenarios</button>
+              <button class="lms-tab" type="button" data-tab="locations">Locations</button>
+              <button class="lms-tab" type="button" data-tab="staff">Staff</button>
+              <button class="lms-tab" type="button" data-tab="curricula">Curricula</button>
+            </div>
+            <div class="lms-tab-underline" id="lms-tab-underline"></div>
+          </div>
+
+          <div class="lms-stage">
+
+            <!-- View: Scenarios -->
+            <div class="lms-view is-active" data-view="scenarios">
+              <div class="lms-view-head">
+                <div>
+                  <div class="lms-eyebrow">Library</div>
+                  <div class="lms-h">Practice scenarios &amp; tests</div>
+                </div>
+                <button class="lms-btn lms-btn-primary"><span class="lms-btn-plus">+</span>New scenario</button>
+              </div>
+              <div class="lms-rows">
+                <div class="lms-row">
+                  <div class="lms-row-icon" style="background:rgba(27,158,255,0.14);border-color:rgba(27,158,255,0.32);color:#4DCFFF;">CR</div>
+                  <div class="lms-row-body">
+                    <div class="lms-row-name">Customer Recovery at the Counter</div>
+                    <div class="lms-row-meta">Fast Food · 3 objectives</div>
+                  </div>
+                  <div class="lms-row-tags">
+                    <span class="lms-tag lms-tag-pass">Practice</span>
+                    <span class="lms-tag lms-tag-test">Test</span>
+                  </div>
+                </div>
+                <div class="lms-row">
+                  <div class="lms-row-icon" style="background:rgba(0,229,160,0.14);border-color:rgba(0,229,160,0.32);color:#00E5A0;">MC</div>
+                  <div class="lms-row-body">
+                    <div class="lms-row-name">Membership Close — Tour</div>
+                    <div class="lms-row-meta">Fitness · 4 objectives</div>
+                  </div>
+                  <div class="lms-row-tags">
+                    <span class="lms-tag lms-tag-pass">Practice</span>
+                    <span class="lms-tag lms-tag-test">Test</span>
+                  </div>
+                </div>
+                <div class="lms-row">
+                  <div class="lms-row-icon" style="background:rgba(139,92,246,0.16);border-color:rgba(139,92,246,0.32);color:#c4b5fd;">GR</div>
+                  <div class="lms-row-body">
+                    <div class="lms-row-name">VIP Guest Recovery</div>
+                    <div class="lms-row-meta">Hospitality · 3 objectives</div>
+                  </div>
+                  <div class="lms-row-tags">
+                    <span class="lms-tag lms-tag-pass">Practice</span>
+                    <span class="lms-tag lms-tag-test">Test</span>
+                  </div>
+                </div>
+                <div class="lms-row">
+                  <div class="lms-row-icon" style="background:rgba(245,158,11,0.16);border-color:rgba(245,158,11,0.32);color:#FCD34D;">CC</div>
+                  <div class="lms-row-body">
+                    <div class="lms-row-name">Coaching a Difficult Conversation</div>
+                    <div class="lms-row-meta">Manager · 5 objectives</div>
+                  </div>
+                  <div class="lms-row-tags">
+                    <span class="lms-tag lms-tag-amber">Draft</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- View: Locations -->
+            <div class="lms-view" data-view="locations">
+              <div class="lms-view-head">
+                <div>
+                  <div class="lms-eyebrow">Org structure</div>
+                  <div class="lms-h">Locations</div>
+                </div>
+                <button class="lms-btn lms-btn-primary"><span class="lms-btn-plus">+</span>Add location</button>
+              </div>
+              <div class="lms-loc-grid">
+                <div class="lms-loc">
+                  <div class="lms-loc-flag" style="background:linear-gradient(135deg,#1B9EFF,#0D6FCC);"></div>
+                  <div class="lms-loc-name">Downtown Detroit</div>
+                  <div class="lms-loc-stats"><span>24 staff</span><span class="lms-pill lms-pill-pass">91%</span></div>
+                </div>
+                <div class="lms-loc">
+                  <div class="lms-loc-flag" style="background:linear-gradient(135deg,#00E5A0,#00A876);"></div>
+                  <div class="lms-loc-name">Northland Mall</div>
+                  <div class="lms-loc-stats"><span>18 staff</span><span class="lms-pill lms-pill-pass">88%</span></div>
+                </div>
+                <div class="lms-loc">
+                  <div class="lms-loc-flag" style="background:linear-gradient(135deg,#F59E0B,#D97706);"></div>
+                  <div class="lms-loc-name">Lakeside Plaza</div>
+                  <div class="lms-loc-stats"><span>16 staff</span><span class="lms-pill lms-pill-amber">78%</span></div>
+                </div>
+                <div class="lms-loc">
+                  <div class="lms-loc-flag" style="background:linear-gradient(135deg,#EF4444,#B91C1C);"></div>
+                  <div class="lms-loc-name">Riverside Outlet</div>
+                  <div class="lms-loc-stats"><span>12 staff</span><span class="lms-pill lms-pill-red">67%</span></div>
+                </div>
+                <div class="lms-loc lms-loc-new" id="lms-loc-new">
+                  <div class="lms-loc-plus">+</div>
+                  <div class="lms-loc-newname">Auburn Town Center</div>
+                  <div class="lms-loc-newmeta">Onboarding...</div>
+                </div>
+                <div class="lms-loc lms-loc-ghost"></div>
+              </div>
+            </div>
+
+            <!-- View: Staff -->
+            <div class="lms-view" data-view="staff">
+              <div class="lms-view-head">
+                <div>
+                  <div class="lms-eyebrow">Roster</div>
+                  <div class="lms-h">Assign staff to locations</div>
+                </div>
+                <span class="lms-search">Search...</span>
+              </div>
+              <div class="lms-rows">
+                <div class="lms-row">
+                  <div class="lms-row-avatar" style="background:linear-gradient(135deg,#00E5A0,#00A876);">MT</div>
+                  <div class="lms-row-body">
+                    <div class="lms-row-name">Marcus T.</div>
+                    <div class="lms-row-meta">Shift Lead · 14 mo</div>
+                  </div>
+                  <div class="lms-assign">
+                    <span class="lms-arrow">→</span>
+                    <span class="lms-assign-pill">Northland Mall</span>
+                  </div>
+                </div>
+                <div class="lms-row">
+                  <div class="lms-row-avatar" style="background:linear-gradient(135deg,#1B9EFF,#0D6FCC);">DR</div>
+                  <div class="lms-row-body">
+                    <div class="lms-row-name">Dana R.</div>
+                    <div class="lms-row-meta">Crew · 6 mo</div>
+                  </div>
+                  <div class="lms-assign">
+                    <span class="lms-arrow">→</span>
+                    <span class="lms-assign-pill">Downtown Detroit</span>
+                  </div>
+                </div>
+                <div class="lms-row">
+                  <div class="lms-row-avatar" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);">PS</div>
+                  <div class="lms-row-body">
+                    <div class="lms-row-name">Priya S.</div>
+                    <div class="lms-row-meta">Manager · 22 mo</div>
+                  </div>
+                  <div class="lms-assign">
+                    <span class="lms-arrow">→</span>
+                    <span class="lms-assign-pill" id="lms-assign-priya">Northland Mall</span>
+                  </div>
+                </div>
+                <div class="lms-row">
+                  <div class="lms-row-avatar" style="background:linear-gradient(135deg,#EC4899,#BE185D);">TN</div>
+                  <div class="lms-row-body">
+                    <div class="lms-row-name">Talia N.</div>
+                    <div class="lms-row-meta">Crew · 3 mo · New</div>
+                  </div>
+                  <div class="lms-assign">
+                    <span class="lms-arrow">→</span>
+                    <span class="lms-assign-pill lms-assign-pill-new" id="lms-assign-talia">Auburn Town Center</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- View: Curricula -->
+            <div class="lms-view" data-view="curricula">
+              <div class="lms-view-head">
+                <div>
+                  <div class="lms-eyebrow">Programs</div>
+                  <div class="lms-h">Curricula</div>
+                </div>
+                <button class="lms-btn lms-btn-primary"><span class="lms-btn-plus">+</span>New curriculum</button>
+              </div>
+              <div class="lms-curr-grid">
+                <div class="lms-curr">
+                  <div class="lms-curr-rail" style="background:linear-gradient(90deg,#1B9EFF,#0D6FCC);"></div>
+                  <div class="lms-curr-name">New Hire Foundations</div>
+                  <div class="lms-curr-modules">5 scenarios · 2 required tests</div>
+                  <div class="lms-curr-foot">
+                    <div class="lms-curr-avatars">
+                      <span style="background:linear-gradient(135deg,#1B9EFF,#0D6FCC);">DR</span>
+                      <span style="background:linear-gradient(135deg,#EC4899,#BE185D);">TN</span>
+                      <span style="background:linear-gradient(135deg,#F59E0B,#D97706);">JK</span>
+                      <span class="lms-curr-more">+83</span>
+                    </div>
+                    <span class="lms-pill lms-pill-pass">86 assigned</span>
+                  </div>
+                </div>
+                <div class="lms-curr">
+                  <div class="lms-curr-rail" style="background:linear-gradient(90deg,#00E5A0,#00A876);"></div>
+                  <div class="lms-curr-name">Service Recovery Cert</div>
+                  <div class="lms-curr-modules">3 scenarios · 1 required test</div>
+                  <div class="lms-curr-foot">
+                    <div class="lms-curr-avatars">
+                      <span style="background:linear-gradient(135deg,#00E5A0,#00A876);">MT</span>
+                      <span style="background:linear-gradient(135deg,#1B9EFF,#0D6FCC);">EP</span>
+                      <span class="lms-curr-more">+40</span>
+                    </div>
+                    <span class="lms-pill lms-pill-pass">42 assigned</span>
+                  </div>
+                </div>
+                <div class="lms-curr">
+                  <div class="lms-curr-rail" style="background:linear-gradient(90deg,#8B5CF6,#6D28D9);"></div>
+                  <div class="lms-curr-name">Manager Coaching</div>
+                  <div class="lms-curr-modules">4 scenarios · 1 required test</div>
+                  <div class="lms-curr-foot">
+                    <div class="lms-curr-avatars">
+                      <span style="background:linear-gradient(135deg,#8B5CF6,#6D28D9);">PS</span>
+                      <span class="lms-curr-more">+11</span>
+                    </div>
+                    <span class="lms-pill lms-pill-amber">12 assigned</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /.lms-stage -->
+
+          <div class="lms-cursor" id="lms-cursor">
+            <svg viewBox="0 0 18 22" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 2 L2 16 L6.5 12.5 L9 19 L11.5 18 L9 11.5 L14.5 11.5 Z"
+                    fill="#fff" stroke="#0a0a0a" stroke-width="1" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  const frame = document.getElementById('lms-frame');
+  if (!frame) return;
+  const tabs    = Array.from(frame.querySelectorAll('.lms-tab'));
+  const views   = Array.from(frame.querySelectorAll('.lms-view'));
+  const underline = document.getElementById('lms-tab-underline');
+  const cursor  = document.getElementById('lms-cursor');
+  if (!tabs.length || !views.length) return;
+
+  let idx = 0;
+  let started = false;
+
+  function show(name) {
+    tabs.forEach(t => t.classList.toggle('is-active', t.dataset.tab === name));
+    views.forEach(v => v.classList.toggle('is-active', v.dataset.view === name));
+    // Slide the underline to the active tab
+    const activeTab = tabs.find(t => t.dataset.tab === name);
+    if (activeTab && underline) {
+      underline.style.left  = activeTab.offsetLeft + 'px';
+      underline.style.width = activeTab.offsetWidth + 'px';
+    }
+    // Reset per-view animations so they replay each time the view becomes active
+    if (name === 'locations') {
+      const newLoc = document.getElementById('lms-loc-new');
+      if (newLoc) {
+        newLoc.classList.remove('is-shown');
+        setTimeout(() => newLoc.classList.add('is-shown'), 800);
+      }
+    }
+    if (name === 'staff') {
+      const taliaPill = document.getElementById('lms-assign-talia');
+      if (taliaPill) {
+        taliaPill.classList.remove('is-shown');
+        setTimeout(() => taliaPill.classList.add('is-shown'), 700);
+      }
+    }
+  }
+
+  function moveCursorTo(el) {
+    if (!cursor || !el) return;
+    const fr = frame.getBoundingClientRect();
+    const r  = el.getBoundingClientRect();
+    cursor.style.left = (r.left - fr.left + r.width * 0.5) + 'px';
+    cursor.style.top  = (r.top - fr.top + r.height * 0.5) + 'px';
+  }
+
+  function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  async function cycle() {
+    while (true) {
+      const tab = tabs[idx];
+      cursor.classList.add('visible');
+      moveCursorTo(tab);
+      await wait(700);
+      cursor.classList.add('is-clicking');
+      await wait(380);
+      cursor.classList.remove('is-clicking');
+      show(tab.dataset.tab);
+      cursor.classList.remove('visible');
+      await wait(3200);
+      idx = (idx + 1) % tabs.length;
+    }
+  }
+
+  function maybeStart() {
+    if (started) return;
+    const r = frame.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      started = true;
+      // Position the underline at first tab on initial render
+      requestAnimationFrame(() => show('scenarios'));
+      setTimeout(cycle, 700);
+    }
+  }
+  window.addEventListener('scroll', maybeStart, { passive: true });
+  maybeStart();
+})();
+</script>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes wave {
+  from { transform: scaleY(0.4); }
+  to   { transform: scaleY(1.0); }
+}
+</style>
+
 
 <!-- ================================================================
      FOUR STEPS
@@ -46,98 +404,6 @@
     </div>
   </div>
 </section>
-
-<!-- ================================================================
-     TECHNOLOGY
-     ================================================================ -->
-<section style="background:var(--bg-deep);padding:100px 0;">
-  <div class="container">
-    <div class="step-split">
-
-      <!-- Left: copy -->
-      <div class="reveal">
-        <span class="eyebrow on-dark">Technology</span>
-        <h2 style="margin-top:16px;">Realtime avatar streaming.<br>No video calls. No actors.</h2>
-        <p style="margin-top:20px;">The avatar is a fully autonomous AI persona that streams live video and audio directly in the trainee's browser. It listens via microphone, reasons over the scenario context, and speaks with natural lip-sync and expression — all under 500ms of latency.</p>
-        <ul style="list-style:none;padding:0;margin:28px 0 0;display:flex;flex-direction:column;gap:16px;">
-          <li style="display:flex;align-items:flex-start;gap:12px;padding-bottom:16px;border-bottom:1px solid rgba(27,158,255,0.10);">
-            <svg width="18" height="18" style="flex-shrink:0;margin-top:2px;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>WebRTC video stream</b> — no download, no plugin</div>
-          </li>
-          <li style="display:flex;align-items:flex-start;gap:12px;padding-bottom:16px;border-bottom:1px solid rgba(27,158,255,0.10);">
-            <svg width="18" height="18" style="flex-shrink:0;margin-top:2px;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>Persona-scoped context</b> — each simulation sets a unique system prompt</div>
-          </li>
-          <li style="display:flex;align-items:flex-start;gap:12px;padding-bottom:16px;border-bottom:1px solid rgba(27,158,255,0.10);">
-            <svg width="18" height="18" style="flex-shrink:0;margin-top:2px;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>Live transcript</b> — every spoken word is captured for analysis</div>
-          </li>
-          <li style="display:flex;align-items:flex-start;gap:12px;">
-            <svg width="18" height="18" style="flex-shrink:0;margin-top:2px;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3"><polyline points="20 6 9 17 4 12"/></svg>
-            <div><b>Session isolation</b> — each run is its own token; nothing leaks between trainees</div>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Right: avatar interface visual -->
-      <div class="step-visual reveal reveal-delay-2">
-        <div style="background:rgba(8,12,24,0.90);border:1px solid rgba(27,158,255,0.18);border-radius:20px;overflow:hidden;position:relative;">
-
-          <!-- Avatar face area -->
-          <div style="position:relative;background:linear-gradient(160deg,#0D1421 0%,#060A14 100%);padding:32px 28px 24px;display:flex;flex-direction:column;align-items:center;">
-            <!-- Animated glow ring -->
-            <div style="position:relative;width:120px;height:120px;margin-bottom:20px;">
-              <div style="position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(from 0deg,transparent 60%,rgba(27,158,255,0.6) 75%,rgba(77,207,255,0.8) 85%,rgba(27,158,255,0.6) 95%,transparent);animation:spin 3s linear infinite;"></div>
-              <div style="position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(from 180deg,transparent 60%,rgba(0,229,160,0.4) 78%,rgba(0,229,160,0.6) 88%,transparent);animation:spin 4s linear infinite reverse;"></div>
-              <!-- Avatar face placeholder -->
-              <div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(145deg,#1a2744,#0d1830);border:2px solid rgba(27,158,255,0.25);display:flex;align-items:center;justify-content:center;overflow:hidden;">
-                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" style="color:rgba(27,158,255,0.5);" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-              </div>
-            </div>
-
-            <!-- Live badge + name -->
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-              <span style="width:8px;height:8px;border-radius:50%;background:#00E5A0;box-shadow:0 0 8px rgba(0,229,160,0.7);animation:pulse 1.5s ease-in-out infinite;display:inline-block;"></span>
-              <span style="font-family:var(--font-mono);font-size:11px;color:#00E5A0;letter-spacing:0.12em;text-transform:uppercase;">Live · AI Avatar</span>
-            </div>
-            <div style="font-size:14px;color:var(--text-secondary);">Speaking naturally in real time</div>
-
-            <!-- Audio waveform -->
-            <div style="display:flex;align-items:center;gap:3px;margin-top:18px;height:36px;">
-              {% for h in [14,22,30,18,36,24,14,30,20,36,16,26,34,18,24,14,30,22] %}
-              <div style="width:3px;height:{{ h }}px;background:linear-gradient(180deg,var(--accent),var(--accent-soft));border-radius:2px;animation:wave {{ (loop.index % 4) * 0.15 + 0.5 }}s ease-in-out {{ loop.index * 0.06 }}s infinite alternate;opacity:0.85;"></div>
-              {% endfor %}
-            </div>
-          </div>
-
-          <!-- Status strip -->
-          <div style="padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(27,158,255,0.10);background:rgba(4,8,15,0.60);">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent-glow);"></div>
-              <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">WebRTC · &lt;180ms</span>
-            </div>
-            <div style="display:flex;gap:6px;">
-              <span style="background:rgba(27,158,255,0.10);border:1px solid rgba(27,158,255,0.20);border-radius:6px;padding:3px 10px;font-size:11px;font-family:var(--font-mono);color:var(--accent-soft);">Video</span>
-              <span style="background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.20);border-radius:6px;padding:3px 10px;font-size:11px;font-family:var(--font-mono);color:#00E5A0;">Audio</span>
-              <span style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.20);border-radius:6px;padding:3px 10px;font-size:11px;font-family:var(--font-mono);color:#c4b5fd;">AI</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<style>
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes wave {
-  from { transform: scaleY(0.4); }
-  to   { transform: scaleY(1.0); }
-}
-</style>
-
 <!-- ================================================================
      AI ANALYSIS
      ================================================================ -->

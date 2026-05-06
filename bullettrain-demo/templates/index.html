@@ -739,6 +739,13 @@
   applyActive(1);
   requestAnimationFrame(() => scrollToDom(1, true));
 
+  // Kick off the first advance quickly so motion starts right away,
+  // rather than waiting a full interval before the first transition.
+  setTimeout(() => {
+    if (Date.now() < pauseUntil) return;
+    goNext();
+  }, 1400);
+
   // Auto-cycle
   setInterval(() => {
     if (Date.now() < pauseUntil) return;

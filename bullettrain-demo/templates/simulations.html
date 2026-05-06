@@ -426,7 +426,7 @@
     function addHint(text) {
       const h = document.createElement('div');
       h.className = 'sim-hint';
-      h.innerHTML = '<span class="sim-hint-icon">💡</span><span class="sim-hint-text"></span>';
+      h.innerHTML = '<span class="sim-hint-icon">💡</span><span class="sim-hint-label">Hint:</span><span class="sim-hint-text"></span>';
       convo.appendChild(h);
       const tx = h.querySelector('.sim-hint-text');
       return typewrite(tx, text, 16);
