@@ -5887,15 +5887,21 @@ footer .footer-brand-desc {
 .sim-detail-scroll {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 320px;
+  flex: 1;
+  min-height: 0;
   padding-right: 6px;
   scrollbar-width: none;
   -ms-overflow-style: none;
   font-size: 13px;
   color: var(--text-secondary);
   line-height: 1.6;
+  /* Soften the top/bottom edges so text fades instead of clipping mid-line */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
 }
 .sim-detail-scroll::-webkit-scrollbar { display: none; }
+.sim-detail-scroll > :first-child { margin-top: 0; }
+.sim-detail-scroll > :last-child  { margin-bottom: 8px; }
 .sim-detail-section-label {
   font-family: var(--font-mono);
   font-size: 10px;

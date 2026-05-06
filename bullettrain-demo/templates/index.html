@@ -648,8 +648,18 @@
     const card = allDom[domIdx];
     if (!card) return;
     isProgScroll = true;
-    const target = card.offsetLeft + card.offsetWidth / 2 - grid.clientWidth / 2;
-    grid.scrollTo({ left: Math.max(0, target), behavior: snap ? 'auto' : 'smooth' });
+    const target = Math.max(0, card.offsetLeft + card.offsetWidth / 2 - grid.clientWidth / 2);
+    if (snap) {
+      // Force instant — temporarily disable the CSS smooth scroll-behavior
+      // (scroll-behavior: smooth on the container otherwise smooth-eases the
+      // snap-back through every intermediate card)
+      const prev = grid.style.scrollBehavior;
+      grid.style.scrollBehavior = 'auto';
+      grid.scrollLeft = target;
+      requestAnimationFrame(() => { grid.style.scrollBehavior = prev || ''; });
+    } else {
+      grid.scrollTo({ left: target, behavior: 'smooth' });
+    }
     setTimeout(() => { isProgScroll = false; }, snap ? 30 : 700);
   }
 
