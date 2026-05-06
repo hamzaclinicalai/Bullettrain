@@ -499,40 +499,348 @@
         </ul>
       </div>
 
-      <div class="split-art reveal reveal-delay-2">
-        <div class="fake-screen">
-          <!-- Manager assignment view -->
-          <div class="cluster" style="margin-bottom:14px;">
-            <span class="fake-pill" style="background:rgba(139,92,246,0.15);border-color:rgba(139,92,246,0.25);color:#c4b5fd;">
-              <span style="width:7px;height:7px;border-radius:50%;background:#8B5CF6;display:inline-block;"></span>
-              Manager Dashboard
-            </span>
-          </div>
-          <div style="font-size:12px;color:var(--text-muted);font-family:var(--font-mono);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;">Assigned: Customer Recovery</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(27,158,255,0.06);border:1px solid rgba(27,158,255,0.14);border-radius:8px;padding:9px 12px;">
-              <span style="font-size:13px;color:var(--text-primary);">Dana R.</span>
-              <span style="font-family:var(--font-mono);font-size:11px;color:var(--signal-green);">Passed · 87%</span>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(27,158,255,0.06);border:1px solid rgba(27,158,255,0.14);border-radius:8px;padding:9px 12px;">
-              <span style="font-size:13px;color:var(--text-primary);">Marcus T.</span>
-              <span style="font-family:var(--font-mono);font-size:11px;color:var(--signal-green);">Passed · 91%</span>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(27,158,255,0.06);border:1px solid rgba(27,158,255,0.14);border-radius:8px;padding:9px 12px;">
-              <span style="font-size:13px;color:var(--text-primary);">Jordan K.</span>
-              <span style="font-family:var(--font-mono);font-size:11px;color:#F59E0B);">In progress</span>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.18);border-radius:8px;padding:9px 12px;">
-              <span style="font-size:13px;color:var(--text-primary);">Riley M.</span>
-              <span style="font-family:var(--font-mono);font-size:11px;color:#F87171;">Below threshold · 61%</span>
+      <div class="ent-dash-wrap reveal reveal-delay-2">
+        <div class="ent-dash" id="ent-dash">
+
+          <!-- Browser chrome -->
+          <div class="ent-dash-chrome">
+            <div class="ent-dash-dots"><i></i><i></i><i></i></div>
+            <div class="ent-dash-url">app.bullettrain.ai / manager</div>
+            <div class="ent-dash-pill-mini" id="ent-dash-mode">
+              <span class="ent-dash-pill-dot"></span>
+              Live
             </div>
           </div>
-          <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;">
-            <span style="font-size:11px;font-family:var(--font-mono);color:var(--text-muted);">Pass threshold: 75%</span>
-            <span style="font-size:11px;font-family:var(--font-mono);color:var(--accent);">3 / 4 cleared</span>
+
+          <!-- Stage -->
+          <div class="ent-dash-stage">
+
+            <!-- ─── View 1: Company HQ ─── -->
+            <div class="ent-dash-view is-active" data-view="company">
+              <div class="ent-dash-crumb">
+                <span class="ent-dash-crumb-current">Apex Hospitality Group</span>
+              </div>
+              <div class="ent-dash-headline">All Locations · Customer Recovery</div>
+
+              <div class="ent-dash-stats">
+                <div class="ent-dash-stat">
+                  <div class="ent-dash-stat-row">
+                    <span class="ent-dash-stat-num" data-num="42">0</span>
+                  </div>
+                  <span class="ent-dash-stat-lbl">Locations</span>
+                </div>
+                <div class="ent-dash-stat">
+                  <div class="ent-dash-stat-row">
+                    <span class="ent-dash-stat-num" data-num="386">0</span>
+                  </div>
+                  <span class="ent-dash-stat-lbl">Active staff</span>
+                </div>
+                <div class="ent-dash-stat">
+                  <div class="ent-dash-stat-row">
+                    <span class="ent-dash-stat-num" data-num="84">0</span>
+                    <span class="ent-dash-stat-pct">%</span>
+                  </div>
+                  <span class="ent-dash-stat-lbl">Pass rate</span>
+                </div>
+              </div>
+
+              <div class="ent-dash-list-label">Locations</div>
+              <div class="ent-dash-list">
+                <div class="ent-dash-row">
+                  <div class="ent-dash-row-name">
+                    <div class="ent-dash-row-icon" style="background:rgba(27,158,255,0.14);border-color:rgba(27,158,255,0.30);color:#4DCFFF;">DT</div>
+                    <span>Downtown Detroit</span>
+                  </div>
+                  <div class="ent-dash-row-meta">
+                    <span class="ent-dash-row-meta-item">24 staff</span>
+                    <span class="ent-dash-pill pass">91%</span>
+                  </div>
+                </div>
+                <div class="ent-dash-row" data-target="franchise">
+                  <div class="ent-dash-row-name">
+                    <div class="ent-dash-row-icon" style="background:rgba(0,229,160,0.14);border-color:rgba(0,229,160,0.30);color:#00E5A0;">NM</div>
+                    <span>Northland Mall</span>
+                  </div>
+                  <div class="ent-dash-row-meta">
+                    <span class="ent-dash-row-meta-item">18 staff</span>
+                    <span class="ent-dash-pill pass">88%</span>
+                  </div>
+                </div>
+                <div class="ent-dash-row">
+                  <div class="ent-dash-row-name">
+                    <div class="ent-dash-row-icon" style="background:rgba(245,158,11,0.14);border-color:rgba(245,158,11,0.30);color:#FCD34D;">LP</div>
+                    <span>Lakeside Plaza</span>
+                  </div>
+                  <div class="ent-dash-row-meta">
+                    <span class="ent-dash-row-meta-item">16 staff</span>
+                    <span class="ent-dash-pill amber">78%</span>
+                  </div>
+                </div>
+                <div class="ent-dash-row">
+                  <div class="ent-dash-row-name">
+                    <div class="ent-dash-row-icon" style="background:rgba(239,68,68,0.14);border-color:rgba(239,68,68,0.30);color:#F87171;">RO</div>
+                    <span>Riverside Outlet</span>
+                  </div>
+                  <div class="ent-dash-row-meta">
+                    <span class="ent-dash-row-meta-item">12 staff</span>
+                    <span class="ent-dash-pill red">67%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ─── View 2: Franchise (Northland Mall) ─── -->
+            <div class="ent-dash-view" data-view="franchise">
+              <div class="ent-dash-crumb">
+                <span class="ent-dash-crumb-back">← Apex / </span>
+                <span class="ent-dash-crumb-current">Northland Mall</span>
+              </div>
+              <div class="ent-dash-headline">Customer Recovery · Cohort 03</div>
+
+              <div class="ent-dash-stats">
+                <div class="ent-dash-stat">
+                  <div class="ent-dash-stat-row">
+                    <span class="ent-dash-stat-num" data-num="18">0</span>
+                  </div>
+                  <span class="ent-dash-stat-lbl">Active staff</span>
+                </div>
+                <div class="ent-dash-stat">
+                  <div class="ent-dash-stat-row">
+                    <span class="ent-dash-stat-num" data-num="88">0</span>
+                    <span class="ent-dash-stat-pct">%</span>
+                  </div>
+                  <span class="ent-dash-stat-lbl">Pass rate</span>
+                </div>
+                <div class="ent-dash-stat">
+                  <div class="ent-dash-stat-row">
+                    <span class="ent-dash-stat-num" data-num="2">0</span>
+                  </div>
+                  <span class="ent-dash-stat-lbl">Below threshold</span>
+                </div>
+              </div>
+
+              <div class="ent-dash-list-label">Staff</div>
+              <div class="ent-dash-list">
+                <div class="ent-dash-row">
+                  <div class="ent-dash-row-name">
+                    <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#1B9EFF,#0D6FCC);">DR</div>
+                    <span>Dana R.</span>
+                  </div>
+                  <div class="ent-dash-row-meta">
+                    <span class="ent-dash-pill pass">87%</span>
+                  </div>
+                </div>
+                <div class="ent-dash-row" data-target="employee">
+                  <div class="ent-dash-row-name">
+                    <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#00E5A0,#00A876);">MT</div>
+                    <span>Marcus T.</span>
+                  </div>
+                  <div class="ent-dash-row-meta">
+                    <span class="ent-dash-pill pass">91%</span>
+                  </div>
+                </div>
+                <div class="ent-dash-row">
+                  <div class="ent-dash-row-name">
+                    <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706);">JK</div>
+                    <span>Jordan K.</span>
+                  </div>
+                  <div class="ent-dash-row-meta">
+                    <span class="ent-dash-pill amber">In progress</span>
+                  </div>
+                </div>
+                <div class="ent-dash-row">
+                  <div class="ent-dash-row-name">
+                    <div class="ent-dash-row-avatar" style="background:linear-gradient(135deg,#EF4444,#B91C1C);">RM</div>
+                    <span>Riley M.</span>
+                  </div>
+                  <div class="ent-dash-row-meta">
+                    <span class="ent-dash-pill red">61%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ─── View 3: Employee (Marcus T.) ─── -->
+            <div class="ent-dash-view" data-view="employee">
+              <div class="ent-dash-crumb">
+                <span class="ent-dash-crumb-back">← Northland Mall / </span>
+                <span class="ent-dash-crumb-current">Marcus T.</span>
+              </div>
+
+              <div class="ent-dash-profile">
+                <div class="ent-dash-profile-avatar" style="background:linear-gradient(135deg,#00E5A0,#00A876);">MT</div>
+                <div class="ent-dash-profile-meta">
+                  <div class="ent-dash-profile-name">Marcus T.</div>
+                  <div class="ent-dash-profile-role">Shift Lead · 14 months</div>
+                </div>
+                <div class="ent-dash-profile-grade">
+                  <span class="ent-dash-profile-grade-letter">A−</span>
+                  <span class="ent-dash-profile-grade-lbl">Cleared</span>
+                </div>
+              </div>
+
+              <div class="ent-dash-stats">
+                <div class="ent-dash-stat">
+                  <div class="ent-dash-stat-row">
+                    <span class="ent-dash-stat-num" data-num="91">0</span>
+                    <span class="ent-dash-stat-pct">%</span>
+                  </div>
+                  <span class="ent-dash-stat-lbl">Latest score</span>
+                </div>
+                <div class="ent-dash-stat">
+                  <div class="ent-dash-stat-row">
+                    <span class="ent-dash-stat-num" data-num="8">0</span>
+                  </div>
+                  <span class="ent-dash-stat-lbl">Sessions</span>
+                </div>
+                <div class="ent-dash-stat">
+                  <div class="ent-dash-stat-row">
+                    <span class="ent-dash-stat-num" data-num="12">0</span>
+                  </div>
+                  <span class="ent-dash-stat-lbl">Day streak</span>
+                </div>
+              </div>
+
+              <div class="ent-dash-list-label">Skill breakdown</div>
+              <div class="ent-dash-chart">
+                <div class="ent-dash-chart-bar" data-h="92"><span class="ent-dash-chart-lbl">Listen</span></div>
+                <div class="ent-dash-chart-bar" data-h="88"><span class="ent-dash-chart-lbl">Validate</span></div>
+                <div class="ent-dash-chart-bar" data-h="78"><span class="ent-dash-chart-lbl">Reframe</span></div>
+                <div class="ent-dash-chart-bar" data-h="95"><span class="ent-dash-chart-lbl">Resolve</span></div>
+                <div class="ent-dash-chart-bar" data-h="84"><span class="ent-dash-chart-lbl">Close</span></div>
+              </div>
+
+              <div class="ent-dash-coach">
+                <div class="ent-dash-coach-icon">★</div>
+                <div class="ent-dash-coach-body">
+                  <div class="ent-dash-coach-title">AI Coaching Note</div>
+                  <div class="ent-dash-coach-text">Strong listening and resolution. Reframe scores trail by ~10pts — surface the customer's underlying value before pivoting.</div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /.ent-dash-stage -->
+
+          <!-- Animated cursor -->
+          <div class="ent-dash-cursor" id="ent-dash-cursor">
+            <svg viewBox="0 0 18 22" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 2 L2 16 L6.5 12.5 L9 19 L11.5 18 L9 11.5 L14.5 11.5 Z"
+                    fill="#fff" stroke="#0a0a0a" stroke-width="1" stroke-linejoin="round"/>
+            </svg>
           </div>
-        </div>
+
+        </div><!-- /.ent-dash -->
       </div>
+
+<script>
+(function () {
+  const dash = document.getElementById('ent-dash');
+  if (!dash) return;
+  const cursor = document.getElementById('ent-dash-cursor');
+  const views  = dash.querySelectorAll('.ent-dash-view');
+
+  function showView(name) {
+    views.forEach(v => v.classList.toggle('is-active', v.dataset.view === name));
+  }
+
+  function moveCursorTo(target, offsetX, offsetY) {
+    if (!target || !cursor) return;
+    const dRect = dash.getBoundingClientRect();
+    const tRect = target.getBoundingClientRect();
+    const x = (tRect.left - dRect.left) + (offsetX != null ? offsetX : tRect.width * 0.62);
+    const y = (tRect.top  - dRect.top ) + (offsetY != null ? offsetY : tRect.height * 0.50);
+    cursor.style.left = x + 'px';
+    cursor.style.top  = y + 'px';
+  }
+
+  function clickAt(target) {
+    if (!target) return;
+    target.classList.add('is-hover');
+    if (cursor) cursor.classList.add('is-clicking');
+    setTimeout(() => {
+      if (cursor) cursor.classList.remove('is-clicking');
+    }, 480);
+    setTimeout(() => {
+      target.classList.remove('is-hover');
+    }, 700);
+  }
+
+  function animateNum(el) {
+    if (!el) return;
+    const target = parseInt(el.dataset.num, 10) || 0;
+    el.textContent = '0';
+    let n = 0;
+    const step = Math.max(1, Math.ceil(target / 26));
+    const t = setInterval(() => {
+      n = Math.min(n + step, target);
+      el.textContent = n;
+      if (n >= target) clearInterval(t);
+    }, 30);
+  }
+
+  function animateView(name) {
+    const v = dash.querySelector('[data-view="' + name + '"]');
+    if (!v) return;
+    v.querySelectorAll('.ent-dash-stat-num').forEach(animateNum);
+    if (name === 'employee') {
+      const bars = v.querySelectorAll('.ent-dash-chart-bar');
+      bars.forEach((b, i) => {
+        b.style.height = '0%';
+        setTimeout(() => { b.style.height = b.dataset.h + '%'; }, 200 + i * 110);
+      });
+    }
+  }
+
+  function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  async function cycle() {
+    while (true) {
+      // ── State 1: Company
+      showView('company');
+      cursor.classList.remove('visible');
+      animateView('company');
+      await wait(1000);
+      cursor.classList.add('visible');
+
+      const franchise = dash.querySelector('[data-view="company"] .ent-dash-row[data-target="franchise"]');
+      moveCursorTo(franchise);
+      await wait(1700);
+      clickAt(franchise);
+      await wait(550);
+
+      // ── State 2: Franchise
+      showView('franchise');
+      animateView('franchise');
+      await wait(2400);
+
+      const employee = dash.querySelector('[data-view="franchise"] .ent-dash-row[data-target="employee"]');
+      moveCursorTo(employee);
+      await wait(1300);
+      clickAt(employee);
+      await wait(550);
+
+      // ── State 3: Employee
+      showView('employee');
+      cursor.classList.remove('visible');
+      animateView('employee');
+      await wait(4200);
+    }
+  }
+
+  // Kick off when the dashboard scrolls into view (simple intersection check)
+  let started = false;
+  function maybeStart() {
+    if (started) return;
+    const r = dash.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      started = true;
+      setTimeout(cycle, 600);
+    }
+  }
+  window.addEventListener('scroll', maybeStart, { passive: true });
+  maybeStart();
+})();
+</script>
     </div>
   </div>
 </section>
