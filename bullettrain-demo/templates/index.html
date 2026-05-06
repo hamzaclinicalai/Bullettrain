@@ -29,7 +29,7 @@
     <div class="hav-text-col">
       <span class="eyebrow on-dark">Interactive Avatar Powered Enterprise Training</span>
       <h1 class="gradient-text" style="margin-top:18px;">
-        Train your team with real conversations.
+        Train and test your team with real conversations.
       </h1>
       <p class="hero-sub">
         BulletTrain puts your people inside real custom scenarios built to simulate your business processes. They practice, get scored, and improve. No trainer required.
@@ -1044,6 +1044,17 @@
   stage.appendChild(buildAssessment());
 
   const views = stage.querySelectorAll('.ent-dash-view');
+
+  // Lock user scrolling on every scrollable container in the dashboard.
+  // Programmatic scrollTop changes (used by smoothScroll for the assessment
+  // view) are unaffected — only user-initiated wheel and touch are blocked.
+  function lockUserScroll(el) {
+    if (!el) return;
+    const block = e => e.preventDefault();
+    el.addEventListener('wheel',     block, { passive: false });
+    el.addEventListener('touchmove', block, { passive: false });
+  }
+  stage.querySelectorAll('.ent-dash-scroll, .ent-dash-asses-scroll').forEach(lockUserScroll);
 
   // ── Cycle helpers ──────────────────────────────────────────────────────
   function showView(name) {
