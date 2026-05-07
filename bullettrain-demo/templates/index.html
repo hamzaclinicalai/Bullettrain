@@ -35,11 +35,11 @@
         BulletTrain puts your people inside real custom scenarios built to simulate your business processes. They practice, get scored, and improve. No trainer required.
       </p>
       <div class="hero-cta" style="justify-content:flex-start;">
-        <a href="{{ url_for('catalog') }}" class="btn btn-primary btn-lg">
+        <a href="https://calendar.app.google/k1hf9GhZnoPq4A1DA" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Schedule Discovery Call</a>
+        <a href="{{ url_for('catalog') }}" class="btn btn-ghost on-dark btn-lg">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           Explore Simulations
         </a>
-        <a href="https://calendar.app.google/k1hf9GhZnoPq4A1DA" target="_blank" rel="noopener" class="btn btn-ghost on-dark btn-lg">Schedule Discovery Call</a>
       </div>
     </div>
 
@@ -793,32 +793,34 @@
         <div class="phase-flow-rail-fill" id="phase-rail-fill"></div>
         <div class="phase-flow-train" id="phase-orb">
           <span class="pft-trail" aria-hidden="true"></span>
-          <svg class="pft-body" viewBox="0 0 64 20" aria-hidden="true">
+          <svg class="pft-body" viewBox="0 0 96 22" aria-hidden="true">
             <defs>
               <linearGradient id="pftBody" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#0D6FCC"/>
-                <stop offset="60%" stop-color="#1B9EFF"/>
-                <stop offset="100%" stop-color="#9EE7FF"/>
+                <stop offset="0%" stop-color="#0A3D7A"/>
+                <stop offset="55%" stop-color="#1B7ED4"/>
+                <stop offset="100%" stop-color="#5EC8F0"/>
               </linearGradient>
               <linearGradient id="pftWin" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.65"/>
-                <stop offset="100%" stop-color="#8CC8FF" stop-opacity="0.05"/>
+                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#8CC8FF" stop-opacity="0.04"/>
               </linearGradient>
             </defs>
-            <!-- Body: pill with tapered nose -->
-            <path d="M3 10 Q3 5 8 5 L42 5 C52 5 60 7 62 10 C60 13 52 15 42 15 L8 15 Q3 15 3 10 Z" fill="url(#pftBody)"/>
-            <!-- Cockpit window -->
-            <path d="M44 7.6 C50 7.9 56 8.6 58 10 C56 11.4 50 12.1 44 12.4 Z" fill="url(#pftWin)"/>
-            <!-- Side stripe -->
-            <rect x="7" y="11.4" width="34" height="1.2" rx="0.6" fill="#FFFFFF" fill-opacity="0.55"/>
-            <!-- Passenger windows -->
-            <circle cx="14" cy="9" r="0.9" fill="#FFFFFF" fill-opacity="0.75"/>
-            <circle cx="20" cy="9" r="0.9" fill="#FFFFFF" fill-opacity="0.75"/>
-            <circle cx="26" cy="9" r="0.9" fill="#FFFFFF" fill-opacity="0.75"/>
-            <circle cx="32" cy="9" r="0.9" fill="#FFFFFF" fill-opacity="0.75"/>
-            <circle cx="38" cy="9" r="0.9" fill="#FFFFFF" fill-opacity="0.75"/>
+            <!-- Flat rectangular body + long Shinkansen nose -->
+            <path d="M5 4 L62 4 C76 4 88 7 91 11 C88 15 76 18 62 18 L5 18 Q3 18 3 11 Q3 4 5 4 Z" fill="url(#pftBody)"/>
+            <!-- Window band -->
+            <rect x="7" y="7" width="52" height="5" rx="1.5" fill="url(#pftWin)"/>
+            <!-- Window dividers -->
+            <line x1="16" y1="7" x2="16" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
+            <line x1="25" y1="7" x2="25" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
+            <line x1="34" y1="7" x2="34" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
+            <line x1="43" y1="7" x2="43" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
+            <line x1="52" y1="7" x2="52" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
+            <!-- Bottom accent stripe -->
+            <rect x="4" y="15" width="58" height="1.8" rx="0.6" fill="#4DCFFF" fill-opacity="0.60"/>
             <!-- Rear vent -->
-            <rect x="3.5" y="8.5" width="2.2" height="3" rx="0.6" fill="#B8E5FF" fill-opacity="0.85"/>
+            <rect x="3.5" y="9" width="2.5" height="4" rx="0.8" fill="#B8E5FF" fill-opacity="0.70"/>
+            <!-- Headlight -->
+            <circle cx="89" cy="11" r="1.4" fill="#FFFFFF" fill-opacity="0.90"/>
           </svg>
         </div>
       </div>
@@ -827,7 +829,7 @@
       <div class="phase-flow-card" data-phase="0">
         <div class="phase-flow-marker"><span>01</span></div>
         <h3>Scenario-first library</h3>
-        <p>Every simulation is built around a real franchise moment: a service recovery, an objection, a coaching conversation. Not a generic script.</p>
+        <p>Every simulation is built around a real enterprise scenario: a service recovery, an objection, a coaching conversation. Not a generic script.</p>
         <div class="phase-flow-mini phase-flow-mini-tags">
           <span class="pf-tag" style="--c:#4DCFFF">Customer Recovery</span>
           <span class="pf-tag" style="--c:#00E5A0">Membership Close</span>
@@ -897,22 +899,21 @@
 
   let phase = 0;
   let started = false;
+  let busy = false;
 
   function activate(p) {
     cards.forEach((c, n) => c.classList.toggle('is-active', n === p));
     cards.forEach((c, n) => c.classList.toggle('is-past', n < p));
-    // Advance the rail fill to align with the active marker
     const stops = ['16.66%', '50%', '83.33%'];
     if (railFill) railFill.style.width = stops[p];
     if (orb) {
       orb.style.left = stops[p];
       orb.classList.remove('is-boosting');
-      void orb.offsetWidth; // restart the boost animation on every transition
+      void orb.offsetWidth;
       orb.classList.add('is-boosting');
       clearTimeout(orb._boostT);
       orb._boostT = setTimeout(() => orb.classList.remove('is-boosting'), 1200);
     }
-    // Re-trigger the score-bar fills when phase 3 is active
     if (p === 2) {
       const fills = flow.querySelectorAll('.pf-score-fill');
       fills.forEach((f, i) => {
@@ -922,9 +923,36 @@
     }
   }
 
+  function exitAndReenter(targetPhase) {
+    if (!orb) { phase = targetPhase; activate(targetPhase); return; }
+    busy = true;
+    // Rush off the right edge
+    orb.style.transition = 'left 0.55s cubic-bezier(.4,0,.8,.5), opacity 0.38s ease';
+    orb.style.left = '110%';
+    orb.style.opacity = '0';
+    setTimeout(() => {
+      // Teleport to just off the left edge (no transition)
+      orb.style.transition = 'none';
+      orb.style.left = '-10%';
+      void orb.offsetWidth;
+      // Re-enable transition, fade in, and move to first stop
+      orb.style.transition = '';
+      orb.style.opacity = '1';
+      phase = targetPhase;
+      activate(targetPhase);
+      busy = false;
+    }, 580);
+  }
+
   function tick() {
-    phase = (phase + 1) % cards.length;
-    activate(phase);
+    if (busy) return;
+    const next = (phase + 1) % cards.length;
+    if (next === 0) {
+      exitAndReenter(0);
+    } else {
+      phase = next;
+      activate(phase);
+    }
   }
 
   function maybeStart() {

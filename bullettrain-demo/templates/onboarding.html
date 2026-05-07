@@ -48,7 +48,33 @@
 
     <div class="onb" id="onb">
       <!-- Step indicators -->
-      <div class="onb-steps">
+      <div class="onb-steps" id="onb-steps">
+        <div class="onb-train" id="onb-train" aria-hidden="true">
+          <span class="pft-trail"></span>
+          <svg class="pft-body" viewBox="0 0 96 22" aria-hidden="true">
+            <defs>
+              <linearGradient id="pftBodyOnb" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#0A3D7A"/>
+                <stop offset="55%" stop-color="#1B7ED4"/>
+                <stop offset="100%" stop-color="#5EC8F0"/>
+              </linearGradient>
+              <linearGradient id="pftWinOnb" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#8CC8FF" stop-opacity="0.04"/>
+              </linearGradient>
+            </defs>
+            <path d="M5 4 L62 4 C76 4 88 7 91 11 C88 15 76 18 62 18 L5 18 Q3 18 3 11 Q3 4 5 4 Z" fill="url(#pftBodyOnb)"/>
+            <rect x="7" y="7" width="52" height="5" rx="1.5" fill="url(#pftWinOnb)"/>
+            <line x1="16" y1="7" x2="16" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
+            <line x1="25" y1="7" x2="25" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
+            <line x1="34" y1="7" x2="34" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
+            <line x1="43" y1="7" x2="43" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
+            <line x1="52" y1="7" x2="52" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
+            <rect x="4" y="15" width="58" height="1.8" rx="0.6" fill="#4DCFFF" fill-opacity="0.60"/>
+            <rect x="3.5" y="9" width="2.5" height="4" rx="0.8" fill="#B8E5FF" fill-opacity="0.70"/>
+            <circle cx="89" cy="11" r="1.4" fill="#FFFFFF" fill-opacity="0.90"/>
+          </svg>
+        </div>
         <div class="onb-step is-active" data-step="0">
           <div class="onb-step-circle"><span class="onb-step-num">1</span></div>
           <div class="onb-step-title">Discovery call</div>
@@ -258,9 +284,42 @@
     document.getElementById('onb-line-2'),
     document.getElementById('onb-line-3')
   ];
+  const stepsEl = document.getElementById('onb-steps');
+  const trainEl = document.getElementById('onb-train');
 
   let idx = 0;
   let started = false;
+  let busy = false;
+  let trainStops = [];
+
+  function calcStops() {
+    if (!stepsEl || !stepEls.length) return;
+    const sr = stepsEl.getBoundingClientRect();
+    trainStops = stepEls.map(s => {
+      const circle = s.querySelector('.onb-step-circle') || s;
+      const cr = circle.getBoundingClientRect();
+      return ((cr.left + cr.width / 2 - sr.left) / sr.width * 100).toFixed(2) + '%';
+    });
+    // Position train vertically at the line level
+    if (trainEl) {
+      const firstLine = stepsEl.querySelector('.onb-line');
+      if (firstLine) {
+        const lr = firstLine.getBoundingClientRect();
+        const srTop = stepsEl.getBoundingClientRect().top;
+        trainEl.style.top = (lr.top + lr.height / 2 - srTop) + 'px';
+      }
+    }
+  }
+
+  function positionTrain(i) {
+    if (!trainEl || !trainStops.length) return;
+    trainEl.style.left = trainStops[i];
+    trainEl.classList.remove('is-boosting');
+    void trainEl.offsetWidth;
+    trainEl.classList.add('is-boosting');
+    clearTimeout(trainEl._boostT);
+    trainEl._boostT = setTimeout(() => trainEl.classList.remove('is-boosting'), 1200);
+  }
 
   function show(i) {
     stepEls.forEach((s, n) => {
@@ -268,14 +327,31 @@
       s.classList.toggle('is-past',  n < i);
     });
     paneEls.forEach((p, n) => p.classList.toggle('is-active', n === i));
-    // Fill connecting lines for past steps
     lineFills.forEach((f, n) => { if (f) f.style.width = n < i ? '100%' : '0%'; });
+    positionTrain(i);
 
-    // Replay per-pane micro-animations on entry
     if (i === 0) replayCall();
     if (i === 1) replayProposal();
     if (i === 2) replaySign();
     if (i === 3) replayDeploy();
+  }
+
+  function exitAndReenter(targetIdx) {
+    if (!trainEl) { idx = targetIdx; show(targetIdx); return; }
+    busy = true;
+    trainEl.style.transition = 'left 0.55s cubic-bezier(.4,0,.8,.5), opacity 0.38s ease';
+    trainEl.style.left = '110%';
+    trainEl.style.opacity = '0';
+    setTimeout(() => {
+      trainEl.style.transition = 'none';
+      trainEl.style.left = '-10%';
+      void trainEl.offsetWidth;
+      trainEl.style.transition = '';
+      trainEl.style.opacity = '1';
+      idx = targetIdx;
+      show(targetIdx);
+      busy = false;
+    }, 580);
   }
 
   function replayCall() {
@@ -314,7 +390,6 @@
         badge.classList.add('is-signed');
       }, 1700);
     }
-    // Reset and re-fade-in checklist
     const checks = root.querySelectorAll('.onb-sign-check');
     checks.forEach(c => c.classList.remove('is-shown'));
     checks.forEach((c, k) => setTimeout(() => c.classList.add('is-shown'), 1900 + k * 200));
@@ -336,8 +411,14 @@
   }
 
   function tick() {
-    idx = (idx + 1) % stepEls.length;
-    show(idx);
+    if (busy) return;
+    const next = (idx + 1) % stepEls.length;
+    if (next === 0) {
+      exitAndReenter(0);
+    } else {
+      idx = next;
+      show(idx);
+    }
   }
 
   function maybeStart() {
@@ -345,11 +426,13 @@
     const r = root.getBoundingClientRect();
     if (r.top < window.innerHeight && r.bottom > 0) {
       started = true;
+      calcStops();
       show(0);
       setInterval(tick, 4200);
     }
   }
   window.addEventListener('scroll', maybeStart, { passive: true });
+  window.addEventListener('resize', calcStops, { passive: true });
   maybeStart();
 })();
 </script>
