@@ -791,7 +791,36 @@
       <!-- Connector rail spanning the row -->
       <div class="phase-flow-rail">
         <div class="phase-flow-rail-fill" id="phase-rail-fill"></div>
-        <div class="phase-flow-orb" id="phase-orb"></div>
+        <div class="phase-flow-train" id="phase-orb">
+          <span class="pft-trail" aria-hidden="true"></span>
+          <svg class="pft-body" viewBox="0 0 64 20" aria-hidden="true">
+            <defs>
+              <linearGradient id="pftBody" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#0D6FCC"/>
+                <stop offset="60%" stop-color="#1B9EFF"/>
+                <stop offset="100%" stop-color="#9EE7FF"/>
+              </linearGradient>
+              <linearGradient id="pftWin" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.65"/>
+                <stop offset="100%" stop-color="#8CC8FF" stop-opacity="0.05"/>
+              </linearGradient>
+            </defs>
+            <!-- Body: pill with tapered nose -->
+            <path d="M3 10 Q3 5 8 5 L42 5 C52 5 60 7 62 10 C60 13 52 15 42 15 L8 15 Q3 15 3 10 Z" fill="url(#pftBody)"/>
+            <!-- Cockpit window -->
+            <path d="M44 7.6 C50 7.9 56 8.6 58 10 C56 11.4 50 12.1 44 12.4 Z" fill="url(#pftWin)"/>
+            <!-- Side stripe -->
+            <rect x="7" y="11.4" width="34" height="1.2" rx="0.6" fill="#FFFFFF" fill-opacity="0.55"/>
+            <!-- Passenger windows -->
+            <circle cx="14" cy="9" r="0.9" fill="#FFFFFF" fill-opacity="0.75"/>
+            <circle cx="20" cy="9" r="0.9" fill="#FFFFFF" fill-opacity="0.75"/>
+            <circle cx="26" cy="9" r="0.9" fill="#FFFFFF" fill-opacity="0.75"/>
+            <circle cx="32" cy="9" r="0.9" fill="#FFFFFF" fill-opacity="0.75"/>
+            <circle cx="38" cy="9" r="0.9" fill="#FFFFFF" fill-opacity="0.75"/>
+            <!-- Rear vent -->
+            <rect x="3.5" y="8.5" width="2.2" height="3" rx="0.6" fill="#B8E5FF" fill-opacity="0.85"/>
+          </svg>
+        </div>
       </div>
 
       <!-- Phase 1 -->
@@ -875,7 +904,14 @@
     // Advance the rail fill to align with the active marker
     const stops = ['16.66%', '50%', '83.33%'];
     if (railFill) railFill.style.width = stops[p];
-    if (orb) orb.style.left = stops[p];
+    if (orb) {
+      orb.style.left = stops[p];
+      orb.classList.remove('is-boosting');
+      void orb.offsetWidth; // restart the boost animation on every transition
+      orb.classList.add('is-boosting');
+      clearTimeout(orb._boostT);
+      orb._boostT = setTimeout(() => orb.classList.remove('is-boosting'), 1200);
+    }
     // Re-trigger the score-bar fills when phase 3 is active
     if (p === 2) {
       const fills = flow.querySelectorAll('.pf-score-fill');
