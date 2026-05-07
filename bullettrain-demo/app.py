@@ -377,6 +377,13 @@ def unlock():
     )
 
 
+@app.route("/lock")
+def lock():
+    """Clear the unlock flag so the gate reappears. Useful for demos and testing."""
+    flask_session.pop("simulations_unlocked", None)
+    return redirect(url_for("catalog"))
+
+
 @app.route("/catalog")
 def catalog():
     return render_template(
