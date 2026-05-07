@@ -340,7 +340,7 @@ def about():
     return render_template("about.html")
 
 
-UNLOCK_SESSION_KEY = "sim_unlock_v2"
+UNLOCK_SESSION_KEY = "sim_unlock_v3"
 
 
 def _simulations_unlocked():
