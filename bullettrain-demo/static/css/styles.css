@@ -3237,8 +3237,8 @@ section.light .eyebrow { color: var(--accent-deep); }
   position: absolute;
   top: 50%;
   left: 0%;
-  width: 96px;
-  height: 22px;
+  width: 110px;
+  height: 28px;
   transform: translate(-50%, -50%);
   transition: left 0.9s cubic-bezier(.16,1,.3,1);
   z-index: 3;
@@ -4438,6 +4438,47 @@ footer .footer-inner {
   gap: 48px;
 }
 
+/* Centered single-column footer */
+footer .footer-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+footer .footer-center .footer-brand-desc {
+  margin: 0 auto;
+  max-width: 56ch;
+}
+footer .footer-nav {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 28px;
+}
+footer .footer-nav li { padding: 4px 0; }
+footer .footer-nav li a {
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition: color 0.2s;
+}
+footer .footer-nav li a:hover { color: var(--text-primary); }
+footer .footer-center .colophon {
+  border-top: 1px solid rgba(27,158,255,0.08);
+  padding-top: 24px;
+  margin-top: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
 footer h4 {
   color: var(--text-primary);
   font-size: 11px;
@@ -4930,21 +4971,73 @@ footer .footer-brand-desc {
   margin-top: 40px;
 }
 
-/* Top step indicators */
+/* Track + step indicators wrapper (track above, numbers below) */
+.onb-track-area {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+/* Futuristic dual-rail track that the bullet train rides on */
+.onb-track {
+  position: relative;
+  width: 100%;
+  height: 14px;
+  overflow: visible;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px, transparent 13px,
+    rgba(27,158,255,0.08) 13px, rgba(27,158,255,0.08) 15px
+  );
+}
+.onb-track::before,
+.onb-track::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 1.5px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(27,158,255,0.20) 0px, rgba(27,158,255,0.20) 10px,
+    rgba(27,158,255,0.07) 10px, rgba(27,158,255,0.07) 14px
+  );
+}
+.onb-track::before { top: 0; }
+.onb-track::after  { bottom: 0; }
+.onb-track-fill {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 0%;
+  transition: width 0.9s cubic-bezier(.16,1,.3,1);
+  pointer-events: none;
+  overflow: visible;
+}
+.onb-track-fill::before,
+.onb-track-fill::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--signal-green) 55%, var(--signal-purple) 100%);
+  box-shadow: 0 0 8px rgba(27,158,255,0.75), 0 0 18px rgba(27,158,255,0.40);
+}
+.onb-track-fill::before { top: 0; }
+.onb-track-fill::after  { bottom: 0; opacity: 0.55; }
+
+/* Step row below the track */
 .onb-steps {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0;
   position: relative;
-  overflow: visible;
 }
 .onb-step {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  flex: 0 0 auto;
-  min-width: 110px;
+  flex: 1;
+  min-width: 0;
   text-align: center;
 }
 .onb-step-circle {
@@ -4997,32 +5090,12 @@ footer .footer-brand-desc {
   color: var(--text-primary);
 }
 
-/* Connector line between step circles */
-.onb-line {
-  flex: 1;
-  height: 2px;
-  background: rgba(27,158,255,0.10);
-  border-radius: 2px;
-  margin: 0 -8px;
-  position: relative;
-  align-self: center;
-  margin-top: -22px;
-  overflow: hidden;
-}
-.onb-line-fill {
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  background: linear-gradient(90deg, var(--accent) 0%, var(--signal-green) 100%);
-  border-radius: 2px;
-  width: 0%;
-  transition: width 0.7s cubic-bezier(.16,1,.3,1);
-}
-
-/* Onboarding timeline bullet train */
+/* Onboarding timeline bullet train (rides the .onb-track) */
 .onb-train {
   position: absolute;
-  width: 96px;
-  height: 22px;
+  top: 50%;
+  width: 110px;
+  height: 28px;
   transform: translate(-50%, -50%);
   transition: left 0.9s cubic-bezier(.16,1,.3,1), opacity 0.38s ease;
   z-index: 4;

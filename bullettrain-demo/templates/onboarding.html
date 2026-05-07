@@ -47,53 +47,59 @@
     </div>
 
     <div class="onb" id="onb">
-      <!-- Step indicators -->
-      <div class="onb-steps" id="onb-steps">
-        <div class="onb-train" id="onb-train" aria-hidden="true">
-          <span class="pft-trail"></span>
-          <svg class="pft-body" viewBox="0 0 96 22" aria-hidden="true">
-            <defs>
-              <linearGradient id="pftBodyOnb" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#0A3D7A"/>
-                <stop offset="55%" stop-color="#1B7ED4"/>
-                <stop offset="100%" stop-color="#5EC8F0"/>
-              </linearGradient>
-              <linearGradient id="pftWinOnb" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
-                <stop offset="100%" stop-color="#8CC8FF" stop-opacity="0.04"/>
-              </linearGradient>
-            </defs>
-            <path d="M5 4 L62 4 C78 4 89 9 92 18 L5 18 Q3 18 3 11 Q3 4 5 4 Z" fill="url(#pftBodyOnb)"/>
-            <rect x="7" y="7" width="52" height="5" rx="1.5" fill="url(#pftWinOnb)"/>
-            <line x1="16" y1="7" x2="16" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
-            <line x1="25" y1="7" x2="25" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
-            <line x1="34" y1="7" x2="34" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
-            <line x1="43" y1="7" x2="43" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
-            <line x1="52" y1="7" x2="52" y2="12" stroke="#062050" stroke-width="0.8" stroke-opacity="0.5"/>
-            <rect x="4" y="15" width="58" height="1.8" rx="0.6" fill="#4DCFFF" fill-opacity="0.60"/>
-            <rect x="3.5" y="9" width="2.5" height="4" rx="0.8" fill="#B8E5FF" fill-opacity="0.70"/>
-            <circle cx="86" cy="14" r="1.3" fill="#FFFFFF" fill-opacity="0.90"/>
-          </svg>
+      <!-- Tracks above + step indicators below -->
+      <div class="onb-track-area" id="onb-track-area">
+
+        <!-- Futuristic dual-rail track with the bullet train riding it -->
+        <div class="onb-track">
+          <div class="onb-track-fill" id="onb-track-fill"></div>
+          <div class="onb-train" id="onb-train" aria-hidden="true">
+            <span class="pft-trail"></span>
+            <svg class="pft-body" viewBox="0 0 110 28" aria-hidden="true">
+              <defs>
+                <linearGradient id="pftBodyOnb" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#FFFFFF"/>
+                  <stop offset="55%" stop-color="#E5EDF5"/>
+                  <stop offset="100%" stop-color="#A8B5C5"/>
+                </linearGradient>
+                <linearGradient id="pftGlassOnb" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1A2535"/>
+                  <stop offset="100%" stop-color="#040810"/>
+                </linearGradient>
+              </defs>
+              <path d="M5 5 L70 5 C86 5 100 11 106 23 L5 23 Q3 23 3 14 Q3 5 5 5 Z" fill="url(#pftBodyOnb)"/>
+              <rect x="7" y="10" width="55" height="4" rx="1" fill="url(#pftGlassOnb)"/>
+              <path d="M62 6 L72 6 C84 6 95 10 102 18 Q103 19 100 19 L62 19 Z" fill="url(#pftGlassOnb)"/>
+              <rect x="6" y="5" width="64" height="0.5" fill="#FFFFFF" fill-opacity="0.85"/>
+              <rect x="5" y="8.7" width="100" height="0.8" fill="#4DCFFF"/>
+              <rect x="5" y="15.5" width="100" height="1" fill="#1B9EFF"/>
+              <rect x="5" y="20" width="65" height="0.6" fill="#4DCFFF" fill-opacity="0.7"/>
+              <rect x="3" y="22" width="103" height="1" fill="#1A2535" fill-opacity="0.45"/>
+              <circle cx="103" cy="20" r="1.6" fill="#FFFFFF"/>
+            </svg>
+          </div>
         </div>
-        <div class="onb-step is-active" data-step="0">
-          <div class="onb-step-circle"><span class="onb-step-num">1</span></div>
-          <div class="onb-step-title">Discovery call</div>
+
+        <!-- Step circles + titles below the track -->
+        <div class="onb-steps" id="onb-steps">
+          <div class="onb-step is-active" data-step="0">
+            <div class="onb-step-circle"><span class="onb-step-num">1</span></div>
+            <div class="onb-step-title">Discovery call</div>
+          </div>
+          <div class="onb-step" data-step="1">
+            <div class="onb-step-circle"><span class="onb-step-num">2</span></div>
+            <div class="onb-step-title">Custom proposal</div>
+          </div>
+          <div class="onb-step" data-step="2">
+            <div class="onb-step-circle"><span class="onb-step-num">3</span></div>
+            <div class="onb-step-title">Sign &amp; onboard</div>
+          </div>
+          <div class="onb-step" data-step="3">
+            <div class="onb-step-circle"><span class="onb-step-num">4</span></div>
+            <div class="onb-step-title">Build &amp; deploy</div>
+          </div>
         </div>
-        <div class="onb-line"><div class="onb-line-fill" id="onb-line-1"></div></div>
-        <div class="onb-step" data-step="1">
-          <div class="onb-step-circle"><span class="onb-step-num">2</span></div>
-          <div class="onb-step-title">Custom proposal</div>
-        </div>
-        <div class="onb-line"><div class="onb-line-fill" id="onb-line-2"></div></div>
-        <div class="onb-step" data-step="2">
-          <div class="onb-step-circle"><span class="onb-step-num">3</span></div>
-          <div class="onb-step-title">Sign &amp; onboard</div>
-        </div>
-        <div class="onb-line"><div class="onb-line-fill" id="onb-line-3"></div></div>
-        <div class="onb-step" data-step="3">
-          <div class="onb-step-circle"><span class="onb-step-num">4</span></div>
-          <div class="onb-step-title">Build &amp; deploy</div>
-        </div>
+
       </div>
 
       <!-- Stage with the active step's content -->
@@ -279,11 +285,8 @@
   if (!root) return;
   const stepEls = Array.from(root.querySelectorAll('.onb-step'));
   const paneEls = Array.from(root.querySelectorAll('.onb-pane'));
-  const lineFills = [
-    document.getElementById('onb-line-1'),
-    document.getElementById('onb-line-2'),
-    document.getElementById('onb-line-3')
-  ];
+  const trackArea = document.getElementById('onb-track-area');
+  const trackFill = document.getElementById('onb-track-fill');
   const stepsEl = document.getElementById('onb-steps');
   const trainEl = document.getElementById('onb-train');
 
@@ -293,27 +296,19 @@
   let trainStops = [];
 
   function calcStops() {
-    if (!stepsEl || !stepEls.length) return;
-    const sr = stepsEl.getBoundingClientRect();
+    if (!trackArea || !stepEls.length) return;
+    const tr = trackArea.getBoundingClientRect();
     trainStops = stepEls.map(s => {
       const circle = s.querySelector('.onb-step-circle') || s;
       const cr = circle.getBoundingClientRect();
-      return ((cr.left + cr.width / 2 - sr.left) / sr.width * 100).toFixed(2) + '%';
+      return ((cr.left + cr.width / 2 - tr.left) / tr.width * 100).toFixed(2) + '%';
     });
-    // Position train vertically at the line level
-    if (trainEl) {
-      const firstLine = stepsEl.querySelector('.onb-line');
-      if (firstLine) {
-        const lr = firstLine.getBoundingClientRect();
-        const srTop = stepsEl.getBoundingClientRect().top;
-        trainEl.style.top = (lr.top + lr.height / 2 - srTop) + 'px';
-      }
-    }
   }
 
   function positionTrain(i) {
     if (!trainEl || !trainStops.length) return;
     trainEl.style.left = trainStops[i];
+    if (trackFill) trackFill.style.width = trainStops[i];
     trainEl.classList.remove('is-boosting');
     void trainEl.offsetWidth;
     trainEl.classList.add('is-boosting');
@@ -327,7 +322,6 @@
       s.classList.toggle('is-past',  n < i);
     });
     paneEls.forEach((p, n) => p.classList.toggle('is-active', n === i));
-    lineFills.forEach((f, n) => { if (f) f.style.width = n < i ? '100%' : '0%'; });
     positionTrain(i);
 
     if (i === 0) replayCall();
@@ -342,12 +336,22 @@
     trainEl.style.transition = 'left 0.55s cubic-bezier(.4,0,.8,.5), opacity 0.38s ease';
     trainEl.style.left = '110%';
     trainEl.style.opacity = '0';
+    if (trackFill) {
+      trackFill.style.transition = 'width 0.55s ease-out';
+      trackFill.style.width = '100%';
+    }
     setTimeout(() => {
       trainEl.style.transition = 'none';
       trainEl.style.left = '-10%';
       void trainEl.offsetWidth;
       trainEl.style.transition = '';
       trainEl.style.opacity = '1';
+      if (trackFill) {
+        trackFill.style.transition = 'none';
+        trackFill.style.width = '0%';
+        void trackFill.offsetWidth;
+        trackFill.style.transition = '';
+      }
       idx = targetIdx;
       show(targetIdx);
       busy = false;

@@ -72,46 +72,33 @@
 {% block footer %}
 <footer>
   <div class="container">
-    <div class="footer-inner">
+    <div class="footer-center">
 
-      <!-- Brand column -->
-      <div>
-        <a href="{{ url_for('index') }}" class="footer-brand-text" style="text-decoration:none;display:inline-block;margin-bottom:14px;">
-          {% if has_logo_png %}
-            <img src="{{ url_for('static', filename='img/logo-icon.png') }}"
-                 alt="BulletTrain.ai"
-                 style="height:48px;width:auto;max-width:200px;object-fit:contain;display:block;" />
-          {% else %}
-            <img src="{{ url_for('static', filename='img/logo-wordmark.svg') }}"
-                 alt="BulletTrain.ai"
-                 style="height:48px;width:auto;max-width:200px;object-fit:contain;display:block;" />
-          {% endif %}
-        </a>
-        <p class="footer-brand-desc">
-          Enterprise training reimagined. Practice real conversations with AI avatars, track skill growth, and build confident teams.
-        </p>
-      </div>
+      <!-- Brand -->
+      <a href="{{ url_for('index') }}" class="footer-brand-text" style="text-decoration:none;display:inline-block;margin-bottom:14px;">
+        {% if has_logo_png %}
+          <img src="{{ url_for('static', filename='img/logo-icon.png') }}"
+               alt="BulletTrain.ai"
+               style="height:48px;width:auto;max-width:220px;object-fit:contain;display:block;margin:0 auto;" />
+        {% else %}
+          <img src="{{ url_for('static', filename='img/logo-wordmark.svg') }}"
+               alt="BulletTrain.ai"
+               style="height:48px;width:auto;max-width:220px;object-fit:contain;display:block;margin:0 auto;" />
+        {% endif %}
+      </a>
+      <p class="footer-brand-desc">
+        Enterprise training reimagined. Practice real conversations with AI avatars, track skill growth, and build confident teams.
+      </p>
 
-      <!-- Platform links -->
-      <div>
-        <h4>Platform</h4>
-        <ul>
-          <li><a href="{{ url_for('index') }}">Home</a></li>
-          <li><a href="{{ url_for('platform') }}">Platform</a></li>
-          <li><a href="{{ url_for('workflow') }}">Workflow</a></li>
-          <li><a href="{{ url_for('onboarding') }}">Onboarding</a></li>
-          <li><a href="{{ url_for('catalog') }}">Simulation Library</a></li>
-        </ul>
-      </div>
-
-      <!-- Company links -->
-      <div>
-        <h4>Company</h4>
-        <ul>
-          <li><a href="{{ url_for('about') }}">About</a></li>
-          <li><a href="mailto:hello@bullettrain.ai">Contact Us</a></li>
-        </ul>
-      </div>
+      <!-- Nav links (mirrors the navbar) -->
+      <ul class="footer-nav">
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('platform') }}">Platform</a></li>
+        <li><a href="{{ url_for('workflow') }}">Workflow</a></li>
+        <li><a href="{{ url_for('onboarding') }}">Onboarding</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('catalog') }}">Catalog</a></li>
+      </ul>
 
       <!-- Colophon -->
       <div class="colophon">
