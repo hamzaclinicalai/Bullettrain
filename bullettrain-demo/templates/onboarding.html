@@ -316,7 +316,6 @@
     const trackWidth = trackEl.getBoundingClientRect().width;
     const trainBackPx = Math.max(0, parseFloat(stopPercent) / 100 * trackWidth - 66);
     cabins.style.width = trainBackPx + 'px';
-    cabins.style.backgroundPositionX = trainBackPx + 'px';
   }
 
   function positionTrain(i) {
@@ -357,9 +356,8 @@
     }
     if (cabins && trackEl) {
       const trackWidth = trackEl.getBoundingClientRect().width;
-      cabins.style.transition = 'width 0.55s ease-out, background-position-x 0.55s ease-out';
+      cabins.style.transition = 'width 0.55s ease-out';
       cabins.style.width = trackWidth + 'px';
-      cabins.style.backgroundPositionX = trackWidth + 'px';
     }
     setTimeout(() => {
       trainEl.style.transition = 'none';
@@ -376,7 +374,6 @@
       if (cabins) {
         cabins.style.transition = 'none';
         cabins.style.width = '0';
-        cabins.style.backgroundPositionX = '0';
         void cabins.offsetWidth;
         cabins.style.transition = '';
       }

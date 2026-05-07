@@ -533,8 +533,8 @@
 <section class="dark">
   <div class="container">
     <div class="section-head reveal" style="margin-bottom:32px;">
-      <span class="eyebrow">Platform</span>
-      <h2>From scenario to skill in a single session.</h2>
+      <span class="eyebrow">An end to end learning management platform</span>
+      <h2>Deploy scenario based interactive avatar trainings to your enterprise teams.</h2>
     </div>
 
     <div class="phase-flow" id="phase-flow">
@@ -667,7 +667,6 @@
     const railWidth = rail.getBoundingClientRect().width;
     const trainBackPx = Math.max(0, parseFloat(stopPercent) / 100 * railWidth - 66);
     cabins.style.width = trainBackPx + 'px';
-    cabins.style.backgroundPositionX = trainBackPx + 'px';
   }
 
   function activate(p) {
@@ -701,9 +700,8 @@
     orb.style.opacity = '0';
     if (cabins && rail) {
       const railWidth = rail.getBoundingClientRect().width;
-      cabins.style.transition = 'width 0.55s ease-out, background-position-x 0.55s ease-out';
+      cabins.style.transition = 'width 0.55s ease-out';
       cabins.style.width = railWidth + 'px';
-      cabins.style.backgroundPositionX = railWidth + 'px';
     }
     setTimeout(() => {
       orb.style.transition = 'none';
@@ -718,7 +716,6 @@
       if (cabins) {
         cabins.style.transition = 'none';
         cabins.style.width = '0';
-        cabins.style.backgroundPositionX = '0';
         void cabins.offsetWidth;
         cabins.style.transition = '';
       }
