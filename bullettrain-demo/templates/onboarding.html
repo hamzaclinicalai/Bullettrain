@@ -53,6 +53,7 @@
         <!-- Futuristic dual-rail track with the bullet train riding it -->
         <div class="onb-track">
           <div class="onb-track-fill" id="onb-track-fill"></div>
+          <div class="onb-cabins" id="onb-cabins"></div>
           <div class="onb-train" id="onb-train" aria-hidden="true">
             <span class="pft-trail"></span>
             <svg class="pft-body" viewBox="0 0 140 48" aria-hidden="true">
@@ -290,6 +291,7 @@
   const paneEls = Array.from(root.querySelectorAll('.onb-pane'));
   const trackArea = document.getElementById('onb-track-area');
   const trackFill = document.getElementById('onb-track-fill');
+  const cabins = document.getElementById('onb-cabins');
   const stepsEl = document.getElementById('onb-steps');
   const trainEl = document.getElementById('onb-train');
 
@@ -312,6 +314,7 @@
     if (!trainEl || !trainStops.length) return;
     trainEl.style.left = trainStops[i];
     if (trackFill) trackFill.style.width = trainStops[i];
+    if (cabins) cabins.style.width = `calc(${trainStops[i]} - 66px)`;
     trainEl.classList.remove('is-boosting');
     void trainEl.offsetWidth;
     trainEl.classList.add('is-boosting');
@@ -343,6 +346,10 @@
       trackFill.style.transition = 'width 0.55s ease-out';
       trackFill.style.width = '100%';
     }
+    if (cabins) {
+      cabins.style.transition = 'width 0.55s ease-out';
+      cabins.style.width = '100%';
+    }
     setTimeout(() => {
       trainEl.style.transition = 'none';
       trainEl.style.left = '-10%';
@@ -354,6 +361,12 @@
         trackFill.style.width = '0%';
         void trackFill.offsetWidth;
         trackFill.style.transition = '';
+      }
+      if (cabins) {
+        cabins.style.transition = 'none';
+        cabins.style.width = '0';
+        void cabins.offsetWidth;
+        cabins.style.transition = '';
       }
       idx = targetIdx;
       show(targetIdx);
@@ -434,7 +447,23 @@
     if (r.top < window.innerHeight && r.bottom > 0) {
       started = true;
       calcStops();
-      show(0);
+      // Park the train off-screen left so it animates in to step 1
+      if (trainEl) {
+        trainEl.style.transition = 'none';
+        trainEl.style.left = '-10%';
+        trainEl.style.opacity = '0';
+        void trainEl.offsetWidth;
+        trainEl.style.transition = '';
+        trainEl.style.opacity = '1';
+      }
+      if (cabins) {
+        cabins.style.transition = 'none';
+        cabins.style.width = '0';
+        void cabins.offsetWidth;
+        cabins.style.transition = '';
+      }
+      // Slight delay so the user sees the train arrive at step 1
+      setTimeout(() => show(0), 60);
       setInterval(tick, 4200);
     }
   }

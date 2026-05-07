@@ -29,10 +29,10 @@
     <div class="hav-text-col">
       <span class="eyebrow on-dark">Interactive Avatar Powered Enterprise Training</span>
       <h1 class="gradient-text" style="margin-top:18px;">
-        Train and test your team with real scenarios.
+        Train and test your team with real scenarios
       </h1>
       <p class="hero-sub">
-        BulletTrain puts your people inside real custom scenarios built to simulate your business processes. They practice, get scored, and improve. No trainer required.
+        BulletTrain puts your people inside real custom scenarios built to simulate your business processes. They practice, get scored, and improve.
       </p>
       <div class="hero-cta" style="justify-content:flex-start;">
         <a href="https://calendar.app.google/k1hf9GhZnoPq4A1DA" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Schedule Discovery Call</a>
@@ -542,6 +542,7 @@
       <!-- Connector rail spanning the row -->
       <div class="phase-flow-rail">
         <div class="phase-flow-rail-fill" id="phase-rail-fill"></div>
+        <div class="phase-flow-cabins" id="phase-cabins"></div>
         <div class="phase-flow-train" id="phase-orb">
           <span class="pft-trail" aria-hidden="true"></span>
           <svg class="pft-body" viewBox="0 0 140 48" aria-hidden="true">
@@ -585,8 +586,8 @@
 
       <!-- Phase 1 -->
       <div class="phase-flow-card" data-phase="0">
-        <div class="phase-flow-marker"><span>01</span></div>
-        <h3>Scenario-first library</h3>
+        <div class="phase-flow-marker"><span>1</span></div>
+        <h3>Create Scenarios For Your Curriculum</h3>
         <p>Every simulation is built around a real enterprise scenario: a service recovery, an objection, a coaching conversation. Not a generic script.</p>
         <div class="phase-flow-mini phase-flow-mini-tags">
           <span class="pf-tag" style="--c:#4DCFFF">Customer Recovery</span>
@@ -599,8 +600,8 @@
 
       <!-- Phase 2 -->
       <div class="phase-flow-card" data-phase="1">
-        <div class="phase-flow-marker"><span>02</span></div>
-        <h3>Practice then Test</h3>
+        <div class="phase-flow-marker"><span>2</span></div>
+        <h3>Deploy Your Training Program</h3>
         <p>Trainees warm up in practice mode with light guidance, then unlock test mode for a blind run. Skills are locked in, not just demonstrated once.</p>
         <div class="phase-flow-mini phase-flow-mini-modes">
           <div class="pf-mode-row">
@@ -620,8 +621,8 @@
 
       <!-- Phase 3 -->
       <div class="phase-flow-card" data-phase="2">
-        <div class="phase-flow-marker"><span>03</span></div>
-        <h3>AI performance analysis</h3>
+        <div class="phase-flow-marker"><span>3</span></div>
+        <h3>AI Performance Analysis</h3>
         <p>After every session the platform grades each objective, shows the trainee exactly where they succeeded or stumbled, and recommends their next rep.</p>
         <div class="phase-flow-mini phase-flow-mini-scores">
           <div class="pf-score-row">
@@ -652,6 +653,7 @@
   if (!flow) return;
   const cards = flow.querySelectorAll('.phase-flow-card');
   const railFill = document.getElementById('phase-rail-fill');
+  const cabins = document.getElementById('phase-cabins');
   const orb = document.getElementById('phase-orb');
   if (!cards.length) return;
 
@@ -664,6 +666,7 @@
     cards.forEach((c, n) => c.classList.toggle('is-past', n < p));
     const stops = ['16.66%', '50%', '83.33%'];
     if (railFill) railFill.style.width = stops[p];
+    if (cabins) cabins.style.width = `calc(${stops[p]} - 66px)`;
     if (orb) {
       orb.style.left = stops[p];
       orb.classList.remove('is-boosting');
@@ -684,16 +687,29 @@
   function exitAndReenter(targetPhase) {
     if (!orb) { phase = targetPhase; activate(targetPhase); return; }
     busy = true;
-    // Rush off the right edge
     orb.style.transition = 'left 0.55s cubic-bezier(.4,0,.8,.5), opacity 0.38s ease';
     orb.style.left = '110%';
     orb.style.opacity = '0';
+    if (cabins) {
+      cabins.style.transition = 'width 0.55s ease-out';
+      cabins.style.width = '100%';
+    }
     setTimeout(() => {
-      // Teleport to just off the left edge (no transition)
       orb.style.transition = 'none';
       orb.style.left = '-10%';
       void orb.offsetWidth;
-      // Re-enable transition, fade in, and move to first stop
+      if (railFill) {
+        railFill.style.transition = 'none';
+        railFill.style.width = '0%';
+        void railFill.offsetWidth;
+        railFill.style.transition = '';
+      }
+      if (cabins) {
+        cabins.style.transition = 'none';
+        cabins.style.width = '0';
+        void cabins.offsetWidth;
+        cabins.style.transition = '';
+      }
       orb.style.transition = '';
       orb.style.opacity = '1';
       phase = targetPhase;
@@ -718,6 +734,15 @@
     const r = flow.getBoundingClientRect();
     if (r.top < window.innerHeight && r.bottom > 0) {
       started = true;
+      // Start the train off-screen left and fade it in as it slides to stop 0
+      if (orb) {
+        orb.style.transition = 'none';
+        orb.style.left = '-10%';
+        orb.style.opacity = '0';
+        void orb.offsetWidth;
+        orb.style.transition = '';
+        orb.style.opacity = '1';
+      }
       activate(0);
       setInterval(tick, 3400);
     }
