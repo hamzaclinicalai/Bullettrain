@@ -290,6 +290,7 @@
   const stepEls = Array.from(root.querySelectorAll('.onb-step'));
   const paneEls = Array.from(root.querySelectorAll('.onb-pane'));
   const trackArea = document.getElementById('onb-track-area');
+  const trackEl = trackArea ? trackArea.querySelector('.onb-track') : null;
   const trackFill = document.getElementById('onb-track-fill');
   const cabins = document.getElementById('onb-cabins');
   const stepsEl = document.getElementById('onb-steps');
@@ -310,11 +311,19 @@
     });
   }
 
+  function setCabin(stopPercent) {
+    if (!cabins || !trackEl) return;
+    const trackWidth = trackEl.getBoundingClientRect().width;
+    const trainBackPx = Math.max(0, parseFloat(stopPercent) / 100 * trackWidth - 66);
+    cabins.style.width = trainBackPx + 'px';
+    cabins.style.backgroundPositionX = trainBackPx + 'px';
+  }
+
   function positionTrain(i) {
     if (!trainEl || !trainStops.length) return;
     trainEl.style.left = trainStops[i];
     if (trackFill) trackFill.style.width = trainStops[i];
-    if (cabins) cabins.style.width = `calc(${trainStops[i]} - 66px)`;
+    setCabin(trainStops[i]);
     trainEl.classList.remove('is-boosting');
     void trainEl.offsetWidth;
     trainEl.classList.add('is-boosting');
@@ -346,9 +355,11 @@
       trackFill.style.transition = 'width 0.55s ease-out';
       trackFill.style.width = '100%';
     }
-    if (cabins) {
-      cabins.style.transition = 'width 0.55s ease-out';
-      cabins.style.width = '100%';
+    if (cabins && trackEl) {
+      const trackWidth = trackEl.getBoundingClientRect().width;
+      cabins.style.transition = 'width 0.55s ease-out, background-position-x 0.55s ease-out';
+      cabins.style.width = trackWidth + 'px';
+      cabins.style.backgroundPositionX = trackWidth + 'px';
     }
     setTimeout(() => {
       trainEl.style.transition = 'none';
@@ -365,6 +376,7 @@
       if (cabins) {
         cabins.style.transition = 'none';
         cabins.style.width = '0';
+        cabins.style.backgroundPositionX = '0';
         void cabins.offsetWidth;
         cabins.style.transition = '';
       }

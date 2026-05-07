@@ -532,7 +532,7 @@
      ================================================================ -->
 <section class="dark">
   <div class="container">
-    <div class="section-head reveal">
+    <div class="section-head reveal" style="margin-bottom:32px;">
       <span class="eyebrow">Platform</span>
       <h2>From scenario to skill in a single session.</h2>
     </div>
@@ -652,6 +652,7 @@
   const flow = document.getElementById('phase-flow');
   if (!flow) return;
   const cards = flow.querySelectorAll('.phase-flow-card');
+  const rail = flow.querySelector('.phase-flow-rail');
   const railFill = document.getElementById('phase-rail-fill');
   const cabins = document.getElementById('phase-cabins');
   const orb = document.getElementById('phase-orb');
@@ -661,12 +662,20 @@
   let started = false;
   let busy = false;
 
+  function setCabin(stopPercent) {
+    if (!cabins || !rail) return;
+    const railWidth = rail.getBoundingClientRect().width;
+    const trainBackPx = Math.max(0, parseFloat(stopPercent) / 100 * railWidth - 66);
+    cabins.style.width = trainBackPx + 'px';
+    cabins.style.backgroundPositionX = trainBackPx + 'px';
+  }
+
   function activate(p) {
     cards.forEach((c, n) => c.classList.toggle('is-active', n === p));
     cards.forEach((c, n) => c.classList.toggle('is-past', n < p));
     const stops = ['16.66%', '50%', '83.33%'];
     if (railFill) railFill.style.width = stops[p];
-    if (cabins) cabins.style.width = `calc(${stops[p]} - 66px)`;
+    setCabin(stops[p]);
     if (orb) {
       orb.style.left = stops[p];
       orb.classList.remove('is-boosting');
@@ -690,9 +699,11 @@
     orb.style.transition = 'left 0.55s cubic-bezier(.4,0,.8,.5), opacity 0.38s ease';
     orb.style.left = '110%';
     orb.style.opacity = '0';
-    if (cabins) {
-      cabins.style.transition = 'width 0.55s ease-out';
-      cabins.style.width = '100%';
+    if (cabins && rail) {
+      const railWidth = rail.getBoundingClientRect().width;
+      cabins.style.transition = 'width 0.55s ease-out, background-position-x 0.55s ease-out';
+      cabins.style.width = railWidth + 'px';
+      cabins.style.backgroundPositionX = railWidth + 'px';
     }
     setTimeout(() => {
       orb.style.transition = 'none';
@@ -707,6 +718,7 @@
       if (cabins) {
         cabins.style.transition = 'none';
         cabins.style.width = '0';
+        cabins.style.backgroundPositionX = '0';
         void cabins.offsetWidth;
         cabins.style.transition = '';
       }
@@ -748,6 +760,10 @@
     }
   }
   window.addEventListener('scroll', maybeStart, { passive: true });
+  window.addEventListener('resize', () => {
+    const stops = ['16.66%', '50%', '83.33%'];
+    if (started && !busy) setCabin(stops[phase]);
+  }, { passive: true });
   maybeStart();
 })();
 </script>
