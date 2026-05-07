@@ -340,8 +340,11 @@ def about():
     return render_template("about.html")
 
 
+UNLOCK_SESSION_KEY = "sim_unlock_v2"
+
+
 def _simulations_unlocked():
-    return bool(flask_session.get("simulations_unlocked"))
+    return bool(flask_session.get(UNLOCK_SESSION_KEY))
 
 
 def _gate_redirect(next_path):
@@ -365,7 +368,7 @@ def unlock():
     if request.method == "POST":
         code = (request.form.get("passcode") or "").strip()
         if code.upper() == SIMULATION_PASSCODE.upper():
-            flask_session["simulations_unlocked"] = True
+            flask_session[UNLOCK_SESSION_KEY] = True
             return redirect(next_url)
         error = "Incorrect passcode. Try again or schedule a discovery call to receive one."
 
@@ -380,7 +383,7 @@ def unlock():
 @app.route("/lock")
 def lock():
     """Clear the unlock flag so the gate reappears. Useful for demos and testing."""
-    flask_session.pop("simulations_unlocked", None)
+    flask_session.pop(UNLOCK_SESSION_KEY, None)
     return redirect(url_for("catalog"))
 
 
