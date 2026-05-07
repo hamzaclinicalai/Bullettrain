@@ -3300,6 +3300,10 @@ section.light .eyebrow { color: var(--accent-deep); }
       transparent 98%),
     /* Body gradient (base) */
     linear-gradient(to bottom, #FFFFFF, #E5EDF5 50%, #A8B5C5);
+  /* Anchor the cabin-separator pattern to the right edge so the lines
+     translate with the train as it advances instead of staying parked at
+     the left of the trail. Horizontal stripes / body gradient ignore this. */
+  background-position-x: 100%;
 }
 .pft-body {
   position: relative;
